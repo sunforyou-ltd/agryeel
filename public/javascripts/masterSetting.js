@@ -34,6 +34,8 @@
       ml.append('<li class="collection-item menuitem master-trriger" gmnid="13" style="border-left-color:#1a237e; background-color: #1a237e !important;"><i class="material-icons" style="color:#e1bee7;">settings</i><span style="color:#fafafa;">等級・質設定</span></li>');
       ml.append('<li class="collection-item menuitem master-trriger" gmnid="14" style="border-left-color:#1a237e; background-color: #1a237e !important;"><i class="material-icons" style="color:#e1bee7;">settings</i><span style="color:#fafafa;">階級・サイズ設定</span></li>');
       ml.append('<li class="collection-item menuitem master-trriger" gmnid="15" style="border-left-color:#1a237e; background-color: #1a237e !important;"><i class="material-icons" style="color:#e1bee7;">settings</i><span style="color:#fafafa;">資材設定</span></li>');
+      ml.append('<li class="collection-item menuitem master-trriger" gmnid="17" style="border-left-color:#1a237e; background-color: #1a237e !important;"><i class="material-icons" style="color:#e1bee7;">settings</i><span style="color:#fafafa;">容器設定</span></li>');
+      ml.append('<li class="collection-item menuitem master-trriger" gmnid="18" style="border-left-color:#1a237e; background-color: #1a237e !important;"><i class="material-icons" style="color:#e1bee7;">settings</i><span style="color:#fafafa;">土設定</span></li>');
     }
     ml.append('<li id="masterclose" class="collection-item menuitem" style="border-left-color:#1a237e; background-color: #1a237e !important;"><i class="material-icons" style="color:#b2dfdb;">close</i><span style="color:#fafafa;">閉じる</span></li>');
     //- クローズメニューにイベントを設定する

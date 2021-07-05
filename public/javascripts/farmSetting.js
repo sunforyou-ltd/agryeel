@@ -169,6 +169,13 @@
         htmlString+= '</div>';
         htmlString+= '</div>';
 
+        /* 育苗機能 */
+        htmlString+= '<div class="row">';
+        htmlString+= '<div class="col s10 offset-s1 mst-item-title">';
+        htmlString+= '育苗機能<a href="#selectmodal"  class="collection-item selectmodal-trigger" title="育苗機能選択"" data="getIkubyoFunction" displayspan="#G2702IkubyoFunctionSpan"><span id="G2702IkubyoFunctionSpan" class="blockquote-input">未選択</span></a>';
+        htmlString+= '</div>';
+        htmlString+= '</div>';
+
         htmlString+= '</form>';
         htmlString+= '</div>';
         htmlString+= '</div>';
@@ -247,6 +254,14 @@
         }
         selectClose();
 
+        //----- 育苗機能 -----
+        selectDataGet("#G2702IkubyoFunctionSpan", "getIkubyoFunction");
+        var oJson = selectData(jsonResult.ikubyoFunction);
+        if (oJson != undefined) {
+          oJson.select = true;
+        }
+        selectClose();
+
         },
           dataType:'json',
           contentType:'text/json',
@@ -296,6 +311,7 @@
         }
         var historyReference = selectConvertJson("#G2702HistoryReferenceSpan");
         var syukakuInputCount = selectConvertJson("#G2702SyukakuInputCountSpan");
+        var ikubyoFunction = selectConvertJson("#G2702IkubyoFunctionSpan");
 
         jsondata["areaUnit"]         = areaUnit;
         jsondata["kisyo"]            = kisyo;
@@ -303,6 +319,7 @@
         jsondata["workPlanAutoMove"] = workPlanAutoMove;
         jsondata["historyReference"] = historyReference;
         jsondata["syukakuInputCount"] = syukakuInputCount;
+        jsondata["ikubyoFunction"] = ikubyoFunction;
 
 	    console.log("jsondata", jsondata);
 

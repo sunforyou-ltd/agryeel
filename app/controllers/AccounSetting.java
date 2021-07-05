@@ -248,6 +248,10 @@ public class AccounSetting extends Controller {
         uc.accountStatusData.deleteFlag = 1;
         uc.accountStatusData.update();
 
+        //---------- アカウントス育苗テータス情報の更新 ----------
+        uc.accountIkubyoStatusData.deleteFlag = 1;
+        uc.accountIkubyoStatusData.update();
+
         resultJson.put(AgryeelConst.Result.RESULT, AgryeelConst.Result.SUCCESS);
 
         return ok(resultJson);

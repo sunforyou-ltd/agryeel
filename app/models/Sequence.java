@@ -147,6 +147,22 @@ public class Sequence extends Model {
          * 作業計画ID
          */
         public static final int WORKPLANID      =  29;
+        /**
+         * プランラインID
+         */
+        public static final int PLANLINEID      =  30;
+        /**
+         * 育苗記録ID
+         */
+        public static final int IKUBYODIARYID   =  31;
+        /**
+         * 容器ID
+         */
+        public static final int YOUKIID         =  32;
+        /**
+         * 土ID
+         */
+        public static final int SOILID          =  33;
     }
 
     /**

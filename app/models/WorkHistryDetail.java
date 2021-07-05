@@ -77,6 +77,26 @@ public class WorkHistryDetail extends Model {
      * 収穫人数
      */
     public int syukakuNinzu;
+    /**
+     * 苗No
+     */
+    public String naeNo;
+    /**
+     * 列数
+     */
+    public double retusu;
+    /**
+     * 条間
+     */
+    public double joukan;
+    /**
+     * 条数
+     */
+    public double jousu;
+    /**
+     * 作付距離
+     */
+    public double plantingDistance;
 
     public static Finder<Long, WorkHistryDetail> find = new Finder<Long, WorkHistryDetail>(Long.class, WorkHistryDetail.class);
 

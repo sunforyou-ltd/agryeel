@@ -28,7 +28,7 @@ public class TeishokuCompornent extends CommonWorkDiaryWork {
     /**
      * 列数
      */
-    public int retusu = 0;
+    public double retusu = 0;
 
     /**
      * コンストラクタ
@@ -105,7 +105,7 @@ public class TeishokuCompornent extends CommonWorkDiaryWork {
         wkd.naemaisu      = this.wlt.naemaisu;
       }
       else {
-        wkd.retusu        = Integer.parseInt(input.get("retusu").asText());       //列数
+        wkd.retusu        = Double.parseDouble(input.get("retusu").asText());     //列数
         wkd.naemaisu      = Integer.parseInt(input.get("naemaisu").asText());     //使用苗枚数
       }
 
@@ -122,7 +122,7 @@ public class TeishokuCompornent extends CommonWorkDiaryWork {
 
       super.plan(input, wkp, wk);
 
-      wkp.retusu        = Integer.parseInt(input.get("retusu").asText());       //列数
+      wkp.retusu        = Double.parseDouble(input.get("retusu").asText());     //列数
       wkp.naemaisu      = Integer.parseInt(input.get("naemaisu").asText());     //使用苗枚数
 
     }

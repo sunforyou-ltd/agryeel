@@ -99,6 +99,14 @@ public class AgryeelConst {
          */
         public static String  SIZAIID			= "sizaiId";
         /**
+         * 容器ID
+         */
+        public static String  YOUKIID			= "youkiId";
+        /**
+         * 土ID
+         */
+        public static String  SOILID			= "soilId";
+        /**
          * 作業ID（作業記録日誌）
          */
         public static String  WORKID			= "workId";
@@ -715,6 +723,14 @@ public class AgryeelConst {
              * サイズ
              */
             public static String  SIZE			= "sizeDataList";
+            /**
+             * 容器
+             */
+            public static String  YOUKI			= "youkiDataList";
+            /**
+             * 土
+             */
+            public static String  SOIL			= "soilDataList";
         }
         /**
          * 前回履歴値
@@ -1000,6 +1016,14 @@ public class AgryeelConst {
 	         */
 	        public static String  SIZE			= "階級・サイズ";
 	        /**
+	         * 画面名（容器）
+	         */
+	        public static String  YOUKI			= "容器";
+	        /**
+	         * 画面名（土）
+	         */
+	        public static String  SOIL			= "土";
+	        /**
 	         * 画面名（資材）
 	         */
 	        public static String  SIZAI			= "資材";
@@ -1072,6 +1096,15 @@ public class AgryeelConst {
          * 生産者
          */
         public static final int  	  FARM				= 16;
+        /**
+         * 容器
+         */
+        public static final int  	  YOUKI				= 17;
+        /**
+         * 土
+         */
+        public static final int  	  SOIL				= 18;
+
     }
 
 	/**

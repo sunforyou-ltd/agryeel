@@ -202,6 +202,7 @@ GET     /getHistoryReference                    controllers.CommonController.get
 GET     /getWorkPlanAutoCreate                  controllers.CommonController.getWorkPlanAutoCreate()
 GET     /getWorkDiaryDiscription                controllers.CommonController.getWorkDiaryDiscription()
 GET     /getSyukauInputCount                    controllers.CommonController.getSyukauInputCount()
+GET     /getIkubyoFunction                      controllers.CommonController.getIkubyoFunction()
 GET     /getTimeLineWorking                     controllers.CommonController.getTimeLineWorking()
 GET     /:workId/:kukakuId/getKikiOfWorkJson    controllers.CommonController.getKikiOfWorkJson(workId: Double, kukakuId: Double)
 GET     /:kikiId/getAttachmentOfKikiJson        controllers.CommonController.getAttachmentOfKikiJson(kikiId: Double)
@@ -593,6 +594,16 @@ GET     /:farmId/:sizaiId/sizaiSettingMove  controllers.SizaiSetting.sizaiSettin
 GET     /sizaiSettingInit        	        controllers.SizaiSetting.sizaiSettingInit()
 POST    /submitSizai		        	    controllers.SizaiSetting.submitSizai()
 POST    /deleteSizai		        	    controllers.SizaiSetting.deleteSizai()
+#- 容器マスタ画面
+GET     /:farmId/:youkiId/youkiSettingMove  	controllers.YoukiSetting.youkiSettingMove(farmId: Double, youkiId: Double)
+GET     /youkiSettingInit        	        	controllers.YoukiSetting.youkiSettingInit()
+POST    /submitYouki		        	      	controllers.YoukiSetting.submitYouki()
+POST    /deleteYouki		        	       	controllers.YoukiSetting.deleteYouki()
+#- 土マスタ画面
+GET     /:farmId/:soilId/soilSettingMove    	controllers.SoilSetting.soilSettingMove(farmId: Double, soilId: Double)
+GET     /soilSettingInit        	        	controllers.SoilSetting.soilSettingInit()
+POST    /submitSoil		        	        	controllers.SoilSetting.submitSoil()
+POST    /deleteSoil		        	         	controllers.SoilSetting.deleteSoil()
 
 #-------------------------------------------------------------------------------
 # システムバッチ

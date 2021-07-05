@@ -104,7 +104,7 @@ public class WorkLastTime extends Model {
     /**
      * 列数
      */
-    public int retusu;
+    public double retusu;
     /**
      * 使用苗枚数
      */

@@ -28,7 +28,7 @@ public class MultiCompornent extends CommonWorkDiaryWork {
     /**
      * 列数
      */
-    public int retusu = 0;
+    public double retusu = 0;
 
     /**
      * コンストラクタ
@@ -118,7 +118,7 @@ public class MultiCompornent extends CommonWorkDiaryWork {
         wkd.useMulti      = this.wlt.useMulti;
       }
       else {
-        wkd.retusu        = Integer.parseInt(input.get("retusu").asText());       //列数
+        wkd.retusu        = Double.parseDouble(input.get("retusu").asText());       //列数
         if("".equals(input.get("useMulti").asText())) {
           wkd.useMulti      = 0;
         }
@@ -140,7 +140,7 @@ public class MultiCompornent extends CommonWorkDiaryWork {
 
       super.plan(input, wkp, wk);
 
-      wkp.retusu        = Integer.parseInt(input.get("retusu").asText());       //列数
+      wkp.retusu        = Double.parseDouble(input.get("retusu").asText());     //列数
       wkp.useMulti      = Double.parseDouble(input.get("useMulti").asText());   //使用マルチ
 
     }

@@ -8,6 +8,7 @@ import java.util.List;
 import javax.xml.bind.DatatypeConverter;
 
 import models.Account;
+import models.AccountIkubyoStatus;
 import models.AccountStatus;
 import models.Compartment;
 import models.Farm;
@@ -60,6 +61,7 @@ public class UserComprtnent implements AgryellInterface{
 	/** アカウント情報 */
 	public Account	      accountData;
   public AccountStatus  accountStatusData;
+    public AccountIkubyoStatus  accountIkubyoStatusData;
 	public FarmGroup  farmGroupData;
 	public FarmStatus farmStatusData;
   public Farm       farmData;
@@ -71,6 +73,7 @@ public class UserComprtnent implements AgryellInterface{
 
 		accountData       = null;
 		accountStatusData = null;
+		accountIkubyoStatusData = null;
 		farmGroupData = null;
 		farmStatusData = null;
 		farmData      = null;
@@ -97,6 +100,10 @@ public class UserComprtnent implements AgryellInterface{
     	AccountStatus accountStatus = AccountStatus.find.where().eq("account_id", accountId).findUnique();
     	if (accountStatus != null) {
     	  accountStatusData = accountStatus;
+    	}
+    	AccountIkubyoStatus accountIkubyoStatus = AccountIkubyoStatus.find.where().eq("account_id", accountId).findUnique();
+    	if (accountIkubyoStatus != null) {
+    	  accountIkubyoStatusData = accountIkubyoStatus;
     	}
     	result = getFarmDataFromAccount();       //生産者情報を取得する
       result = getFarmGroupDataFromFarmData(); //生産者グループ情報を取得する
@@ -298,6 +305,29 @@ public class UserComprtnent implements AgryellInterface{
       pJson.put("radius"            , accountStatusData.radius);
       pJson.put("workPlanInitId"    , accountStatusData.workPlanInitId);
 
+      //----- アカウント育苗ステータス情報 -----
+      if (accountIkubyoStatusData.selectStartDate == null) {
+        pJson.put("selectStartDateIb"      , "");
+      }
+      else {
+        pJson.put("selectStartDateIb"      , sdf.format(accountIkubyoStatusData.selectStartDate));
+      }
+      if (accountIkubyoStatusData.selectEndDate == null) {
+        pJson.put("selectEndDateIb"      , "");
+      }
+      else {
+        pJson.put("selectEndDateIb"      , sdf.format(accountIkubyoStatusData.selectEndDate));
+      }
+      pJson.put("selectWorkIdIb"    , accountIkubyoStatusData.selectWorkId);
+      pJson.put("selectAccountIdIb" , accountIkubyoStatusData.selectAccountId);
+      pJson.put("selectCropIdIb"    , accountIkubyoStatusData.selectCropId);
+      pJson.put("selectHinsyuIdIb"  , accountIkubyoStatusData.selectHinsyuId);
+      pJson.put("selectWorkingIb"   , accountIkubyoStatusData.selectWorking);
+      pJson.put("ssnCrop"           , accountIkubyoStatusData.ssnCrop);
+      pJson.put("ssnHinsyu"         , accountIkubyoStatusData.ssnHinsyu);
+      pJson.put("ssnSeiikuF"        , accountIkubyoStatusData.ssnSeiikuF);
+      pJson.put("ssnSeiikuT"        , accountIkubyoStatusData.ssnSeiikuT);
+
       //----- 生産者情報 -----
       if (farmData != null) { //生産者情報が存在する
         pJson.put("farmid"      , farmData.farmId);
@@ -321,9 +351,11 @@ public class UserComprtnent implements AgryellInterface{
       //----- 生産者ステータス -----
       if (farmStatusData != null) { //生産者ステータス情報が存在する
         pJson.put("contractplan"      , farmStatusData.contractPlan);
+        pJson.put("ikubyoFunction"    , farmStatusData.ikubyoFunction);
       }
       else {
         pJson.put("contractplan"      , JSON_NONE);
+        pJson.put("ikubyoFunction"    , JSON_NONE);
       }
 
       //----- 担当者情報 -----
@@ -497,6 +529,53 @@ public class UserComprtnent implements AgryellInterface{
       pJson.put("workStartPrompt"   , accountStatusData.workStartPrompt);
       pJson.put("workChangeDisplay" , accountStatusData.workChangeDisplay);
 
+      //----- アカウント育苗ステータス情報 -----
+      if (accountIkubyoStatusData.selectStartDate == null) {
+        pJson.put("selectStartDateIb"      , "");
+      }
+      else {
+        pJson.put("selectStartDateIb"      , sdf.format(accountIkubyoStatusData.selectStartDate));
+      }
+      if (accountIkubyoStatusData.selectEndDate == null) {
+        pJson.put("selectEndDateIb"      , "");
+      }
+      else {
+        pJson.put("selectEndDateIb"      , sdf.format(accountIkubyoStatusData.selectEndDate));
+      }
+      if (accountIkubyoStatusData.selectWorkId == null) {
+    	  pJson.put("selectWorkIdIb"      , "");
+      }else{
+    	  pJson.put("selectWorkIdIb"      , accountIkubyoStatusData.selectWorkId);
+      }
+      if (accountIkubyoStatusData.selectAccountId == null) {
+    	  pJson.put("selectAccountIdIb"      , "");
+      }else{
+    	  pJson.put("selectAccountIdIb"      , accountIkubyoStatusData.selectAccountId);
+      }
+      if (accountIkubyoStatusData.selectCropId == null) {
+    	  pJson.put("selectCropIdIb"      , "");
+      }else{
+    	  pJson.put("selectCropIdIb"      , accountIkubyoStatusData.selectCropId);
+      }
+      if (accountIkubyoStatusData.selectHinsyuId == null) {
+    	  pJson.put("selectHinsyuIdIb"      , "");
+      }else{
+    	  pJson.put("selectHinsyuIdIb"      , accountIkubyoStatusData.selectHinsyuId);
+      }
+      pJson.put("selectWorkingIb"     , accountIkubyoStatusData.selectWorking);
+      if (accountIkubyoStatusData.ssnCrop == null) {
+    	  pJson.put("ssnCrop"      , "");
+      }else{
+    	  pJson.put("ssnCrop"      , accountIkubyoStatusData.ssnCrop);
+      }
+      if (accountIkubyoStatusData.ssnHinsyu == null) {
+    	  pJson.put("ssnHinsyu"      , "");
+      }else{
+    	  pJson.put("ssnHinsyu"      , accountIkubyoStatusData.ssnHinsyu);
+      }
+      pJson.put("ssnSeiikuF"        , accountIkubyoStatusData.ssnSeiikuF);
+      pJson.put("ssnSeiikuT"        , accountIkubyoStatusData.ssnSeiikuT);
+
       //----- 生産者情報 -----
       if (farmData != null) { //生産者情報が存在する
         pJson.put("farmid"      , farmData.farmId);
@@ -520,9 +599,11 @@ public class UserComprtnent implements AgryellInterface{
       //----- 生産者ステータス -----
       if (farmStatusData != null) { //生産者ステータス情報が存在する
         pJson.put("contractplan"      , farmStatusData.contractPlan);
+        pJson.put("ikubyoFunction"    , farmStatusData.ikubyoFunction);
       }
       else {
         pJson.put("contractplan"      , JSON_NONE);
+        pJson.put("ikubyoFunction"    , JSON_NONE);
       }
     }
     else {
@@ -741,6 +822,10 @@ public class UserComprtnent implements AgryellInterface{
 			  break;
 			}
 			as.save();
+
+			AccountIkubyoStatus ais = new AccountIkubyoStatus();
+			ais.accountId = account.accountId;
+			ais.save();
 		}
 		catch (Exception ex) {
 
