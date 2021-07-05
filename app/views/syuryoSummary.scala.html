@@ -1,0 +1,372 @@
+@(title: String)
+
+<!DOCTYPE html>
+
+<html lang="jp">
+      <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+        <title>AICA</title>
+
+        <!-- FONT  -->
+        <link href="https://fonts.googleapis.com/css?family=Lato:400,700|Noto+Sans+JP:400,700" rel="stylesheet">
+        <!-- CSS  -->
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/materialize.css")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/agryeel.css")">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+      </head>
+      <body>
+      <!-- ナビゲーションバー -->
+      <div class="navbar-fixed">
+        <nav class="red darken-4" role="navigation">
+          <div class="nav-wrapper">
+            <ul class="right">
+              <li><a href="#" class="right display-change" displaymode="0"><i class="mdi-editor-format-list-bulleted left"></i>一覧表</a></li>
+              <li><a href="#" class="right display-change" displaymode="1"><i class="mdi-action-assessment left"></i>グラフ</a></li>
+              <li><a href="#" class="right display-change" displaymode="2"><i class="mdi-editor-attach-file left"></i>クリップ</a></li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+      <!-- メインセクション -->
+      <!-- 収量画面まとめ -->
+      <div id="mainSyuryo" class="col s12">
+        <div class="row">
+          <div class="col s12 m3 l3">
+             <div id="subContentsList">
+              <ul class="collapsible popout" data-collapsible="accordion">
+                <li>
+                  <div class="collapsible-header"><i class="mdi-editor-format-list-bulleted"></i>一覧表</div>
+                  <div class="collapsible-body">
+                    <div class="row">
+                      <div class="col s12 m12 l6">
+                          <blockquote>場所／担当者</blockquote>
+                          <input name="listPlace" type="radio" id="placeKukakuList" checked/>
+                          <label for="placeKukakuList">場所</label><br>
+                          <input name="listPlace" type="radio" id="placeUneList" />
+                          <label for="placeUneList">畝</label><br>
+                          <input name="placeJo" type="radio" id="placeJoList" />
+                          <label for="listPlaceJoList">条</label><br>
+                          <input name="listPlace" type="radio" id="placeKabuList" />
+                          <label for="placeKabuList">株</label><br>
+                          <input name="listPlace" type="radio" id="placeAccountList" />
+                          <label for="placeAccountList">担当者</label>
+                      </div>
+                      <div class="col s12 m12 l6">
+                          <blockquote>単位</blockquote>
+                          <input name="listValue" type="radio" id="unitSakuList" checked/>
+                          <label for="unitSakuList">作</label><br>
+                          <input name="listValue" type="radio" id="unitYearList" />
+                          <label for="unitYearList">年</label><br>
+                          <input name="listValue" type="radio" id="unitMonthList" />
+                          <label for="unitMonthList">月</label><br>
+                          <input name="listValue" type="radio" id="unitDayList" />
+                          <label for="unitDayList">日</label>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+          </div>
+          <div id="subContentsGraph">
+              <ul class="collapsible popout" data-collapsible="accordion">
+                <li>
+                  <div class="collapsible-header"><i class="mdi-action-assessment"></i>グラフ</div>
+                  <div class="collapsible-body">
+                    <div class="row">
+                      <div class="col s12 m12 l6">
+                          <blockquote>場所／担当者</blockquote>
+                          <input name="graphPlace" type="radio" id="placeKukakuGraph" checked/>
+                          <label for="placeKukakuGraph">場所</label><br>
+                          <input name="graphPlace" type="radio" id="placeUneGraph" />
+                          <label for="placeUneGraph">畝</label><br>
+                          <input name="graphPlace" type="radio" id="placeJoGraph" />
+                          <label for="placeJoGraph">条</label><br>
+                          <input name="graphPlace" type="radio" id="placeKabuGraph" />
+                          <label for="placeKabuGraph">株</label><br>
+                          <input name="graphPlace" type="radio" id="placeAccountGraph" />
+                          <label for="placeAccountGraph">担当者</label>
+                      </div>
+                      <div class="col s12 m12 l6">
+                          <blockquote>単位</blockquote>
+                          <input name="graphValue" type="radio" id="unitSakuGraph" checked/>
+                          <label for="unitSakuGraph">作</label><br>
+                          <input name="graphValue" type="radio" id="unitYearGraph" />
+                          <label for="unitYearGraph">年</label><br>
+                          <input name="graphValue" type="radio" id="unitMonthGraph" />
+                          <label for="unitMonthGraph">月</label><br>
+                          <input name="graphValue" type="radio" id="unitDayGraph" />
+                          <label for="unitDayGraph">日</label>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+          </div>
+           <div id="subContentsClip">
+            <ul class="collapsible popout" data-collapsible="accordion">
+                <li>
+                  <div class="collapsible-header"><i class="mdi-editor-attach-file"></i>クリップ</div>
+                  <div class="collapsible-body">
+                    <div class="row">
+                      <div class="col s12 m12 l6">
+                        <blockquote>場所／担当者</blockquote>
+                        <input name="clipPlace" type="radio" id="placeKukakuClip" checked/>
+                        <label for="placeKukakuClip">場所</label><br>
+                        <input name="clipPlace" type="radio" id="placeUneClip" />
+                        <label for="placeUneClip">畝</label><br>
+                        <input name="clipPlace" type="radio" id="placeJoClip" />
+                        <label for="placeJoClip">条</label><br>
+                        <input name="clipPlace" type="radio" id="placeKabuClip" />
+                        <label for="placeKabuClip">株</label><br>
+                        <input name="clipPlace" type="radio" id="placeAccountClip" />
+                        <label for="placeAccountClip">担当者</label>
+                      </div>
+                      <div class="col s12 m12 l6">
+                        <blockquote>単位</blockquote>
+                        <input name="clipValue" type="radio" id="unitSakuClip" checked/>
+                        <label for="unitSakuClip">作</label><br>
+                        <input name="clipValue" type="radio" id="unitYearClip" />
+                        <label for="unitYearClip">年</label><br>
+                        <input name="clipValue" type="radio" id="unitMonthClip" />
+                        <label for="unitMonthClip">月</label><br>
+                        <input name="clipValue" type="radio" id="unitDayClip" />
+                        <label for="unitDayClip">日</label>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col s12">
+                        <blockquote>クリップグループ</blockquote>
+                      </div>
+                      <div class="col s12 m12 l4">
+                        <input name="clipGroup" type="radio" id="clipGroup1" checked/>
+                        <label for="clipGroup1">１</label>
+                      </div>
+                      <div class="col s12 m12 l4">
+                        <input name="clipGroup" type="radio" id="clipGroup2" />
+                        <label for="clipGroup2">２</label>
+                      </div>
+                      <div class="col s12 m12 l4">
+                        <input name="clipGroup" type="radio" id="clipGroup3" />
+                        <label for="clipGroup3">３</label>
+                      </div>
+                      <div class="col s12 m12 l4">
+                        <input name="clipGroup" type="radio" id="clipGroup4" />
+                        <label for="clipGroup4">４</label>
+                      </div>
+                      <div class="col s12 m12 l4">
+                        <input name="clipGroup" type="radio" id="clipGroup5" />
+                        <label for="clipGroup5">５</label>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="col s12 m9 l9">
+            <div id="mainContentsList">
+              <!-- 一覧表 -->
+              <div id="G0006List"></div>
+            </div>
+            <div id="mainContentsGraph">
+              <!-- グラフ -->
+              <div id="G0006Graph"></div>
+            </div>
+            <div id="mainContentsClip">
+              <div class="row">
+                <div class="col s12">
+                  <div class="card-panel green lighten-2 white-text">収量まとめクリップ（場所別作付単位）</div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col s12 m12 l8">
+                  <blockquote>一覧表</blockquote>
+                  <table class="centered bordered">
+                    <thead>
+                      <tr class="grey lighten-5">
+                          <th data-field="id">場所</th>
+                          <th data-field="name">１</th>
+                          <th data-field="price">２</th>
+                          <th data-field="id">３</th>
+                          <th data-field="name">４</th>
+                          <th data-field="price">５</th>
+                          <th data-field="id">６</th>
+                          <th data-field="name">７</th>
+                          <th data-field="price">合計</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>Ａ－１</td>
+                        <td>520</td>
+                        <td>632</td>
+                        <td>550</td>
+                        <td>0</td>
+                        <td>498</td>
+                        <td>560</td>
+                        <td>432</td>
+                        <td>3,192</td>
+                      </tr>
+                      <tr>
+                        <td>Ａ－２</td>
+                        <td>580</td>
+                        <td>562</td>
+                        <td>498</td>
+                        <td>614</td>
+                        <td>598</td>
+                        <td>620</td>
+                        <td>600</td>
+                        <td>4,072</td>
+                      </tr>
+                      <tr>
+                        <td>Ａ－３</td>
+                        <td>668</td>
+                        <td>700</td>
+                        <td>0</td>
+                        <td>754</td>
+                        <td>680</td>
+                        <td>720</td>
+                        <td>782</td>
+                        <td>4,304</td>
+                      </tr>
+                      <tr>
+                        <td>Ｂ－４</td>
+                        <td>1,200</td>
+                        <td>800</td>
+                        <td>1,140</td>
+                        <td>0</td>
+                        <td>680</td>
+                        <td>1,400</td>
+                        <td>400</td>
+                        <td>5,620</td>
+                      </tr>
+                      <tr>
+                        <td>Ｂ－５</td>
+                        <td>1,200</td>
+                        <td>800</td>
+                        <td>1,140</td>
+                        <td>0</td>
+                        <td>680</td>
+                        <td>1,400</td>
+                        <td>400</td>
+                        <td>5,620</td>
+                      </tr>
+                      <tr>
+                        <td>Ｃ－６</td>
+                        <td>1,200</td>
+                        <td>800</td>
+                        <td>1,140</td>
+                        <td>0</td>
+                        <td>680</td>
+                        <td>1,400</td>
+                        <td>400</td>
+                        <td>5,620</td>
+                      </tr>
+                      <tr>
+                        <td>Ｃ－７</td>
+                        <td>1,200</td>
+                        <td>800</td>
+                        <td>1,140</td>
+                        <td>0</td>
+                        <td>680</td>
+                        <td>1,400</td>
+                        <td>400</td>
+                        <td>5,620</td>
+                      </tr>
+                      <tr>
+                        <td>Ｃ－８</td>
+                        <td>1,200</td>
+                        <td>800</td>
+                        <td>1,140</td>
+                        <td>0</td>
+                        <td>680</td>
+                        <td>1,400</td>
+                        <td>400</td>
+                        <td>5,620</td>
+                      </tr>
+                      <tr>
+                        <td>Ｃ－９</td>
+                        <td>1,200</td>
+                        <td>800</td>
+                        <td>1,140</td>
+                        <td>0</td>
+                        <td>680</td>
+                        <td>1,400</td>
+                        <td>400</td>
+                        <td>5,620</td>
+                      </tr>
+                      <tr>
+                        <td>Ｄ－１０</td>
+                        <td>1,200</td>
+                        <td>800</td>
+                        <td>1,140</td>
+                        <td>0</td>
+                        <td>680</td>
+                        <td>1,400</td>
+                        <td>400</td>
+                        <td>5,620</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="col s12 m12 l4">
+                  <div class="row">
+                    <div class="col s12">
+                      <blockquote>合計収穫量</blockquote>
+                      <canvas id="sample6" class="syuryo-canvas"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col s12 m12 l8">
+                  <div class="right">
+                    <ul class="pagination">
+                      <li class="disabled"><a href="#!"><i class="mdi-navigation-chevron-left"></i></a></li>
+                      <li class="active"><a href="#!">1</a></li>
+                      <li class="waves-effect"><a href="#!">2</a></li>
+                      <li class="waves-effect"><a href="#!">3</a></li>
+                      <li class="waves-effect"><a href="#!">4</a></li>
+                      <li class="waves-effect"><a href="#!">5</a></li>
+                      <li class="waves-effect"><a href="#!">6</a></li>
+                      <li class="waves-effect"><a href="#!">7</a></li>
+                      <li class="waves-effect"><a href="#!">8</a></li>
+                      <li class="waves-effect"><a href="#!">9</a></li>
+                      <li class="waves-effect"><a href="#!">10</a></li>
+                      <li class="waves-effect"><a href="#!"><i class="mdi-navigation-chevron-right"></i></a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    <!-- アクションボタン -->
+    <div class="fixed-action-btn" style="bottom: 24px; right: 24px;">
+      <a class="btn-floating btn-large red">
+        <i class="material-icons large">mode_edit</i>
+      </a>
+      <ul>
+          <li><a class="btn-floating blue" href="./menuMove"><i class="large material-icons">arrow_back</i></a></li>
+      </ul>
+    </div>
+    <!-- フッター -->
+    <footer class="page-footer red darken-4">
+      <div class="footer-copyright">
+        <div class="container center">
+          &copy;Sun For You.Ltd
+        </div>
+      </div>
+      </footer>
+      </body>
+
+      <script src="https://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script>
+      <script src="@routes.Assets.at("javascripts/materialize.js")" type="text/javascript"></script>
+      <script src="@routes.Assets.at("javascripts/agryeel.js")" type="text/javascript"></script>
+      <script src="@routes.Assets.at("javascripts/chart.js")" type="text/javascript"></script>
+      <script src="@routes.Assets.at("javascripts/init.js")" type="text/javascript"></script>
+      <script src="@routes.Assets.at("javascripts/syuryoSummary.js")" type="text/javascript"></script>
+
+</html>

@@ -1,0 +1,171 @@
+@(title: String)
+
+<!DOCTYPE html>
+
+<html lang="jp">
+      <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+        <title>AICA</title>
+
+        <!-- FONT  -->
+        <link href="https://fonts.googleapis.com/css?family=Lato:400,700|Noto+Sans+JP:400,700" rel="stylesheet">
+        <!-- CSS  -->
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/materialize.css")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/icomoon.css")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/agryeel.css")">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+      </head>
+      <body>
+      <!-- 選択用モーダル画面 -->
+      <!-- セレクトモーダル -->
+      <div id="selectmodal" class="modal modal-fixed-footer">
+      </div>
+      <!-- マルチセレクトモーダル -->
+      <div id="mselectmodal" class="modal modal-fixed-footer">
+      </div>
+      <!-- 確認モーダル -->
+      <div id="confarmmodal" class="modal">
+      </div>
+      <div id="G0002SelectModal"></div>
+      <div class="navbar-fixed">
+        <nav class="nav-item fixed-color" role="navigation">
+          <div class="nav-wrapper">
+            <img class="nav-image-logo"  src="@routes.Assets.at("image/navilogo.png")">
+          </div>
+        </nav>
+      </div>
+	    <div class="row">
+	      <div id="mainmenu" class="container">
+	      </div>
+	    </div>
+      <div class="row">
+        <div id="kukakusearch" class="col s12 m8 offset-m2 l6 offset-l3">
+        </div>
+      </div>
+      <div class="row">
+        <div id="fieldarea" class="col s12 m8 offset-m2 l6 offset-l3">
+        </div>
+      </div>
+      <div class="row">
+        <div id="kukakuarea" class="col s12 m8 offset-m2 l6 offset-l3">
+        </div>
+      </div>
+      <div class="row">
+        <div id="timelinemenu" class="col s12 m8 offset-m2 l6 offset-l3">
+        </div>
+      </div>
+      <div class="row">
+        <div id="systemMessagearea" class="col s12 m8 offset-m2 l6 offset-l3">
+        </div>
+      </div>
+	    <div class="row" id="mainsection">
+	      <div class="col s12">
+<!--
+	        <ul class="tabs">
+	          <li class="tab col s3"><a id="G0002tabwork" href="#workdiv">Work</a></li>
+	          <li class="tab col s3"><a id="G0002tabfield" href="#housediv">Field</a></li>
+	          <li class="tab col s3"><a id="G0002tabtime" href="#timelinediv">TimeLine</a></li>
+            <li class="tab col s3"><a id="G0002tabborad" href="#dashboraddiv">Board</a></li>
+	        </ul>
+<!--
+            <li class="tab col s4"><a id="G0002tabwork" href="#workdiv">Work</a></li>
+            <li class="tab col s4"><a id="G0002tabfield" href="#housediv">Field</a></li>
+            <li class="tab col s4"><a id="G0002tabtime" href="#timelinediv">TimeLine</a></li>
+-->
+                  <div id="G0002MainTab"></div>
+	      </div>
+	  	<div class="col s12 m8 offset-m2 l6 offset-l3">
+       <!-- メインセクション -->
+	    <div id="workdiv" class="">
+          <div id="G0002MainWork" class="col s12 work menu-scroll">
+          <div class="title-work"><span>Work Menu</span></div>
+          <!--
+          <div class="title-work"><span>Work Menu</span><a href="#selectmodal"  class="selectmodal-trigger" title=" ワークチェイン選択" data="getWorkChainOfFarm" displayspan="#G0002WorkChainSpan" htext="#G0002WorkChainHidden"><i class="material-icons">search</i></a></div>
+          <input type="hidden" id="G0002WorkChainHidden">
+           -->
+          <div id="G0002WorkChainArea" class="col s12">
+          </div>
+          <div id="G0002WorkList" class="col s12" style="padding: 0;">
+          </div>
+          <div id="G0002KukakuList" class="col s12" style="padding: 0;">
+          </div>
+          </div>
+	    </div>
+	    <div id="housediv" class="">
+          <div id="G0002MainHouseWorking" class="col s12 house-working menu-scroll">
+          <div class="title-house"><span id="G0002Displayname">Compartment Status</span><a id="kukakusearchtrigger"><i class="material-icons">search</i></a></div>
+          </div>
+          <div id="G0002HouseList" class="col s12 work menu-scroll">
+          </div>
+          <div id="G0002MainHouseInfo" class="col s12 work menu-scroll">
+          </div>
+	    </div>
+	    <div id="timelinediv" class="">
+	      <div id="G0002MainTimeLine" class="col s12 work menu-scroll">
+	      <div class="title-timeline"><span>Time Line</span><a id="timelinetrigger"><i class="material-icons">search</i></a></div>
+        </div>
+ 	      <div id="timelinelist" class="col s12 work menu-scroll">
+	      </div>
+		  </div>
+      <div id="dashboraddiv" class="">
+        <div id="G0002MainDashBoard" class="col s12 work menu-scroll dashboard">
+        </div>
+      </div>
+	    </div>
+		  </div>
+      <!-- アクションボタン -->
+      <div id="menupage-icon" class="fixed-action-btn" style="bottom: 24px; right: 24px;">
+        <a id="menuBtn" class="btn-floating btn-large yellow darken-4">
+          <i class="material-icons large">menu</i>
+        </a>
+        <ul>
+          <li><a id="menu-sm" class="waves-effect waves-light btn-floating btn-large deep-purple"><i class="material-icons">chat</i></a></li>
+          <li id="reorderButtonList">
+            <a href="#selectmodal" class="waves-effect waves-light btn-floating btn-large indigo selectmodal-trigger" id="reorderButton" title="作業切替"" data="/0/getWorkOfKukaku" displayspan="#workReorder" htext="#workReorderValue"><i class="large material-icons">reorder</i></a>
+            <input type="hidden" id="workReorderValue" value="0"/>
+          </li>
+          <li><a id="menu-top" class="waves-effect waves-light btn-floating btn-large teal"><i class="material-icons">arrow_upward</i></a></li>
+          <li><a id="menu-close" class="waves-effect waves-light btn-floating btn-large light-blue"><i class="material-icons">unfold_less</i></a></li>
+          <li><a id="menu-open" class="waves-effect waves-light btn-floating btn-large purple"><i class="material-icons">unfold_more</i></a></li>
+          <li><a id="mtimeline-close" class="waves-effect waves-light btn-floating btn-large light-green"><i class="material-icons">unfold_less</i></a></li>
+          <li><a id="mtimeline-open" class="waves-effect waves-light btn-floating btn-large amber"><i class="material-icons">unfold_more</i></a></li>
+        </ul>
+      </div>
+      <div id="menutimeline-icon" class="fixed-action-btn" style="bottom: 24px; right: 24px;">
+        <a id="timelineBtn" class="btn-floating btn-large indigo darken-4">
+          <i class="material-icons large">menu</i>
+        </a>
+        <ul>
+          <li><a id="timeline-sm" class="waves-effect waves-light btn-floating btn-large deep-purple"><i class="material-icons">chat</i></a></li>
+          <li><a id="timeline-top" class="waves-effect waves-light btn-floating btn-large teal"><i class="material-icons">arrow_upward</i></a></li>
+          <li><a id="timeline-close" class="waves-effect waves-light btn-floating btn-large light-blue"><i class="material-icons">unfold_less</i></a></li>
+          <li><a id="timeline-open" class="waves-effect waves-light btn-floating btn-large purple"><i class="material-icons">unfold_more</i></a></li>
+        </ul>
+      </div>
+      <!-- フッター -->
+      <footer class="page-footer fixed-color">
+        <div class="footer-copyright">
+          <div class="container center">
+            &copy;Sun For You.Ltd
+          </div>
+        </div>
+      </footer>
+      </body>
+
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script>
+    <script src="@routes.Assets.at("javascripts/materialize.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.at("javascripts/jquery.todate.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.at("javascripts/chart.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.at("javascripts/plugins.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.at("javascripts/sly.min.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.at("javascripts/jquery.inview.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.at("javascripts/agryeel.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.at("javascripts/agryeelmodal.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.at("javascripts/mmanager.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.at("javascripts/init.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.at("javascripts/menu.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.at("javascripts/horizontal.js")" type="text/javascript"></script>
+
+</html>

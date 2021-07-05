@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+
+<html lang="jp">
+      <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+        <title>AICA</title>
+
+        <!-- FONT  -->
+        <link href="https://fonts.googleapis.com/css?family=Lato:400,700|Noto+Sans+JP:400,700" rel="stylesheet">
+        <!-- CSS  -->
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/materialize.css")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/icomoon.css")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/agryeel.css")">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+      </head>
+      <body>
+      <!-- 選択用モーダル画面 -->
+      <!-- セレクトモーダル -->
+      <div id="selectmodal" class="modal modal-fixed-footer">
+      </div>
+      <!-- マルチセレクトモーダル -->
+      <div id="mselectmodal" class="modal modal-fixed-footer">
+      </div>
+      <!-- 作業別時間表示-->
+      <div id="worktimemodal" class="modal modal-fixed-footer">
+      </div>
+      <div class="navbar-fixed">
+        <nav class="nav-item" role="navigation">
+          <div class="nav-wrapper">
+            <img class="nav-image-logo"  src="@routes.Assets.at("image/navilogo.png")">
+          </div>
+        </nav>
+      </div>
+	    <div class="row">
+	      <div id="mainmenu" class="container">
+	      </div>
+	    </div>
+       <!-- メインセクション -->
+      <div class="row" id="mainsection">
+	      <div class="col s12 m8 offset-m2 l6 offset-l3">
+		      <div class="title-timeline"><span>担当者別作業一覧</span></div>
+          <div class="row" id="workingdate-area">
+            <div class="col s12 center">
+              <a class="waves-effect waves-light btn-small navi-workdate" dayshift="-7"><i class="material-icons small">first_page</i></a>
+              <a class="waves-effect waves-light btn-small navi-workdate" dayshift="-1"><i class="material-icons small">chevron_left</i></a>
+              <div class="input-field inline-input">
+                <input type="text" id="WorkingDate" class="datepicker input-text-color workdate-text">
+                <label for="WorkingDate">作業時間確認日</label>
+              </div>
+              <a class="waves-effect waves-light btn-small navi-workdate" dayshift="1"><i class="material-icons small">chevron_right</i></a>
+              <a class="waves-effect waves-light btn-small navi-workdate" dayshift="7"><i class="material-icons small">last_page</i></a>
+            </div>
+          </div>
+	 	      <div id="accountworkinglist" class="col s12 work menu-scroll">
+		      </div>
+          <div id="accountinfo" class="col s12 work menu-scroll">
+          </div>
+		    </div>
+      </div>
+      <!-- フッター -->
+      <footer class="page-footer fixed-color">
+        <div class="footer-copyright">
+          <div class="container center">
+            &copy;Sun For You.Ltd
+          </div>
+        </div>
+      </footer>
+      </body>
+
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script>
+    <script src="@routes.Assets.at("javascripts/materialize.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.at("javascripts/jquery.todate.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.at("javascripts/chart.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.at("javascripts/plugins.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.at("javascripts/sly.min.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.at("javascripts/agryeel.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.at("javascripts/agryeelmodal.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.at("javascripts/mmanager.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.at("javascripts/workingaccount.js")" type="text/javascript"></script>
+
+</html>

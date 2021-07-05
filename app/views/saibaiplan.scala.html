@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+
+<html lang="jp">
+      <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+        <title>AICA</title>
+
+        <!-- FONT  -->
+        <link href="https://fonts.googleapis.com/css?family=Lato:400,700|Noto+Sans+JP:400,700" rel="stylesheet">
+        <!-- CSS  -->
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/materialize.css")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/agryeel.css")">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+      </head>
+      <body>
+        <!-- ローディング領域 -->
+        <div id="LoadingArea" class="agryeel-loading center">
+          <div class="preloader-wrapper big active agryeel-loading-action">
+            <div class="spinner-layer spinner-green-only">
+              <div class="circle-clipper left">
+                <div class="circle"></div>
+              </div><div class="gap-patch">
+                <div class="circle"></div>
+              </div><div class="circle-clipper right">
+                <div class="circle"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 選択用モーダル -->
+        <div id="selectmodal" class="modal modal-fixed-footer">
+        </div>
+        <div id="mselectmodal" class="modal modal-fixed-footer">
+        </div>
+	      <!-- 数値入力用電卓モーダル画面 -->
+	      <div id="calcModal" class="calc-modal">
+          <div class="calc-value">
+            <span id="calc-text">4</span>
+          </div>
+          <div class="calc-button center waves-effect waves-light" id="calc7">
+            <span>７</span>
+          </div>
+          <div class="calc-button center waves-effect waves-light" id="calc8">
+            <span>８</span>
+          </div>
+          <div class="calc-button center waves-effect waves-light" id="calc9">
+            <span>９</span>
+          </div>
+          <div class="calc-button special center waves-effect waves-light" id="calcClear">
+            <span><i class="material-icons white-text">clear</i></span>
+          </div>
+          <div class="calc-button center waves-effect waves-light" id="calc4">
+            <span>４</span>
+          </div>
+          <div class="calc-button center waves-effect waves-light" id="calc5">
+            <span>５</span>
+          </div>
+          <div class="calc-button center waves-effect waves-light" id="calc6">
+            <span>６</span>
+          </div>
+          <div class="calc-button special center waves-effect waves-light" id="calcBS">
+            <span><i class="material-icons white-text">backspace</i></span>
+          </div>
+          <div class="calc-button center waves-effect waves-light" id="calc1">
+            <span>１</span>
+          </div>
+          <div class="calc-button center waves-effect waves-light" id="calc2">
+            <span>２</span>
+          </div>
+          <div class="calc-button center waves-effect waves-light" id="calc3">
+            <span>３</span>
+          </div>
+          <div class="calc-button special center modal-action modal-close waves-effect waves-light">
+            <span><i class="material-icons white-text">arrow_back</i></span>
+          </div>
+          <div class="calc-button center waves-effect waves-light" id="calc0">
+            <span>０</span>
+          </div>
+          <div class="calc-button center waves-effect waves-light" id="calc00">
+            <span>00</span>
+          </div>
+          <div class="calc-button center waves-effect waves-light" id="calcP">
+            <span>．</span>
+          </div>
+          <div class="calc-button special center waves-effect waves-light" id="calcCommit">
+            <span><i class="material-icons white-text">done</i></span>
+          </div>
+        </div>
+        <!-- メインコンテンツ -->
+	      <div class="navbar-fixed">
+	        <nav class="nav-item" role="navigation">
+	          <div class="nav-wrapper">
+	            <img class="nav-image-logo"  src="@routes.Assets.at("image/navilogo.png")">
+	          </div>
+	        </nav>
+	      </div>
+        <!-- メインセクション -->
+	      <div class="row" id="mainsection">
+	        <div id="listsection">
+	        <!-- タイトル -->
+	        <div class="screenTitle"><span class="main">栽培計画 </span><br><span class="sub">-&nbsp;Cultivation plan&nbsp;-</span></div>
+            <!-- 想定条件 -->
+            <div id="souteiJken" class="col s12 m8 offset-m2 l6 offset-l3">
+              <span class="planItemTitle">（想定条件）</span>
+              <table>
+                <thead class="planHeader">
+                  <tr>
+                    <th>品目</th>
+                    <th>播種日</th>
+                    <th>品種</th>
+                    <th>作間</th>
+                  </tr>
+                </thead>
+                <tbody class="planBody list">
+                  <tr id="planEditAddBtn" class="planEditTrigger ignore-elements" key="add">
+                    <td colspan="4"><i class="material-icons tiny">add</i> &nbsp;&nbsp;追加</td>
+                  </tr>
+                </tbody>
+              </table>
+              <a href="#!" id="PlanExcute" class="waves-effect waves-green btn-flat right string-color" style="">計画実行</a>
+            </div>
+            <!-- 栽培計画 -->
+            <div id="saibaiKeikaku" class="col s12 m12 l10 offset-l1">
+              <span class="planItemTitle">2020年</span>
+              <table class="planTable">
+                <thead class="planHeader" id="saibaiKeikakuHeader">
+                </thead>
+                <tbody class="planBody list" id="saibaiKeikakuBody">
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="row" id="editsection">
+            <!-- 条件編集 -->
+            <div class="col s12 m8 offset-m2 l4 offset-l4 card-panel">
+            <div class="planEdit">
+              <div class="row">
+              <div class="col s12">
+              <span class="selectmodal-trigger-title">品目</span><a id="PlanEditCropLink" href="#selectmodal"  class="selectmodal-trigger" title="品目一覧" data="" displayspan="#PlanEditCrop" htext="#PlanEditCropValue"><span id="PlanEditCrop" class="blockquote-input">未選択</span></a>
+              <input type="hidden" id="PlanEditCropValue" value="0"/>
+              </div>
+              </div>
+              <div class="row">
+              <div class="col s12 input-field">
+                <input type="text" id="PlanEditHashuDate" class="datepicker input-text-color">
+                <label id="PlanEditHashuDateLabel" for="PlanEditHashuDate">播種日を入力してください</label>
+              </div>
+              </div>
+              <div class="row">
+              <div class="col s12">
+              <span class="selectmodal-trigger-title">品種</span><a id="PlanEditHinsyuLink" href="#selectmodal"  class="selectmodal-trigger" title="品種一覧" data="" displayspan="#PlanEditHinsyu"><span id="PlanEditHinsyu" class="blockquote-input">未選択</span></a>
+              </div>
+              </div>
+              <div class="row">
+              <div class="col s12 input-field">
+              <input id="PlanEditSakuma" type="text" class="validate input-text-color" maxlength="3" style="text-align: right;" value="0">
+              <label for="PlanEditSakuma">作間を入力してください<span style="color:red">（*）</span></label>
+              <i class="material-icons orange-text text-lighten-1 small right calcTarget" targetId="PlanEditSakuma">keyboard</i>
+              </div>
+              </div>
+              <a href="#!" id="PlanEditRinsaku" class="waves-effect waves-green btn-flat left string-color" style=""><i class="material-icons small left">add</i>輪作反映</a>
+              <a href="#!" id="PlanEditDelete" class="waves-effect waves-green btn-flat left red-text" style=""><i class="material-icons small left">delete</i>削　除</a>
+              <a href="#!" id="PlanEditCommit" class="waves-effect waves-green btn-flat right string-color" style=""><i class="material-icons small left">done</i>確　定</a>
+              <a href="#!" id="PlanEditBack" class="waves-effect waves-green btn-flat right string-color" style=""><i class="material-icons small left">arrow_back</i>閉じる</a>
+            </div>
+            </div>
+	        </div>
+	      </div>
+        <!-- フッター -->
+        <footer class="page-footer fixed-color">
+          <div class="footer-copyright">
+            <div class="container center">
+              &copy;Sun For You.Ltd
+            </div>
+          </div>
+        </footer>
+	      <div class="row">
+	        <div id="mainmenu" class="container">
+	        </div>
+	      </div>
+      </body>
+      <script src="https://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script>
+      <script src="@routes.Assets.at("javascripts/materialize.js")" type="text/javascript"></script>
+      <script src="@routes.Assets.at("javascripts/mmanager.js")" type="text/javascript"></script>
+      <script src="@routes.Assets.at("javascripts/agryeel.js")" type="text/javascript"></script>
+      <script src="@routes.Assets.at("javascripts/agryeelmodal.js")" type="text/javascript"></script>
+  	  <script src="@routes.Assets.at("javascripts/hello.all.js")" type="text/javascript"></script>
+      <script src="@routes.Assets.at("javascripts/Sortable.min.js")" type="text/javascript"></script>
+      <script src="@routes.Assets.at("javascripts/calc.js")" type="text/javascript"></script>
+      <script src="@routes.Assets.at("javascripts/init.js")" type="text/javascript"></script>
+      <script src="@routes.Assets.at("javascripts/saibaiplan.js")" type="text/javascript"></script>
+
+ </html>

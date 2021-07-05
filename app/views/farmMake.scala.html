@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+
+<html lang="jp">
+      <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+        <title>AICA</title>
+
+        <!-- FONT  -->
+        <link href="https://fonts.googleapis.com/css?family=Lato:400,700|Noto+Sans+JP:400,700" rel="stylesheet">
+        <!-- CSS  -->
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/materialize.css")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/agryeel.css")">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+      </head>
+      <body>
+	      <!-- 共通画面 -->
+        <!-- マルチセレクトモーダル -->
+        <div id="mselectmodal" class="modal modal-fixed-footer">
+        </div>
+	      <!-- 選択用モーダル画面 -->
+	      <div id="G9999SelectModal"></div>
+	      <!-- 数値入力用電卓モーダル画面 -->
+	      <div id="calcModal" class="calc-modal">
+	            <div class="calc-value">
+	              <span id="calc-text">4</span>
+	            </div>
+	            <div class="calc-button center waves-effect waves-light" id="calc7">
+	              <span>７</span>
+	            </div>
+	            <div class="calc-button center waves-effect waves-light" id="calc8">
+	              <span>８</span>
+	            </div>
+	            <div class="calc-button center waves-effect waves-light" id="calc9">
+	              <span>９</span>
+	            </div>
+	            <div class="calc-button special center waves-effect waves-light" id="calcClear">
+	              <span><i class="material-icons white-text">clear</i></span>
+	            </div>
+	            <div class="calc-button center waves-effect waves-light" id="calc4">
+	              <span>４</span>
+	            </div>
+	            <div class="calc-button center waves-effect waves-light" id="calc5">
+	              <span>５</span>
+	            </div>
+	            <div class="calc-button center waves-effect waves-light" id="calc6">
+	              <span>６</span>
+	            </div>
+	            <div class="calc-button special center waves-effect waves-light" id="calcBS">
+	              <span><i class="material-icons white-text">backspace</i></span>
+	            </div>
+	            <div class="calc-button center waves-effect waves-light" id="calc1">
+	              <span>１</span>
+	            </div>
+	            <div class="calc-button center waves-effect waves-light" id="calc2">
+	              <span>２</span>
+	            </div>
+	            <div class="calc-button center waves-effect waves-light" id="calc3">
+	              <span>３</span>
+	            </div>
+	            <div class="calc-button special center modal-action modal-close waves-effect waves-light">
+	              <span><i class="material-icons white-text">arrow_back</i></span>
+	            </div>
+	            <div class="calc-button center waves-effect waves-light" id="calc0">
+	              <span>０</span>
+	            </div>
+	            <div class="calc-button center waves-effect waves-light" id="calc00">
+	              <span>00</span>
+	            </div>
+	            <div class="calc-button center waves-effect waves-light" id="calcP">
+	              <span>．</span>
+	            </div>
+	            <div class="calc-button special center waves-effect waves-light" id="calcCommit">
+	              <span><i class="material-icons white-text">done</i></span>
+	            </div>
+	          </div>
+	        </div>
+	      </div>
+        <!-- ローディング領域 -->
+        <div id="LoadingArea" class="agryeel-loading center">
+          <div class="preloader-wrapper big active agryeel-loading-action">
+            <div class="spinner-layer spinner-green-only">
+              <div class="circle-clipper left">
+                <div class="circle"></div>
+              </div><div class="gap-patch">
+                <div class="circle"></div>
+              </div><div class="circle-clipper right">
+                <div class="circle"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- メインコンテンツ -->
+        <div id="MainContents">
+          <!-- ナビゲーションバー -->
+          <div class="navbar-fixed">
+            <nav class="nav-item" role="navigation">
+            <img class="nav-image-logo"  src="@routes.Assets.at("image/navilogo.png")">
+            </nav>
+          </div>
+          <!-- メインセクション -->
+          <div class="section no-pad-bot">
+            <div class="container">
+              <br>
+              <div class="row">
+                <div id="inputFiled" class="col s12 m10 offset-m1 l10 offset-l1">
+                  <div class="title-farmmake white-text">生産者登録</div>
+                  <div class="card" style="background-color: #373740;">
+                    <div class="card-action">
+                      <div class="row">
+                      <div class="input-field col s10 offset-s1">
+                        <input id="G9999MailAddress" type="email" class="validate" maxlength="100" style="ime-mode: disabled; color: #eeeeee;">
+                        <label for="G9999MailAddress">メールアドレスを入力してください。</label>
+                      </div>
+                      </div>
+                      <div class="row">
+                      <div class="input-field col s10 offset-s1">
+                        <input id="G9999FarmName" type="text" class="validate" style="ime-mode: active; color: #eeeeee;">
+                        <label for="G9999FarmName">農場名を入力してください。</label>
+                      </div>
+                      </div>
+                      <div class="row">
+                      <div class="col s10 offset-s1 grey-text">
+		              品目<a href="#mselectmodal"  class="mselectmodal-trigger" title="品目一覧" data="getCrop" displayspan="#G9999Cropspan"><span id="G9999Cropspan" class="blockquote-input">未選択</span></a>
+                      </div>
+                      </div>
+                      <div class="row">
+                      <div class="col s10 offset-s1 grey-text">
+                        圃場グループ数<span id="G9999HojoGroupsSpan" class="blockquote-input">1</span><span class="blockquote-inputOption">グループ</span><i class="material-icons orange-text text-lighten-1 small right calcTarget" targetId="G9999HojoGroups">keyboard</i><br />(最大26グループまで指定可能です)
+                        <input type="hidden" id="G9999HojoGroups" value="1">
+                      </div>
+                      </div>
+                      <div class="row">
+                      <div class="col s10 offset-s1 grey-text">
+                        グループ表記<a href="#G9999ModalGroups"  class="collection-item modal-trigger select-modal"><span id="G9999GroupsTypeSpan" class="blockquote-input">Ａ</span></a>
+                        <input type="hidden" id="G9999GroupsTypeValue" value="0">
+                      </div>
+                      </div>
+                      <div class="row">
+                      <div class="col s10 offset-s1 grey-text">
+                        圃場数<span id="G9999HojoSpan" class="blockquote-input">1</span><span class="blockquote-inputOption">場</span><i class="material-icons orange-text text-lighten-1 small right calcTarget" targetId="G9999Hojo">keyboard</i><br />(1グループ20場まで指定可能です)
+                        <input type="hidden" id="G9999Hojo" value="1">
+                      </div>
+                      </div>
+                      <div class="row">
+                      <div class="col s10 offset-s1">
+                        <div id="Kukaku">
+                          <div class="card-panel lighten-5 z-depth-1" style="background-color: #373740; border-left: 8px solid #D32F2F;">
+                            <span class="house-working-title white-text"><span id="G9999TypeName">Ａ</span>－１</span>
+                            <br>
+                            <br>
+                            <br>
+                          </div>
+                        </div>
+                      </div>
+                      </div>
+                      <div class="row">
+                      <div class="col s10 offset-s1 center">
+                        <p>
+                        <div id="G9999Submit" class="waves-effect waves-light btn-flat white-text"><i class="material-icons small left white-text">done</i>登　録</div>
+                        </p>
+                        <p>
+                        <div id="G9999Back" class="waves-effect waves-light btn-flat white-text"><i class="material-icons small left white-text">arrow_back</i>戻　る</div>
+                        </p>
+                      </div>
+                      </div>
+                  </div>
+                </div>
+              </div>
+              <div id="commitDisplay" class="col s12 m10 offset-m1 l10 offset-l1 white-text">
+              <p>生産者登録が完了しました。<br />
+              アカウント作成時に必要なレジストレーションコードを<br />
+              登録されたメールアドレスに送信しましたので御確認ください。<br />
+              引き続き｢AICA｣をよろしくお願いします。</p>
+              <p><a href="/move">ログイン画面へ</a></p>
+              </div>
+            </div>
+          </div>
+          <!-- フッター -->
+          <footer class="page-footer teal darken-1">
+            <div class="footer-copyright">
+              <div class="container center">
+              &copy;Sun For You.Ltd
+              </div>
+            </div>
+          </footer>
+      </body>
+      <script src="https://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script>
+      <script src="@routes.Assets.at("javascripts/materialize.js")" type="text/javascript"></script>
+      <script src="@routes.Assets.at("javascripts/mmanager.js")" type="text/javascript"></script>
+      <script src="@routes.Assets.at("javascripts/agryeel.js")" type="text/javascript"></script>
+      <script src="@routes.Assets.at("javascripts/agryeelmodal.js")" type="text/javascript"></script>
+      <script src="@routes.Assets.at("javascripts/calc.js")" type="text/javascript"></script>
+      <script src="@routes.Assets.at("javascripts/init.js")" type="text/javascript"></script>
+      <script src="@routes.Assets.at("javascripts/farmMake.js")" type="text/javascript"></script>
+
+ </html>

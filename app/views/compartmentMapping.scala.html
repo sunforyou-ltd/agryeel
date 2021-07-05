@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+
+<html lang="jp">
+      <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+        <title>AICA</title>
+
+        <!-- FONT  -->
+        <link href="https://fonts.googleapis.com/css?family=Lato:400,700|Noto+Sans+JP:400,700" rel="stylesheet">
+        <!-- CSS  -->
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/materialize.css")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/agryeel.css")">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+      </head>
+      <body>
+        <!-- メインコンテンツ -->
+	      <div class="navbar-fixed">
+	        <nav class="nav-item" role="navigation">
+	          <div class="nav-wrapper">
+	            <img class="nav-image-logo"  src="@routes.Assets.at("image/navilogo.png")">
+	          </div>
+	        </nav>
+	      </div>
+        <!-- メインセクション -->
+	      <div class="row CMArea" id="mainsection">
+	        <div id="kukakuSection" class="col s12 m4 l3">
+            <ul id="kukakuList" class="kukakuList">
+            </ul>
+          </div>
+          <div id="mapSection" class="col s12 m4 l6 mapsection">
+            <div id="gmap" class="gmap"></div>
+          </div>
+          <div id="selectSection" class="col s12 m4 l3">
+            <a href="#!" id="btnSetting" class="waves-effect waves-green btn-flat left string-color btnControl teal-text text-darken-2" style=""><i class="material-icons small left">add</i>設&nbsp;定&nbsp;&nbsp;開&nbsp;始</a>
+            <a href="#!" id="btnDelete" class="waves-effect waves-green btn-flat left string-color btnControl red-text text-darken-2" style=""><i class="material-icons small left">delete</i>位置情報クリア</a>
+            <a href="#!" id="btnClear" class="waves-effect waves-green btn-flat left string-color btnControl brown-text text-darken-2" style=""><i class="material-icons small left">clear</i>選&nbsp;択&nbsp;初&nbsp;期&nbsp;化</a>
+	          <div id="selectSection" class="selectBox">
+	            <ul id="selectList" class="selectList">
+	            </ul>
+	          </div>
+          </div>
+        </div>
+        <!-- フッター -->
+        <footer class="page-footer fixed-color">
+          <div class="footer-copyright">
+            <div class="container center">
+              &copy;Sun For You.Ltd
+            </div>
+          </div>
+        </footer>
+	      <div class="row">
+	        <div id="mainmenu" class="container">
+	        </div>
+	      </div>
+      </body>
+      <script src="https://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script>
+      <script src="@routes.Assets.at("javascripts/materialize.js")" type="text/javascript"></script>
+      <script src="@routes.Assets.at("javascripts/mmanager.js")" type="text/javascript"></script>
+      <script src="@routes.Assets.at("javascripts/agryeel.js")" type="text/javascript"></script>
+      <script src="@routes.Assets.at("javascripts/agryeelmodal.js")" type="text/javascript"></script>
+  	  <script src="@routes.Assets.at("javascripts/hello.all.js")" type="text/javascript"></script>
+      <script src="@routes.Assets.at("javascripts/Sortable.min.js")" type="text/javascript"></script>
+      <script src="@routes.Assets.at("javascripts/calc.js")" type="text/javascript"></script>
+      <script src="@routes.Assets.at("javascripts/init.js")" type="text/javascript"></script>
+      <script src="@routes.Assets.at("javascripts/compartmentMapping.js")" type="text/javascript"></script>
+      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxvp9N62OG_L6bDcmRQTTwmEGeQRFhPBE&callback=initMap" async defer></script>
+
+ </html>

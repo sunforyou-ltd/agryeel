@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+
+<html lang="jp">
+      <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+        <title>AICA</title>
+
+        <!-- FONT  -->
+        <link href="https://fonts.googleapis.com/css?family=Lato:400,700|Noto+Sans+JP:400,700" rel="stylesheet">
+        <!-- CSS  -->
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/materialize.css")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/agryeel.css")">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+      </head>
+      <body>
+        <!-- ローディング領域 -->
+        <div id="LoadingArea" class="agryeel-loading center">
+          <div class="preloader-wrapper big active agryeel-loading-action">
+            <div class="spinner-layer spinner-green-only">
+              <div class="circle-clipper left">
+                <div class="circle"></div>
+              </div><div class="gap-patch">
+                <div class="circle"></div>
+              </div><div class="circle-clipper right">
+                <div class="circle"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 選択用モーダル -->
+        <div id="selectmodal" class="modal modal-fixed-footer">
+        </div>
+        <div id="mselectmodal" class="modal modal-fixed-footer">
+        </div>
+        <!-- メインコンテンツ -->
+	      <div class="navbar-fixed">
+	        <nav class="nav-item" role="navigation">
+	          <div class="nav-wrapper">
+	            <img class="nav-image-logo"  src="@routes.Assets.at("image/navilogo.png")">
+	          </div>
+	        </nav>
+	      </div>
+        <!-- メインセクション -->
+	      <div class="row workPlanArea" id="mainsection">
+	        <div id="joukenSection" class="joukenSection">
+		        <!-- タイトル -->
+		        <div class="screenTitle"><span class="main">作業指示（担当者別） </span><span class="sub">-&nbsp;Cultivation plan Account&nbsp;-</span></div>
+            <!-- 想定条件 -->
+            <div id="hyoujiJken" class="col s12 m8 offset-m2 l6 offset-l3 card-panel">
+	            <span id="jkenAreaArea" class="workPlanTitle">（表示条件）</span>
+              <a id="switchend" class="switchbtn" stts="on">記録表示</a>
+              <a id="switchmode" class="switchbtn" stts="on">作業</a>
+	            <a class="waves-effect waves-light btn-flat workplanbackdays" id="workPlanBackDays">作業指示（日別へ）</a><br />
+	            <div id="jkenArea">
+                <div class="col s12 center">
+                  <a class="waves-effect waves-light btn-flat navi-workdate" dayshift="-7"><i class="material-icons small">first_page</i></a>
+                  <a class="waves-effect waves-light btn-flat navi-workdate" dayshift="-1"><i class="material-icons small">chevron_left</i></a>
+                  <div class="input-field inline-input">
+                    <input type="text" id="WorkPlanFromDate" class="datepicker input-text-color workdate-text">
+                  </div>
+                  <a class="waves-effect waves-light btn-flat navi-workdate" dayshift="1"><i class="material-icons small">chevron_right</i></a>
+                  <a class="waves-effect waves-light btn-flat navi-workdate" dayshift="7"><i class="material-icons small">last_page</i></a>
+                </div>
+                <div class="tantousya col s6">
+                <span class="selectmodal-trigger-title">担当者</span><a href="#mselectmodal"  class="mselectmodal-trigger" title="担当者選択" data="getAccountOfFarmAll" displayspan="#WorkPlanAccount" htext="#WorkPlanAccountValue"><span id="WorkPlanAccount" class="blockquote-input">選択なし</span></a>
+                <input type="hidden" id="WorkPlanAccountValue" value=""/>
+                </div>
+	            <div class="crop col s6">
+	            &nbsp;
+	            </div>
+	            <div class="tantousya col s6">
+	            <span class="selectmodal-trigger-title">作業</span><a href="#mselectmodal"  class="mselectmodal-trigger" title="作業選択" data="getWorkOfFarm" displayspan="#WorkPlanWork" htext="#WorkPlanWorkValue"><span id="WorkPlanWork" class="blockquote-input">選択なし</span></a>
+	            <input type="hidden" id="WorkPlanWorkValue" value=""/>
+	            </div>
+	            <div class="crop col s6">
+	            <span class="selectmodal-trigger-title">区画</span><a href="#mselectmodal"  class="mselectmodal-trigger" title="区画選択" data="getCompartmentOfFarm" displayspan="#WorkPlanKukaku" htext="#WorkPlanKukakuValue"><span id="WorkPlanKukaku" class="blockquote-input">選択なし</span></a>
+	            <input type="hidden" id="WorkPlanKukakuValue" value=""/>
+	            </div>
+	            </div>
+            </div>
+          </div>
+          <div id="listSection" class="col s12 m8 offset-m2 l10 offset-l1">
+	          <ul id="WorkPlanAccountList" class="dateList">
+	            <li class="onedate">&nbsp;</li>
+	            <li class="onedate">&nbsp;</li>
+	            <li class="onedate">&nbsp;</li>
+	            <li class="onedate">&nbsp;</li>
+	            <li class="onedate">&nbsp;</li>
+	            <li class="onedate">&nbsp;</li>
+	            <li class="onedate">&nbsp;</li>
+	          </ul>
+          </div>
+		      <div class="fixed-action-btn" style="bottom: 24px; right: 24px;">
+		        <a id="WorkPlanAddBtn" class="btn-floating btn-large red darken-4">
+		          <i class="material-icons large">add</i>
+		        </a>
+          </div>
+        </div>
+        <!-- フッター -->
+        <footer class="page-footer fixed-color">
+          <div class="footer-copyright">
+            <div class="container center">
+              &copy;Sun For You.Ltd
+            </div>
+          </div>
+        </footer>
+	      <div class="row">
+	        <div id="mainmenu" class="container">
+	        </div>
+	      </div>
+      </body>
+      <script src="https://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script>
+      <script src="@routes.Assets.at("javascripts/materialize.js")" type="text/javascript"></script>
+      <script src="@routes.Assets.at("javascripts/mmanager.js")" type="text/javascript"></script>
+      <script src="@routes.Assets.at("javascripts/jquery.inview.js")" type="text/javascript"></script>
+      <script src="@routes.Assets.at("javascripts/agryeel.js")" type="text/javascript"></script>
+      <script src="@routes.Assets.at("javascripts/agryeelmodal.js")" type="text/javascript"></script>
+  	  <!-- <script src="@routes.Assets.at("javascripts/hello.all.js")" type="text/javascript"></script> -->
+      <script src="@routes.Assets.at("javascripts/Sortable.min.js")" type="text/javascript"></script>
+      <!-- <script src="@routes.Assets.at("javascripts/calc.js")" type="text/javascript"></script> -->
+      <script src="@routes.Assets.at("javascripts/init.js")" type="text/javascript"></script>
+      <script src="@routes.Assets.at("javascripts/workplanaccount.js")" type="text/javascript"></script>
+
+ </html>

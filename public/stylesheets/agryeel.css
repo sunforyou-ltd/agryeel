@@ -1,0 +1,3720 @@
+/**********************************************************************************************************************/
+/* AGRYEEL 共通スタイル定義 */
+/**********************************************************************************************************************/
+
+/**********************************************************************************************************************/
+/* 入力フィールド共通定義 */
+/**********************************************************************************************************************/
+/* Rangeフィールド スタイル定義 */
+input[type="range"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  position: relative;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  border:0;
+  width: 100%;
+  height:5px;
+  margin:3px 0;
+  box-shadow:5px 5px 0px #81d4fa inset;
+}
+/* Rangeフィールド スタイル定義 */
+input[type="range"]::-webkit-slider-thumb{
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: #81d4fa;
+  text-align:center;
+  width: 30px;
+  height: 30px;
+  border:1px solid transparent;
+  border-radius:30px;
+  cursor:pointer;
+  -moz-box-sizing:border-box;
+  -webkit-box-sizing:border-box;
+  box-sizing:border-box;
+}
+/* Rangeフィールド スタイル定義 */
+input[type="range"]::-webkit-slider-thumb:before {
+  content:"";
+  display:inline-block;
+  background-color: #29b6f6;
+  width: 20px;
+  height: 20px;
+  border:1px solid transparent;
+  border-radius:20px;
+  margin:4px auto 0;
+  -moz-box-sizing:border-box;
+  -webkit-box-sizing:border-box;
+  box-sizing:border-box;
+}
+/* Rangeフィールド スタイル定義 */
+input[type="range"]::-webkit-slider-thumb:hover {
+  background-color: #b3e5fc;
+}
+
+/* Rangeフィールド スタイル定義 */
+input[type="range"]:active::-webkit-slider-thumb {
+  background-color: #29b6f6;
+}
+/* Rangeフィールド スタイル定義 */
+input[type="range"]:active::-webkit-slider-thumb:before {
+  background-color: #03a9f4;
+}
+/* Rangeフィールド スタイル定義 */
+input[type="range"]:focus {
+  outline:none;
+}
+
+/**********************************************************************************************************************/
+/* フォント定義 */
+html {
+	font-family: 'Lato', 'Noto Sans JP', 'ヒラギノ角ゴ ProN', 'Hiragino Kaku Gothic ProN', 'メイリオ', Meiryo, 'ＭＳ Ｐゴシック', 'MS PGothic', sans-serif !important;
+}
+.string-color {
+  color: #212121;
+}
+.substr-color {
+  color: #9e9e9e;
+}
+.fixed-color {
+  background: #1a237e !important;
+}
+.input-text-color {
+  color: #212121 !important;
+}
+body { background: #f5f5f5; }
+.container { margin: 0 auto; }
+
+/* Example wrapper */
+.wrap {
+  position: relative;
+  margin: 3em 0;
+}
+
+/* Frame */
+.frame {
+  height: 250px;
+  line-height: 250px;
+  overflow: visible;
+}
+.frame ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-size: 40px;
+}
+.frame ul li {
+  float: left;
+  width: 200px;
+  height: 100%;
+  margin: 0 1px 0 0;
+  padding: 0;
+  background: #333;
+  color: #ddd;
+  text-align: center;
+  cursor: pointer;
+}
+.frame ul li.active {
+  color: #fff;
+  background: #a03232;
+}
+
+/* Scrollbar */
+.scrollbar {
+  margin: 0 0 1em 0;
+  height: 2px;
+  background: #ccc;
+  line-height: 0;
+}
+.scrollbar .handle {
+  width: 100px;
+  height: 100%;
+  background: #292a33;
+  cursor: pointer;
+}
+.scrollbar .handle .mousearea {
+  position: absolute;
+  top: -9px;
+  left: 0;
+  width: 100%;
+  height: 20px;
+}
+
+/* Pages */
+.pages {
+  list-style: none;
+  margin: 20px 0;
+  padding: 0;
+  text-align: center;
+}
+.pages li {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  margin: 0 4px;
+  text-indent: -999px;
+  border-radius: 10px;
+  cursor: pointer;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,.2);
+}
+.pages li:hover {
+  background: #aaa;
+}
+.pages li.active {
+  background: #666;
+}
+
+/* Controls */
+.controls { margin: 25px 0; text-align: center; }
+
+/* One Item Per Frame example*/
+.oneperframe { height: 300px; line-height: 300px; }
+.oneperframe ul li { width: 1140px; }
+.oneperframe ul li.active { background: #333; }
+
+/* Crazy example */
+.crazy ul li:nth-child(2n) { width: 100px; margin: 0 4px 0 20px; }
+.crazy ul li:nth-child(3n) { width: 300px; margin: 0 10px 0 5px; }
+.crazy ul li:nth-child(4n) { width: 400px; margin: 0 30px 0 2px; }
+
+/**********************************************************************************************************************/
+/* 全画面共通定義                                                                                                                                                                                                                                                  */
+/**********************************************************************************************************************/
+.screenTitle {
+  width: 100%;
+  line-height: 1rem;
+  background: #1a237e;
+  color: #FFFFFF;
+  padding: 8px;
+  text-align: center;
+}
+.screenTitle .main {
+  font-size: 1.2rem;
+}
+.screenTitle .sub {
+  font-size: 0.8rem;
+}
+/**********************************************************************************************************************/
+/* トップ画面スタイル定義 */
+/**********************************************************************************************************************/
+.top-panel {
+  position: relative;
+	min-height: 320px;
+  background-color: #fafafa;
+}
+.top-panel .top-image-logo {
+  width: 80%;
+  height: 248px;
+  margin-left: 10%;
+  margin-bottom: 64px;
+}
+.top-navigation {
+  font-size: 0.6rem;
+}
+@media only screen and (min-width : 767px) {
+.top-navigation {
+	font-size: 1.2rem;
+}}
+@media only screen and (min-width : 1599px) {
+.top-navigation {
+	font-size: 1.2rem;
+}}
+/**********************************************************************************************************************/
+/* ナビゲーション用スタイル定義 */
+/**********************************************************************************************************************/
+/* アカウント画像(標準) */
+.account {
+  max-width: 55px;
+  height: 55px; }
+
+/* アカウント画像(解像度大) */
+@media only screen and (min-width : 601px) {
+.account {
+  width: 55px;
+  height: 65px; } }
+
+.farmicon {
+  position: absolute;
+  top: 0px;
+  left: 72px;
+  width: 55px;
+  height: 55px;
+  text-align: center;
+  -webkit-border-radius: 12px;
+  -moz-border-radius: 12px;
+  border-radius: 12px;}
+
+.nav-image-logo {
+  color: #FFFFFF;
+  padding: 		4px;
+  max-height: 	60px;
+}
+@media only screen and (min-width : 767px) {
+.nav-image-logo {
+  max-height:   64px;
+}}
+@media only screen and (min-width : 1599px) {
+.nav-image-logo {
+  max-height:   64px;
+}}
+
+.nav-user-menu {
+  color: #00FFFF;
+  padding:     4px;
+  width:  48px;
+  height: 48px;
+  text-align: center;
+  display:inline-block;
+}
+
+.nav-menu {
+	/*
+  width:  48px;
+  height: 48px;
+  */
+  right: 16px;
+}
+
+/**********************************************************************************************************************/
+
+/**********************************************************************************************************************/
+/* ホーム画面用スタイル定義 */
+/**********************************************************************************************************************/
+/* 第一ＴＡＢ定義 */
+.tab-menu {
+  position: fixed;
+  width: 100%;
+  z-index: 997;}
+
+.menu-scroll {
+}
+@media only screen and (min-width : 1599px) {
+.menu-scroll {
+}}
+
+/* ハウス状況照会スタイル定義 */
+/* ハウスグループアイコン */
+.house-groupdiv {
+  position: fixed;
+  top: 0px;
+  width: 80%;
+  z-index: 998;}
+}
+/* ハウス状況照会カテゴリ定義 */
+.house-working {
+  position: relative;
+  margin-top  : 56px;
+  }
+/* 作業スタイル定義 */
+/* 作業カテゴリ定義 */
+.work {
+  position: relative;
+  margin-top: 56px;}
+
+/* 作業画像定義 */
+.work-img {
+  -webkit-border-radius: 2px 2px 0 0;
+  -moz-border-radius: 2px 2px 0 0;
+  border-radius: 2px 2px 0 0;
+  background-clip: padding-box;
+  position: relative;
+  z-index: 10;}
+    /* 作業重ね色定義 */
+    .work-img .detailbox {
+      position: absolute;
+      color: #ffffff;
+      font-size: 1.0rem;
+      top: 0;
+      right: 0;
+      bottom: 4px;
+      left: 0;}
+      /* 赤 */
+      .work-img .detailbox.box-red {
+        background-color: rgba(244,67,54,0.5);}
+      /* 青 */
+      .work-img .detailbox.box-blue {
+        background-color: rgba(33,150,243,0.5);}
+      /* 緑 */
+      .work-img .detailbox.box-green {
+        background-color: rgba(139,195,74,0.5);}
+      /* 紫 */
+      .work-img .detailbox.box-purple {
+        background-color: rgba(186,104,200,0.5);}
+    /* 作業遷移アイコン定義 */
+    .work-img .detailbox .sendicon{
+      padding-right:20px;}
+    /* 作業予定ハウス一覧定義 */
+    .work-img .detailbox .house {
+      padding-top: 4px;
+      padding-left: 20px;
+      padding-bottom:4px;}
+    /* 作業予定ハウス一覧定義（下線） */
+    .work-img .detailbox .house.line {
+      border-bottom: 1px solid #ffffff;}
+    /* 作業項目名定義 */
+    .work-img .detailbox .worktitle {
+      position: relative;
+      background-color: rgba(0,0,0,0.5);
+      padding-top: 12px;
+      padding-bottom: 12px;
+      padding-left: 20px;
+      padding-right: 10px;}
+    /* 作業項目名対象ハウス件数定義 */
+    .work-img .detailbox .worktitle .worktitlebadge {
+      color: #ffffff;
+      background-color: #29b6f6;
+      min-width: 3rem;
+      padding: 4px 4px;
+      text-align: center;
+      font-size: 0.8rem;
+      line-height: inherit;
+      float: right;
+      -webkit-border-radius: 2px;
+      -moz-border-radius: 2px;
+      border-radius: 2px;
+      background-clip: padding-box;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box; }
+
+.work-card {
+  position: relative;
+  border-left: 8px solid #d32f2f;
+  min-height: 96px;
+  cursor: pointer;
+}
+.work-card.sakuduke {
+  border-left: 8px solid #303f9f;
+}
+.work-card.kanri {
+  border-left: 8px solid #00796b;
+}
+.work-card.syukaku {
+  border-left: 8px solid #d32f2f;
+}
+
+
+.work-card .work-title {
+  position: relative;
+  width: 100%;
+  height: 12px;
+}
+@media only screen and (min-width : 767px) {
+.work-card .work-title {
+  height: 16px;
+  }}
+@media only screen and (min-width : 1599px) {
+.work-card .work-title {
+  height: 32px;
+  }}
+
+.work-card .work-title .work-icon {
+  position: absolute;
+  top: 16px;
+  left: 8px;
+  font-size: 1.6rem;
+
+}
+
+.work-card .work-title .work-text {
+  position: absolute;
+  top: 16px;
+  margin-left: 5.2rem;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #424242;
+}
+@media only screen and (min-width : 767px) {
+.work-card .work-title .work-text {
+  margin-left: 6.0rem;
+  font-size: 1.6rem;
+  }}
+@media only screen and (min-width : 1599px) {
+.work-card .work-title .work-text {
+  margin-left: 6.0rem;
+  font-size: 1.4rem;
+  }}
+.work-card .work-title .work-sub-text {
+  position: absolute;
+  top: 44px;
+  margin-left: 5.2rem;
+  font-size: 1.0rem;
+  font-weight: 700;
+  color: #757575;
+}
+@media only screen and (min-width : 767px) {
+.work-card .work-title .work-sub-text {
+  margin-left: 6.0rem;
+  font-size: 1.2rem;
+  }}
+@media only screen and (min-width : 1599px) {
+.work-card .work-title .work-sub-text {
+  margin-left: 6.0rem;
+  font-size: 1.0rem;
+  }}
+.work-card .work-title .work-badge-title {
+  color: #616161;
+  margin-top: 16px;
+  margin-right: 8px;
+  font-size: 0.8rem;
+  float: right;
+}
+.work-card .work-title .work-badge {
+	color: #424242;
+  margin-top: 16px;
+  margin-right: 16px;
+  font-size: 0.8rem;
+  float: right;
+}
+.work-card .work-list {
+	margin:0;
+	margin-top: 72px;
+	border-top: 2px solid #E0E0E0;
+	display: block;
+}
+.work-card .work-list.none{
+	display: none;
+}
+.work-card .work-list-item {
+  position: relative;
+  padding: 4px;
+  font-size: 1.0rem;
+  font-weight: 700;
+  color: #212121;
+  border-bottom: 2px solid #E0E0E0;
+  min-height: 6.4rem;
+}
+.work-card .work-list-item .work-icon {
+  position: absolute;
+  top: 16px;
+  left: 8px;
+  font-size: 1.6rem;
+}
+.work-card .work-list-item .kukaku-name {
+  position: absolute;
+  top: 16px;
+  margin-left: 4.2rem;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #212121;
+}
+@media only screen and (min-width : 767px) {
+.work-card .work-list-item .kukaku-name {
+  margin-left: 5.0rem;
+  font-size: 1.6rem;
+  }}
+@media only screen and (min-width : 1599px) {
+.work-card .work-list-item .kukaku-name {
+  margin-left: 6.0rem;
+  font-size: 1.4rem;
+  }}
+.work-card .work-list-item .kukaku-sub {
+  position: absolute;
+  top: 44px;
+  margin-left: 4.2rem;
+  font-size: 1.0rem;
+  font-weight: 700;
+  color: #757575;
+}
+@media only screen and (min-width : 767px) {
+.work-card .work-list-item .kukaku-sub {
+  margin-left: 5.0rem;
+  font-size: 1.2rem;
+  }}
+@media only screen and (min-width : 1599px) {
+.work-card .work-list-item .kukaku-sub {
+  margin-left: 6.0rem;
+  font-size: 1.0rem;
+  }}
+.initanime3 {
+  left: 150px;}
+.initanime4 {
+  left: 0px;}
+
+/*
+.collapsible-header.timeline {
+  position: relative;
+  min-height: 1em;
+  line-height: 2em;
+  overflow-y:hidden;}
+.collapsible-header.timeline .work-icon {
+  position: absolute;
+  font-size: 1.8em;
+  top: 2px;
+  left: 2px;
+}
+@media only screen and (min-width : 601px) {
+.collapsible-header.timeline .work-icon {
+  top: 2px;
+  font-size: 1.2em;}
+}
+.collapsible-header.timeline .edit-icon {
+  position: absolute;
+  font-size: 0.8em;
+  top: 12px;
+  right: 8px;
+}
+.collapsible-header.timeline .edit-icon .icon{
+  position: absolute;
+  top: -4px;
+  left: 4px;
+}
+.collapsible-header.timeline .timeline-kukakuname{
+    position: absolute;
+    top: 4px;}
+.timeline-updatetime {
+    position: absolute;
+    top: 12px;
+    right: 8px;
+	  font-size: 0.4em;
+    color: #bdbdbd;
+    margin-left: 16px;}
+.collapsible-header.timeline .timeline-workdate {
+    font-size: 0.6em;
+    color: #0288d1;}
+.timeline-worktime {
+    font-size: 0.6em;
+    color: #d32f2f;
+    margin-left: 4px;
+    margin-right: 8px;
+}
+.timeline-accountname {
+    position: absolute;
+    bottom:  12px;
+    right: 8px;
+    margin-left: 16px;}
+*/
+/*-----------------------------------------------------------------------------------------------*/
+/* タイムライン                                                                                                                                                                                                                         */
+/*-----------------------------------------------------------------------------------------------*/
+.timeline {
+}
+@media only screen and (min-width : 1599px) {
+.timeline {
+  height: 480px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}}
+.timeline::-webkit-scrollbar {
+  display: none;
+}
+.timeline .timelinelist {
+	min-height: 4em;
+  border-bottom: 1px solid #eceff1;
+  cursor: pointer;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+.timeline .timelinelist.kani {
+  height: 4em;
+}
+.timeline .timelinelist .work-title {
+  position: relative;
+  min-height: 4em;
+  color: #212121;
+}
+.timeline .timelinelist .work-title .work-icon {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 64px;
+  height: 64px;
+}
+.timeline .timelinelist .work-title .work-text {
+  position: absolute;
+  top: 2px;
+  left: 64px;
+  font-size: 1.0rem;
+  color: #212121;
+}
+.timeline .timelinelist .work-title .work-workdate-text {
+  position: absolute;
+  top: 2px;
+  right: 64px;
+  font-size: 1.0rem;
+  color: #212121;
+}
+.timeline .timelinelist .work-title .account-text {
+  position: absolute;
+  top: 24px;
+  left: 64px;
+  font-size: 1.0rem;
+  color: #616161;
+}
+.timeline .timelinelist .work-title .work-update-text {
+  position: absolute;
+  top: 24px;
+  right: 64px;
+  font-size: 0.8rem;
+  color: #616161;
+}
+.timeline .timelinelist .work-daytime-text {
+  position: absolute;
+  bottom: 4px;
+  right: 16px;
+  font-size: 0.8rem;
+  color: #222222;
+}
+.timeline .timelinelist .message {
+  position: relative;
+  font-size: 0.8rem;
+  color: #616161;
+  margin-bottom: 4px;
+  left: 8px;
+}
+.timeline .timelinelist .message.note {
+  color: #c2185b;
+}
+.timeline .timelinelist .message.danger {
+  color: #d32f2f;
+}
+/*
+ * AGRYEELオリジナルアイコン
+ *
+ */
+.btn-floating .agryeel-orgicon {
+  position: absolute;
+  top: 8px;
+  font-size: 2.2rem;
+  width: 56px;
+  height: 56px;
+  display: block;
+}
+@media only screen and (min-width : 601px) {
+  left: 0.6rem;
+}
+
+/*
+ * メニュー画面の各タイトル
+ */
+.title-timeline {
+  position: relative;
+  width: 100%;
+  height: 56px;
+  background-color: #f5f5f5;
+  color: rgba( 21, 101, 192, 0.8);
+  border-left: 4px solid rgba( 21, 101, 192, 0.8);
+  border-bottom: 4px solid rgba( 21, 101, 192, 0.8);
+  font-size: 1.8em;
+  font-weight: 700;
+  margin-top: -16px;
+  margin-bottom: 16px;
+  padding-top: 8px;
+  padding-left: 16px;
+}
+.title-timeline i {
+  position: absolute;
+  right: 32px;
+  color:#212121;
+  cursor: pointer;
+}
+.title-house {
+  position: relative;
+  width: 100%;
+  height: 56px;
+  background-color: #f5f5f5;
+  color: rgba(0, 150, 88, 0.6);
+  border-left: 4px solid rgba(0, 150, 88, 0.8);
+  border-bottom: 4px solid rgba(0, 150, 88, 0.8);
+  font-size: 1.8em;
+  font-weight: 700;
+  margin-top: 40px;
+  margin-bottom: 16px;
+  padding-top: 8px;
+  padding-left: 16px;
+}
+.title-house i {
+  position: absolute;
+  right: 32px;
+  color:#212121;
+  cursor: pointer;
+}
+.title-work {
+  position: relative;
+  width: 100%;
+  height: 56px;
+  background-color: #f5f5f5;
+  color: rgba(142, 36, 170, 0.6);
+  border-left: 4px solid rgba(142, 36, 170, 0.8);
+  border-bottom: 4px solid rgba(142, 36, 170, 0.8);
+  font-size: 1.8em;
+  font-weight: 700;
+  margin-top: -16px;
+  margin-bottom: 16px;
+  padding-top: 8px;
+  padding-left: 16px;
+}
+.title-work i {
+  position: absolute;
+  right: 32px;
+  color:#212121;
+  cursor: pointer;
+}
+
+/*
+ * 区画グループ検索設定
+ */
+.title-house-group {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 32px;
+  background-color: #9e9e9e ;
+  color: rgba(236, 239, 241, 0.6);
+  border-left: 16px solid #757575;
+  font-size: 1.0em;
+  font-weight: 700;
+  padding-top: 4px;
+  padding-left: 16px;
+  padding-bottom: 4px;
+  margin-bottom: 16px;
+}
+.title-house-group.active{
+
+  background-color: #f4511e;
+  border-left: 16px solid #c62828;
+
+}
+.house-group {
+  display: none;
+  width: 100%;
+  padding-bottom: 16px;
+}
+
+.house-group .housegroup {
+  position: relative;
+  width: 120px;
+  height: 28px;
+  background-color: #f4511e;
+  color: rgba(236, 239, 241, 0.6);
+  font-size: 0.8em;
+  font-weight: 700;
+  top: 8px;
+  left: 16px;
+  padding: 8px 16px 8px 16px;
+  -webkit-border-radius: 16px;
+  -moz-border-radius: 16px;
+  border-radius: 16px;
+}
+.house-group .housegrouptarget {
+  position: relative;
+  top: 24px;
+}
+.house-group .housegrouptarget .house-groupIcon {
+	position: relative;
+	margin-left: 8px;
+	width: 32px;
+	height: 32px;
+	font-size: 1.0rem;
+	font-weight: 700;
+	text-align: center;
+  	color: #FFFFFF;
+  	padding: 4px;
+}
+.house-group .housegrouptarget .house-groupIcon i {
+	position: relative;
+	font-size: 1.4rem;
+}
+@media only screen and (min-width : 601px) {
+.house-group .housegrouptarget .house-groupIcon {
+  width: 56px;
+  height: 56px;
+  font-size: 1.8rem;
+  padding: 8px;
+  font-weight: 400;
+}
+}
+
+/*
+ * タイムライン検索条件
+ */
+.title-search-where {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 32px;
+  background-color: #9e9e9e ;
+  color: rgba(236, 239, 241, 0.6);
+  border-left: 16px solid #757575;
+  font-size: 1.0em;
+  font-weight: 700;
+  padding-top: 4px;
+  padding-left: 16px;
+  padding-bottom: 4px;
+  margin-bottom: 16px;
+}
+.title-search-where.active{
+
+  background-color: #039be5;
+  border-left: 16px solid #1565c0;
+
+}
+.search-where {
+  display: none;
+  width: 100%;
+  padding-bottom: 16px;
+}
+
+.search-where .worktime {
+  position: relative;
+  width: 120px;
+  height: 28px;
+  background-color: #039be5;
+  color: rgba(236, 239, 241, 0.6);
+  font-size: 0.8em;
+  font-weight: 700;
+  top: 8px;
+  padding: 8px 16px 8px 16px;
+  -webkit-border-radius: 16px;
+  -moz-border-radius: 16px;
+  border-radius: 16px;
+}
+
+.search-where .workdate {
+  position: relative;
+  top: 8px;
+}
+
+.search-where .workwork {
+  position: relative;
+  width: 120px;
+  height: 28px;
+  background-color: #039be5;
+  color: rgba(236, 239, 241, 0.6);
+  font-size: 0.6em;
+  font-weight: 700;
+  top: 8px;
+  padding: 8px 16px 8px 16px;
+  -webkit-border-radius: 16px;
+  -moz-border-radius: 16px;
+  border-radius: 16px;
+}
+.search-where .worktarget {
+  position: relative;
+  top: 24px;
+}
+
+.title-search {
+  color: rgba(30, 136, 229, 0.4);
+  font-size: 1.0em;
+  font-weight: 900;
+}
+
+/**********************************************************************************************************************/
+
+/**********************************************************************************************************************/
+/* 作業対象圃場スタイル定義 */
+/**********************************************************************************************************************/
+/* 作業対象圃場カテゴリ定義 */
+.work-target-house {
+  position: relative;
+  margin-top: 56px;}
+
+/* 作業対象圃場 カードパネル */
+.work-target-house-card {
+  position: relative;
+  height: 120px;
+  top: 0;
+  left: 0px;
+  z-index:0;
+}
+  /* 作業対象圃場 カードパネル 切替フローティングボタン */
+  .work-target-house-card .work-target-house-floationg {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;}
+
+/* 作業対象圃場 状況圃場名 */
+.work-target-house-title {
+    font-size: 1.2rem;
+    margin-right: 4px;
+    color: #fb8c00;}
+/* 作業対象圃場 状況項目値 */
+.work-target-house-item-tip {
+    float: right;
+    font-size: 0.8rem;
+    color: #fb8c00;
+    margin-left: 4px;
+    margin-right: 4px;}
+
+/**********************************************************************************************************************/
+
+/* ==========================================================================
+   カスタマイズ部分
+   ========================================================================== */
+ .list-group {
+  border-radius: 0;
+}
+.list-group .list-group-item {
+  background-color: transparent;
+  overflow: hidden;
+  border: 0;
+  border-radius: 0;
+  padding: 0 8px;
+}
+.list-group .list-group-item.baseline {
+  border-bottom: 1px solid #cecece;
+}
+.list-group .list-group-item.baseline:last-child {
+  border-bottom: none;
+}
+.list-group .list-group-item .row-picture,
+.list-group .list-group-item .row-action-primary {
+  float: left;
+  display: inline-block;
+  padding-right: 16px;
+}
+.list-group .list-group-item .row-picture img,
+.list-group .list-group-item .row-action-primary img,
+.list-group .list-group-item .row-picture i,
+.list-group .list-group-item .row-action-primary i,
+.list-group .list-group-item .row-picture label,
+.list-group .list-group-item .row-action-primary label {
+  display: block;
+  width: 56px;
+  height: 56px;
+}
+.list-group .list-group-item .row-picture img,
+.list-group .list-group-item .row-action-primary img {
+  background: rgba(0, 0, 0, 0.1);
+  padding: 1px;
+}
+.list-group .list-group-item .row-picture img.circle,
+.list-group .list-group-item .row-action-primary img.circle {
+  border-radius: 100%;
+}
+.list-group .list-group-item .row-picture i,
+.list-group .list-group-item .row-action-primary i {
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 100%;
+  text-align: center;
+  line-height: 56px;
+  font-size: 16px;
+  color: white;
+}
+.list-group .list-group-item .row-picture label,
+.list-group .list-group-item .row-action-primary label {
+  margin-left: 7px;
+  margin-right: -7px;
+  margin-top: 5px;
+  margin-bottom: -5px;
+}
+.list-group .list-group-item .row-content {
+  display: inline-block;
+  width: calc(100% - 92px);
+  min-height: 66px;
+}
+.list-group .list-group-item .row-content .action-secondary {
+  position: absolute;
+  right: 16px;
+  top: 16px;
+}
+.list-group .list-group-item .row-content .action-secondary i {
+  font-size: 18px;
+  color: rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+}
+.list-group .list-group-item .row-content .action-secondary ~ * {
+  max-width: calc(100% - 30px);
+}
+.list-group .list-group-item .row-content .least-content {
+  position: absolute;
+  right: 16px;
+  top: 0px;
+  color: rgba(0, 0, 0, 0.54);
+  font-size: 12px;
+}
+.list-group .list-group-item .list-group-item-heading {
+  color: rgba(0, 0, 0, 0.77);
+  font-size: 18px;
+  line-height: 29px;
+}
+.list-group .list-group-item.active:hover,
+.list-group .list-group-item.active:focus {
+  background: rgba(0, 0, 0, 0.15);
+  outline: 10px solid rgba(0, 0, 0, 0.15);
+}
+.list-group .list-group-item.active .list-group-item-heading,
+.list-group .list-group-item.active .list-group-item-text {
+  color: rgba(0, 0, 0, 0.84);
+}
+.list-group .list-group-separator {
+  clear: both;
+  overflow: hidden;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.list-group .list-group-separator:before {
+  content: "";
+  width: calc(100% - 90px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  float: right;
+}
+/**********************************************************************************************************************/
+/* 作業記録日誌画面 共通スタイル定義 */
+/**********************************************************************************************************************/
+/* blockquote共通定義 */
+blockquote {
+  margin: 20px 0;
+  font-size: 1.0rem;
+  font-weight: 700;
+  padding-left: 1.5rem;
+  border-left: 5px solid #a5d6a7; }
+.blockquote-tip {
+  padding-left: 1.0rem;
+    color: #ef6c00;}
+.blockquote-input {
+  padding-left: 1.0rem;
+    color: #f57c00;}
+.blockquote-inputOption {
+    color: #ef6c00;}
+.blockquote-display {
+  padding-left: 1.0rem;
+    color: #64b5f6;}
+.blockquote-displayOption {
+    color: #64b5f6;}
+
+/* 作業記録日誌画面 数値入力用電卓モーダル */
+.calc-modal {
+  display: none;
+  position: fixed;
+  left: 0;
+  right: 0;
+  background-color: #eee;
+  padding: 0px;
+  height:400px;
+  width: 100%;
+  max-width:360px;
+  font-size: 20px;
+  margin: auto;
+  z-index: 1000;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  background-clip: padding-box;
+  -webkit-transform: translate(0);
+  -moz-transform: translate(0);
+  -ms-transform: translate(0);
+  -o-transform: translate(0);
+  transform: translate(0);
+  will-change: top, opacity; }
+
+@media only screen and (max-width : 320px) {
+.calc-modal {
+  height:360px;
+  width: 100%;
+  max-width:320px;
+  font-size: 16px;}
+}
+/* 作業記録日誌画面 数値入力用電卓モーダル タイポグラフィ*/
+  .calc-modal h1, .calc-modal h2, .calc-modal h3, .calc-modal h4 {
+    margin-top: 0; }
+  .calc-modal .calc-value {
+    height:120px;
+    width: 100%;
+    font-size: 40px;
+    font-weight: 700;
+    text-align: right;
+    padding-top: 24px;
+    padding-right: 12px;
+    padding-bottom: 24px;
+    background-color: #ef9a9a !important;
+  }
+@media only screen and (max-width : 320px) {
+  .calc-modal .calc-value {
+    height:72px;
+    width: 100%;
+    font-size: 30px;
+    font-weight: 500;
+    text-align: right;
+    padding-top: 16px;
+    padding-right: 8px;
+    padding-bottom: 16px;
+  }
+}
+/* 作業記録日誌画面 数値入力用電卓数字ボタン */
+  .calc-modal .calc-button {
+    float: left;
+    height:90px;
+    font-size: 36px;
+    font-weight: 700;
+    width: 25%;
+    padding-top: 20px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    color: #FFFFFF !important;
+    background-color: #42a5f5 !important;
+  }
+@media only screen and (max-width : 320px) {
+  .calc-modal .calc-button {
+    height:72px;
+    font-size: 24px;
+    font-weight: 500;
+    width: 25%;
+    padding-top: 16px;
+  }
+}
+/* 作業記録日誌画面 数値入力用電卓特殊ボタン */
+  .calc-modal .calc-button.special {
+      background-color: #ef5350 !important;
+    }
+/* 作業記録日誌画面 数値入力用電卓テキスト */
+  .calc-modal .span-calc-text {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    color:red;
+  }
+/* 作業記録日誌画面 日誌登録アニメーション */
+.workdiary-commit {
+  overflow-x: visible;
+  left: 0px;}
+.workdiary-commit.commit {
+  animation: workdiary-committranslate 2s;
+  -webkit-animation: workdiary-committranslate 2s; /* Safari & Chrome */}
+  @keyframes workdiary-committranslate {
+    0%   { transform:  translate(0px, 0px);    }
+    100%  { transform:  translate(0px, -1980px);   }}
+  @-webkit-keyframes workdiary-committranslate {
+    0%   { -webkit-transform:  translate(0px, 0px) ;   }
+    100%  { -webkit-transform:  translate(0px, -1980px);   }}
+/**********************************************************************************************************************/
+
+/**********************************************************************************************************************/
+/* 元帳照会専用スタイル定義 */
+/**********************************************************************************************************************/
+/* 元帳照会フローティングボタン定義 */
+ #G0002MainHouseWorking .motocho-button {
+  z-index: 0;
+  display : block;
+  border-radius: 50%;}
+
+/* 元帳照会フローティングボタン定義(元帳照会オープン時) */
+ #G0002MainHouseWorking .motocho-button.active {
+    position: fixed;
+    z-index: 8000;
+    left: 0;
+    top: 0;
+    cursor: default;
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+    -webkit-transition: all .4s ease-out;
+    transition: all .4s ease-out;
+    border-radius: 0%;
+    background-color: #ffffff !important;
+    width: 100%;
+    height: 100%;
+    overflow-y:auto;
+    }
+/**********************************************************************************************************************/
+
+/**********************************************************************************************************************/
+/* 収量まとめ画面 共通スタイル定義 */
+/**********************************************************************************************************************/
+/* 収量まとめナビゲーション定義 */
+.syuryo-nav-top {
+  display: inline ;
+  position: relative;
+  width: 100px;
+  top: 0;
+  left: 0px;
+  z-index:0;}
+
+/* 収量まとめ カードパネル 切替フローティングボタン */
+.syuryo-nav-top .syuryo-nav-floationg {
+      display: block ;
+      top: -100px;
+  width: 37px;
+  height: 37px;
+  line-height: 37px;
+      z-index:10;}
+
+/* 収量まとめカテゴリ定義 */
+.syuryo-main {
+  position: relative;
+  width: 100%;
+  top: 60px;
+  z-index:0;}
+
+/* 収量まとめグラフ用キャンバス設定 */
+.syuryo-canvas {
+  height: auto !important;
+  width: 100% !important;
+}
+/* 収量まとめカード用 */
+.syuryo-working-item {
+    font-size: 0.8rem;
+    color: #000000;}
+
+/* 収量まとめ 状況項目値 */
+.syuryo-working-item-tip {
+    font-size: 0.8rem;
+    color: #fb8c00;
+    margin-left: 4px;
+    margin-right: 4px;}
+
+/* 収量まとめ クリップボタン */
+.syuryo-working-tap .syuryo-working-floationg-detail {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;}
+
+/* 収量まとめ 進捗状況タップイベント */
+.syuryo-working-tap {
+  position: relative;
+  height: 800px;
+  top: 0;
+  left: 0px;
+  overflow-y:hidden;
+  -webkit-transition: height 1s ease,z-index 1s ease,top 1s ease,left 1s ease,position 1s ease,background-color 1s ease;
+  -moz-transition: height 1s ease,z-index 1s ease,top 1s ease,left 1s ease,position 1s ease,background-color 1s ease;
+  -o-transition: height 1s ease,z-index 1s ease,top 1s ease,left 1s ease,position 1s ease,background-color 1s ease;
+  -ms-transition: height 1s ease,z-index 1s ease,top 1s ease,left 1s ease,position 1s ease,background-color 1s ease;
+  transition: height 1s ease,z-index 1s ease,top 1s ease,left 1s ease,position 1s ease,background-color 1s ease;
+  z-index:0;}
+/**********************************************************************************************************************/
+
+/**********************************************************************************************************************/
+/* 共通モーダル画面専用スタイル定義 */
+/**********************************************************************************************************************/
+/* モーダル画面タイトル */
+.modal {
+	width: 95%;
+	max-width: 800px;
+}
+.modal-title {
+    font-size: 1.2rem;
+    font-weight: 400;
+}
+/* モーダル画面一覧表 */
+.modal-list {
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+/**********************************************************************************************************************/
+
+/**********************************************************************************************************************/
+/* 共通ローディング専用スタイル定義 */
+/**********************************************************************************************************************/
+/* ローディングエリア */
+.agryeel-loading {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    background-color: #ffffff !important;
+}
+/* ローディングアニメーションエリア（モバイル） */
+.agryeel-loading-action {
+    position: absolute;
+    top: 45%;
+    left: 40%;
+}
+/* ローディングアニメーションエリア（タブレット） */
+@media only screen and (min-width : 767px) {
+  .agryeel-loading-action {
+    left: 45%;}}
+/* ローディングアニメーションエリア（ＰＣ） */
+@media only screen and (min-width : 1599px) {
+.agryeel-loading-action {
+    left: 45%;}}
+/**********************************************************************************************************************/
+/**********************************************************************************************************************/
+/* 元帳照会専用スタイル定義 */
+/**********************************************************************************************************************/
+/* 元帳情報 */
+.motochoinfo {
+  height: 80px;
+  position: relative;}
+/* 区画グループアイコン */
+.motochoinfo .icon {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  width: 64px;
+  padding: 8px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 2.4rem;}
+ /* 区画名 */
+.motochoinfo .kukaku {
+  position: absolute;
+  top: 8px;
+  left: 82px;
+  color: #fb8c00;
+  font-weight: 700;
+font-size: 1.6rem;}
+/* 生産物 */
+.motochoinfo .crop {
+  position: absolute;
+  top: 44px;
+  left: 82px;
+  color: #bdbdbd;
+  font-weight: 700;
+  font-size: 1.4rem;}
+/* 年内回転数 */
+.motochoinfo .countofyear {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  color: #fb8c00;
+  font-size: 1.0rem;}
+/* ワープアイコン */
+.warpmenu {
+  height: 100px;
+  position: relative;}
+.warpmenu .icon {
+  position: relative;
+  top: 24px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  width: 64px;
+  padding: 24px;
+  margin-left: 0px;
+  margin-right: 16px;
+  text-align: center;
+  font-size: 2.0rem;}
+/* データタイトル */
+.datatitle {
+  font-weight: 700;
+	font-size: 1.4rem;}
+/* 情報リスト */
+.info {
+    margin-left: 4px;
+  }
+@media only screen and (min-width : 1599px) {
+.info {
+    mix-height: 7rem;
+    margin-left: 4px;
+    overflow-y:auto;}
+  }
+/* 情報リスト */
+.infolist {
+    padding-top: 1rem;
+    padding-bottom: 0.2rem;
+    border-bottom: 1px solid;}
+.infolist.nouhi {
+    mix-height: 7rem;
+    overflow-y:hidden;}
+    .infolist .title {
+      position: absolute;
+      left: 1.4rem;
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: #000000;}
+    .infolist .item {
+      position: absolute;
+      font-size: 1.2rem;
+      color: #fb8c00;
+      right: 1.4rem;}
+    .infolist .nouhi {
+      font-weight: 500;
+	    font-size: 1.0rem;
+      color: #000000;}
+    .infolist .nouhi .kind {
+        -webkit-border-radius: 0.2rem;
+        -moz-border-radius: 0.2rem;
+        border-radius: 0.2rem;
+        width: 1.2rem;
+        padding-top: 0.2rem;
+        padding-bottom: 0.2rem;
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+        padding-top: 0.2rem;
+        margin-right: 0.8rem;
+        margin-left: 0.4rem;
+        line-height: 2;
+        text-align: center;
+        background-color: #0288d1;
+        color: #ffffff;}
+    .infolist .nouhi .kind.other {
+        background-color: #388e3c;}
+    .infolist .nouhi .daycount {
+        margin-left: 0.2rem;
+        font-size: 0.6rem;
+        color: #0288d1;}
+
+.infolist .work-title {
+  position: relative;
+  width: 100%;
+  min-height: 6rem;
+
+}
+
+.infolist .work-title .work-icon {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  font-size: 24px;
+
+}
+@media only screen and (min-width : 767px) {
+.infolist .work-title .work-icon {
+  top: 8px;
+  left: 8px;
+	font-size: 28px;
+  }}
+@media only screen and (min-width : 1599px) {
+.infolist .work-title .work-icon {
+  top: 8px;
+  left: 8px;
+  font-size: 28px;
+  }}
+
+.infolist .work-title .work-text {
+  display: block;
+  position: absolute;
+  top: 8px;
+  left: 72px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #212121;
+}
+@media only screen and (min-width : 767px) {
+.infolist .work-title .work-text {
+  top: 8px;
+  left: 96px;
+  font-size: 20px;
+  }}
+@media only screen and (min-width : 1599px) {
+.infolist .work-title .work-text {
+  top: 8px;
+  left: 96px;
+  font-size: 20px;
+  }}
+.infolist .work-title .work-sub-text {
+  display: inline-block;
+  position: absolute;
+  top: 24px;
+  left: 72px;
+  font-size: 12px;
+  color: #757575;
+}
+@media only screen and (min-width : 767px) {
+.infolist .work-title .work-sub-text {
+  top: 32px;
+  left: 96px;
+  font-size: 20px;
+  }}
+@media only screen and (min-width : 1599px) {
+.infolist .work-title .work-sub-text {
+  top: 32px;
+  left: 96px;
+  font-size: 20px;
+  }}
+.infolist .work-title .work-sub2-text {
+  display: inline-block;
+  position: absolute;
+  top: 40px;
+  left: 72px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #757575;
+}
+@media only screen and (min-width : 767px) {
+.infolist .work-title .work-sub2-text {
+  top: 54px;
+  left: 96px;
+  font-size: 20px;
+  }}
+@media only screen and (min-width : 1599px) {
+.infolist .work-title .work-sub2-text {
+  top: 54px;
+	left: 96px;
+  font-size: 20px;
+  }}
+.infolist .message {
+  display: block;
+	position: relative;
+  padding-top: 4px;
+  height: 100%;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+@media only screen and (min-width : 767px) {
+.infolist .message {
+  font-size: 1.2rem;
+  }}
+@media only screen and (min-width : 1599px) {
+.infolist .message {
+  font-size: 1.2rem;
+  }}
+/**********************************************************************************************************************/
+/**********************************************************************************************************************/
+/* 生産者登録 */
+/**********************************************************************************************************************/
+.title-farmmake {
+  position: relative;
+  width: 100%;
+  height: 56px;
+  background-color: #7CB342;
+  color: rgba(174,213,129 ,0.6);
+  border-left: 16px solid #558B2F;
+  font-size: 1.6em;
+  font-weight: 700;
+  margin-top: -16px;
+  margin-bottom: 16px;
+  padding-top: 8px;
+  padding-left: 16px;
+}
+/**********************************************************************************************************************/
+/* タイムライン編集モーダル */
+/**********************************************************************************************************************/
+.editModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9998;
+  width: 100%;
+  height: 100%;
+  background-color: rgba( 0, 0, 0,0.8);
+}
+.editModal .editModalWrap {
+  position: absolute;
+  width: 300px;
+  height: 196px;
+  top: 50%;
+  left: 50%;
+  margin-top: -98px;
+  margin-left: -150px;
+  z-index: 9999;
+}
+.editModal .editModalWrap .editModalDetail {
+  position: relative;
+	width: 100%;
+  line-height: 3;
+  background-color: #FAFAFA;
+  font-size: 1.0rem;
+  padding-top: 8px;
+  padding-left: 8px;
+}
+.editModal .editModalWrap .editModalDetail .firstLine {
+  position: absolute;
+  top:  -20px;
+  left: 64px;
+  color: #F57C00;
+  font-size: 1.0rem;
+  font-weight: 700;
+}
+.editModal .editModalWrap .editModalDetail .secondLine {
+  position: absolute;
+  bottom:  -16px;
+  left: 64px;
+  color: #1976D2;
+  font-size: 1.0rem;
+  font-weight: 700;
+}
+.editModal .editModalWrap .editModalButton {
+  text-align: center;
+  width: 100%;
+  height: 64px;
+  padding-top: 16px;
+  font-size: 1.6em;
+  font-weight: 700;
+}
+.editModal .editModalWrap .editModalButton.edit {
+  background-color: #F57C00;
+  border-left: 16px solid #EF6C00;
+  color: #FFFFFF;
+}
+.editModal .editModalWrap .editModalButton.delete {
+  background-color: #D32F2F;
+  border-left: 16px solid #C62828;
+  color: #FFFFFF;
+}
+.editModal .editModalWrap .editModalButton.back {
+  background-color: #1976D2;
+  border-left: 16px solid #1565C0;
+  color: #FFFFFF;
+}
+/**********************************************************************************************************************/
+/* スクロールバー特殊処理 */
+#G0002WorkList::-webkit-scrollbar {
+  display: none;
+}
+
+@media only screen and (min-width : 1599px) {
+#G0002WorkList {
+	height: 480px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}}
+#G0002HouseList::-webkit-scrollbar {
+  display: none;
+}
+
+@media only screen and (min-width : 1599px) {
+#G0002HouseList {
+  height: 440px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}}
+#G0002TimeLine::-webkit-scrollbar {
+  display: none;
+}
+
+@media only screen and (min-width : 1599px) {
+#G0002TimeLine {
+  height: 580px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}}
+#G1101MasterMnt::-webkit-scrollbar {
+  display: none;
+}
+
+@media only screen and (min-width : 1599px) {
+#G1101MasterMnt {
+  height: 600px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}}
+#G1002AccountInfo::-webkit-scrollbar {
+  display: none;
+}
+
+@media only screen and (min-width : 1599px) {
+#G1002AccountInfo {
+  height: 600px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}}
+#G1201LandlordInfo::-webkit-scrollbar {
+  display: none;
+}
+
+@media only screen and (min-width : 1599px) {
+#G1201LandlordInfo {
+  height: 600px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}}
+#G1401FieldInfo::-webkit-scrollbar {
+  display: none;
+}
+
+@media only screen and (min-width : 1599px) {
+#G1401FieldInfo {
+  height: 600px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}}
+#G1501CompartmentInfo::-webkit-scrollbar {
+  display: none;
+}
+
+@media only screen and (min-width : 1599px) {
+#G1501CompartmentInfo {
+  height: 600px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}}
+#G1801NouhiInfo::-webkit-scrollbar {
+  display: none;
+}
+
+@media only screen and (min-width : 1599px) {
+#G1801NouhiInfo {
+  height: 600px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}}
+#G2101KikiInfo::-webkit-scrollbar {
+  display: none;
+}
+
+@media only screen and (min-width : 1599px) {
+#G2101KikiInfo {
+  height: 600px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}}
+/**********************************************************************************************************************/
+/* メインメニュー                                                                                                     */
+/**********************************************************************************************************************/
+#mainmenu {
+  width: 360px;
+}
+.menuitem {
+  background-color: #f5f5f5 !important;
+  border-left-style: solid;
+  border-left-width: 8px;
+  border-left-color: #455A64; /* スタイルシートで指定されない場合 */
+  border-bottom: 0px !important;
+  margin-bottom: 4px !important;
+  cursor: pointer;
+}
+.menuitem span {
+	margin-left: 16px;
+	font-size: 1.6rem;
+	color: #aaaaaa;
+}
+/**********************************************************************************************************************/
+/* カラーピッカー                                                                                                                                                                                                                                                                          */
+/**********************************************************************************************************************/
+.color-picker {
+  position: relative;
+}
+.color-picker .title {
+  color: #aaaaaa;
+  font-size: 1.0rem;
+}
+.color-picker .colormodal-trigger {
+  margin-left: 16px;
+  font-size: 1.4rem;
+}
+/**********************************************************************************************************************/
+/* カラーピッカーモーダル                                                                                                                                                                                                                                                              */
+/**********************************************************************************************************************/
+#colormodal {
+  width: 320px;
+  height: 400px;
+  background-color: #373740;
+  color: #eeeeee;
+}
+.color-item {
+	display: inline-block;
+  margin-top: 16px;
+  margin-left: 8px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 0px;
+  cursor: pointer;
+}
+.color-item.active {
+	border: 2px solid #eeeeee;
+}
+#colorfooter {
+  background-color: #373740;
+  color: #eeeeee;
+}
+/**********************************************************************************************************************/
+/* マルチセレクトトリガー                                                                                                                                                                                                                                                              */
+/**********************************************************************************************************************/
+.mselectmodal-trigger-title {
+  position: relative;
+  color: #616161;
+}
+.mselect-trigger {
+  position: relative;
+	}
+.mselect-trigger .title {
+  position: relative;
+  color: #757575;
+  }
+.mselect-trigger .selectitem {
+  position: relative;
+  margin-left: 8px;
+  color: #eeeeee;
+  }
+/**********************************************************************************************************************/
+/* マルチセレクトモーダル                                                                                                                                                                                                                                                              */
+/**********************************************************************************************************************/
+.mselect-item {
+  position: relative;
+	min-height: 32px;
+	color: #222222;
+  cursor:pointer;
+}
+.mselect-item i.status {
+	float: right;
+}
+.mselect-item i.status.add {
+  color:#e53935;
+  contents:add;
+}
+.mselect-item i.status.done {
+  color:#00897b;
+  contents:done;
+}
+/**********************************************************************************************************************/
+/* 詳細情報共通                                                                                                                                                                                                                                                                        */
+/**********************************************************************************************************************/
+.sub-menu {
+  position: relative;
+  min-height: 32px;
+  width: 100%;
+}
+.sub-menu i {
+  color: #aaaaaa;
+  font-size: 2.0rem;
+  position: absolute;
+  left: 16px;
+  cursor: pointer;
+}
+.sub-menu .title {
+	display: inline-block;
+  color: #aaaaaa;
+  font-size: 1.0rem;
+  text-align:center;
+  width: 100%;
+}
+
+/**********************************************************************************************************************/
+/* 圃場状況照会                                                                                                                                                                                                                                                                        */
+/**********************************************************************************************************************/
+.group-item {
+  position: relative;
+  min-height: 64px;
+  cursor: pointer;
+  color: #e0e0e0;
+  font-size: 1.4rem;
+  border-bottom-right-radius: 75% 100%;
+}
+.wgroup-item {
+  position: relative;
+  min-height: 64px;
+  cursor: pointer;
+  color: #e0e0e0;
+  font-size: 1.4rem;
+  border-bottom-right-radius: 75% 100%;
+}
+.field-item {
+  position: relative;
+  min-height: 64px;
+  cursor: pointer;
+  border-bottom: 1px solid #bdbdbd !important;
+  height: 17.0rem;
+  line-height: 17.0rem;
+  width: 100%;
+  overflow-y: hidden;
+/*  background-color: #373740 !important; */
+}
+.field-item.wfield-item {
+  height: 64px;
+  line-height: 64px;
+}
+.field-item .field {
+  color: #616161;
+  font-size: 1.4rem;
+}
+.field-item .kukaku {
+	margin-left: 8px;
+  color: #9e9e9e;
+  font-size: 1.0rem;
+}
+.field-item i {
+  color: #eeeeee;
+  font-size: 2.0rem;
+  position: absolute;
+  top: 4px;
+  right: 16px;
+}
+.field-item .item-title {
+	display: inline-block;
+	width: 7rem;
+  color: #212121;
+  font-size: 1.0rem;
+  padding: 4px;
+  margin-bottom: 4px;
+}
+.field-item .item-title.rotation {
+	border-left: solid 4px #d32f2f;
+}
+.field-item .item-title.crop {
+  border-left: solid 4px #c2185b;
+}
+.field-item .item-title.hinsyu {
+  border-left: solid 4px #689f38;
+}
+.field-item .item-title.hashu {
+  border-left: solid 4px #7b1fa2;
+}
+.field-item .item-title.seiiku {
+  border-left: solid 4px #512da8;
+}
+.field-item .item-title.sekisan {
+  border-left: solid 4px #303f9f;
+}
+.field-item .item-title.rain {
+  border-left: solid 4px #0d47a1;
+}
+.field-item .item-title.syodoku {
+  border-left: solid 4px #1976d2;
+}
+.field-item .item-title.kansui {
+  border-left: solid 4px #0288d1;
+}
+.field-item .item-title.tuihi {
+  border-left: solid 4px #0097a7;
+}
+.field-item .item-title.shukaku {
+  border-left: solid 4px #00796b;
+}
+.field-item .item-title.working {
+  border-left: solid 4px #388e3c;
+}
+.field-item .icon {
+	width: 2.5rem;
+}
+.field-item .item-div-wrapper {
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+  height: 9.0rem;
+  line-height: 9.0rem;
+}
+.field-item .item-div-area {
+  display: inline-block;
+  width: 100%;
+}
+@media only screen and (min-width : 1599px) {
+.field-item .item-div-area {
+  width: 33%;
+}
+}
+.field-item .item-div-item {
+  position: relative;
+	width: 100%;
+  height: 3.0rem;
+  line-height: 3.0rem;
+}
+.field-item .item {
+  color: #e65100;
+  font-size: 1.0rem;
+  margin-left: 8px;
+}
+.field-item .item-div-item .item.top {
+  position: absolute;
+  left: 2.5rem;
+  top: -0.6rem;
+}
+.field-item .item-div-item .item.bottom {
+  position: absolute;
+  left: 2.5rem;
+  bottom: -0.6rem;
+}
+.field-item .sub {
+  color: #aeaeae;
+  font-size: 0.8rem;
+  margin-left: 8px;
+}
+.field-item .chain {
+  color: #eeeeee;
+  font-size: 1.0rem;
+  margin: 8px;
+  height: 3.0rem;
+  line-height: 2.0rem;
+  width: 100%;
+  overflow-x: auto;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+}
+.field-item .chain .chainitem{
+	display: inline-blobk;
+  color: #eeeeee;
+  background-color: #424242;
+  font-size: 0.8rem;
+  padding: 4px;
+  margin-right: 4px;
+  line-height: 1.2rem;
+}
+.field-item .saku-start {
+  position: absolute;
+  color: #eeeeee;
+  top: 4px;
+  right: 8px;
+  border: 1px solid #cccccc;
+  background-color: #afb42b;
+}
+.field-item .aica-analysis {
+  position: absolute;
+  color: #888888;
+  top: 0;
+  right: 4.5rem;
+  font-size: 3.25rem;
+}
+.aicaSaibaiManageArea {
+  position: absolute;
+  z-index: 1000;
+  top:     0;
+  bottom:  0;
+  left:    0;
+  right:   0;
+  width:   90%;
+  max-height: 80%;
+  margin: auto auto;
+  background-color: #eeeeee;
+  opacity: 1.0;
+  font-size: 1.0rem;
+}
+@media screen and (min-width: 481px) { /* タブレット縦：タブレット横：スマートフォン横 */
+  .aicaSaibaiManageArea {
+  }
+}
+@media screen and (min-width: 1201px) { /* デスクトップ */
+  .aicaSaibaiManageArea {
+    width:   28.0rem;
+  }
+}
+.aicaSaibaiManageArea .itemTitle {
+  background-color: #3949ab;
+  color: #eeeeee;
+  text-align: center;
+  height: 1.5rem;
+}
+.aicaSaibaiManageArea .itemTitle i {
+  position: absolute;
+  color: #eeeeee;
+  top: 0;
+  right: 4.0px;
+  cursor:pointer;
+}
+.aicaSaibaiManageArea .item {
+	margin-left: 0.5rem;
+  height: 1.5rem;
+}
+.field-item .adb {
+  position: absolute;
+  font-size: 1.6rem;
+  color: #aaaaaa;
+  top: 8px;
+  right: calc(8px + 6rem);
+}
+.field-item .adb.on {
+  color: #b71c1c;
+}
+/**********************************************************************************************************************/
+/* 圃場詳細情報                                                                                                                                                                                                                                                                        */
+/**********************************************************************************************************************/
+.field-detail {
+
+}
+.field-detail .item-title {
+  color: #616161;
+  font-size: 1.0rem;
+}
+.field-detail .item {
+  color: #f57c00;
+  font-size: 1.0rem;
+  margin-left: 8px;
+}
+.detail-panel-color {
+  background-color: #eeeeee;
+}
+/**********************************************************************************************************************/
+/* 区画詳細情報                                                                                                                                                                                                                                                                        */
+/**********************************************************************************************************************/
+.kukaku-detail {
+
+}
+.kukaku-detail .item-title {
+  color: #616161;
+  font-size: 1.0rem;
+}
+.kukaku-detail .item {
+  color: #f57c00;
+  font-size: 1.2rem;
+  margin-left: 16px;
+}
+.kukaku-detail .sub {
+  color: #9e9e9e;
+  font-size: 1.0rem;
+  margin-left: 8px;
+}
+.kukaku-detail .chain {
+  color: #eeeeee;
+  font-size: 1.0rem;
+  margin: 8px;
+}
+.kukaku-detail .chain .chainitem{
+  color: #eeeeee;
+  background-color: #424242;
+  font-size: 0.8rem;
+  padding: 4px;
+  margin: 4px;
+}
+#totalgrafhbar {
+  color: #fafafa;
+  background-color: #7b1fa2;
+  margin-top: 16px;
+  padding: 4px;
+  padding-left: 0.5em;
+  font-size: 1.4rem;
+  min-height: 4rem;
+  width: 100%;
+  cursor: pointer;
+}
+#totalgrafhbar i {
+	margin: 0 0 0 auto;
+}
+#timelinebar {
+  color: #fafafa;
+  background-color: #1976d2;
+  margin-top: 16px;
+  padding: 4px;
+  padding-left: 0.5em;
+  font-size: 1.4rem;
+  min-height: 4rem;
+  width: 100%;
+  cursor: pointer;
+}
+#timelinebar i {
+  margin: 0 0 0 auto;
+}
+
+
+/**********************************************************************************************************************/
+/* 区画条件検索                                                                                                                                                                                                                                                                       */
+/**********************************************************************************************************************/
+#kukakusearch h6 {
+  position: relative;
+  color: #1a237e;
+  border-left: 8px solid #1a237e;
+  padding-left: 16px;
+}
+/**********************************************************************************************************************/
+/* タイムラインメニュー                                                                                                                                                                                                                                                                  */
+/**********************************************************************************************************************/
+#timelinemenu h6 {
+  position: relative;
+  color: #1a237e;
+  border-left: 8px solid #1a237e;
+  padding-left: 16px;
+}
+/**********************************************************************************************************************/
+/* ナビゲーション
+/**********************************************************************************************************************/
+.nav-item {
+  background-color: #1a237e !important;
+}
+/**********************************************************************************************************************/
+/* 作業中画面
+/**********************************************************************************************************************/
+.working {
+}
+.working .title {
+	color: #616161;
+	font-size: 1.0rem;
+}
+.working .item {
+  color: #f57c00;
+  font-size: 1.2rem;
+  margin-left: 16px;
+}
+.working .item-sub {
+  color: #9e9e9e;
+  font-size: 0.8rem;
+  margin-left: 16px;
+}
+.working .avt {
+	width: 60%;
+}
+.working .aica {
+	display: block;
+  min-height: 120px;
+/*height: 120px;*/
+  width: 90%;
+  margin-left: 5%;
+  padding: 8px;
+  font-size: 0.8rem;
+  color: #212121;
+  background-color: #dcedc8;
+/*overflow-y:auto;*/
+}
+.working-btn {
+	font-size: 1.2rem;
+}
+@media only screen and (max-width : 320px) {
+	.working-btn {
+	  font-size: 0.8rem;
+	}
+}
+/**********************************************************************************************************************/
+/* 作業日誌                                                                                                                                                                                                                                                                               */
+/**********************************************************************************************************************/
+.wd-panel {
+  background-color: #fafafa;
+}
+.wd {
+  position: relative;
+}
+.wd .title {
+  display: inline-block;
+  color: #212121;
+  font-size: 1.0rem;
+  text-align:center;
+  width: 100%;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  border-top: 1px solid #aaaaaa;
+  border-bottom: 1px solid #aaaaaa;
+}
+.wd .item-title {
+  display: inline-block;
+	color: #616161;
+  font-size: 1.0rem;
+  width: 64px;
+}
+.wd .item {
+  color: #f57c00;
+  font-size: 1.2rem;
+  margin-left: 16px;
+}
+.wd .item-sub {
+  color: #616161;
+  font-size: 0.8rem;
+  margin-left: 80px;
+}
+.wd .item.commit {
+  color: #388E3C;
+}
+
+.info-line {
+	padding-top: 16px;
+  border-top: 1px solid #aaaaaa;
+}
+.info-delete {
+  margin-right: 16px;
+}
+.nouhi-commit-btn {
+  margin-right: 16px;
+}
+.row .col.btn-area {
+}
+.wd .shukaku-clear {
+	background-color: #d32f2f;
+  color: #ffffff;
+  min-width: 10rem
+}
+.all-shukaku-clear {
+  background-color: #d32f2f;
+  color: #ffffff;
+  margin-top: 8px;
+  min-width: 10rem
+}
+.wd .senka-clear {
+	background-color: #d32f2f;
+  color: #ffffff;
+  min-width: 10rem
+}
+.all-senka-clear {
+  background-color: #d32f2f;
+  color: #ffffff;
+  margin-top: 8px;
+  min-width: 10rem
+}
+/**********************************************************************************************************************/
+/* 共通アイコン
+/**********************************************************************************************************************/
+.none-icon {
+  display: inline-block;
+  width: 56px;
+  height: 56px;
+  color: #eeeeee;
+  font-size: 2.0rem;
+  font-weight: 700;
+  padding-left: calc((3.0rem / 4) + 0.1rem);
+  padding-top: calc(0.6rem);
+}
+@media only screen and (min-width : 767px) {
+.none-icon {
+  width: 64px;
+  height: 64px;
+  font-size: 2.4rem;
+  padding-left: calc((3.2rem / 4) + 0.1rem);
+}}
+@media only screen and (min-width : 1599px) {
+.none-icon {
+  width: 72px;
+  height: 72px;
+  font-size: 3.0rem;
+  padding-left: calc((3.0rem / 4) + 0.1rem);
+}}
+.none-icon.timeline {
+  display: inline-block;
+  width: 48px;
+  height: 48px;
+  font-size: 2.0rem;
+  font-weight: 700;
+  padding-left: calc((2.0rem / 4) + 0.1rem);
+  padding-top: calc(0.1rem);
+}
+/**********************************************************************************************************************/
+/* 担当者別作業一覧                                                                                                                                                                                                                                                                */
+/**********************************************************************************************************************/
+.account-working {
+  background-color: #fafafa;
+}
+.account-working .item-title {
+  color: #616161;
+  font-size: 1.0rem;
+}
+.account-working .item {
+  color: #f57c00;
+  font-size: 1.2rem;
+  margin-left: 16px;
+}
+.account-working .sub {
+  color: #9e9e9e;
+  font-size: 0.8rem;
+  margin-left: 8px;
+}
+.time-trigger {
+  cursor: pointer;
+}
+/**********************************************************************************************************************/
+/* 担当者作業別時間確認                                                                                                                                                                                                                                                        */
+/**********************************************************************************************************************/
+.awtime {
+  background-color: #fafafa;
+}
+.awtime .item-title {
+  color: #616161;
+  font-size: 1.0rem;
+  width: 5rem;
+  display: inline-block;
+}
+.awtime .item {
+  color: #f57c00;
+  font-size: 1.2rem;
+  margin-left: 16px;
+}
+.awtime .sub {
+  color: #9e9e9e;
+  font-size: 0.8rem;
+  margin-left: 8px;
+}
+.awtime .work {
+  color: #616161;
+  font-size: 0.8rem;
+}
+.awtime .grafhdata {
+  display: inline-block;
+  margin-left: 4px;
+}
+.awtime .per {
+  color: #9e9e9e;
+  font-size: 0.8rem;
+	margin-left: 4px;
+}
+/**********************************************************************************************************************/
+/* 単項目汎用スタイル                                                                                                                                                                                                                                                                */
+/**********************************************************************************************************************/
+.sg {
+  position: relative;
+  border-top: 1px solid #aaaaaa;
+  border-bottom: 1px solid #aaaaaa;
+  width: 100%;
+  min-height:32px;
+  height:32px;
+}
+.sg .title {
+  position: relative;
+	color: #aaaaaa;
+  font-size: 1.0rem;
+  text-align:center;
+  width: 100%;
+  margin-top: 4px;
+}
+.impact-text {
+  color: #1a237e;
+}
+/**********************************************************************************************************************/
+/* マスタメンテナンス                                                                                                                                                                                                                                                                     */
+/**********************************************************************************************************************/
+.mst-area {
+	background-color: #fafafa !important;
+	color: #212121;
+	border-left: 1px solid #9e9e9e;
+	border-right: 1px solid #9e9e9e;
+	border-bottom: 1px solid #9e9e9e;
+}
+.mstedit {
+  color: #33691e;
+}
+.mst-panel {
+  background-color: #fafafa !important;
+}
+.mst-item-title {
+  color: #616161 !important;
+}
+.mst-item {
+  color: #f57c00 !important;
+}
+/**********************************************************************************************************************/
+/* メインメニューフローティングアクションボタン                                                                                                                                                                                                                                */
+/**********************************************************************************************************************/
+#menupage-icon {
+	transition: 1s;
+  animation-timing-function: ease-out;
+  -webkit-transition: 1s;
+  -webkit-animation-timing-function: ease-out;
+}
+#menupage-icon.none {
+  transform: scale(0);
+}
+#menutimeline-icon {
+  transition: 1s;
+  animation-timing-function: ease-out;
+  -webkit-transition: 1s;
+  -webkit-animation-timing-function: ease-out;
+}
+#menutimeline-icon.none {
+  transform: scale(0);
+}
+/*-----------------------------------------------------------------------------------------------*/
+/* システムメッセージ                                                                                                                                                                                                                */
+/*-----------------------------------------------------------------------------------------------*/
+#systemMessagearea h6 {
+  position: relative;
+  color: #1a237e;
+  border-left: 8px solid #1a237e;
+  padding-left: 16px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+.system-message {
+}
+@media only screen and (min-width : 1599px) {
+.system-message {
+  height: 480px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}}
+.system-message::-webkit-scrollbar {
+  display: none;
+}
+.system-message .messagelist {
+  min-height: 4em;
+  border-bottom: 1px solid #eceff1;
+  cursor: pointer;
+  padding: 4px;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  width: 100%;
+  transition: 0.5s;
+  animation-timing-function: ease-out;
+  -webkit-transition: 0.5s;
+  -webkit-animation-timing-function: ease-out;
+}
+.system-message .messagelist .date-title {
+  position: relative;
+  min-height: 1em;
+  color: #757575;
+  padding-left: 8px;
+}
+.system-message .messagelist .message {
+  position: relative;
+  min-height: 1em;
+  color: #424242;
+  font-size: 1em;
+  padding-left: 8px;
+}
+.system-message .messagelist .new {
+  position: relative;
+  color: #b71c1c;
+  font-size: 0.4em;
+  font-weight: 700;
+  padding-left: 4px;
+}
+.system-message .messagelist.remove {
+  width: 0;
+}
+/**********************************************************************************************************************/
+/* 天気情報ウィジェット                                                                                                                                                                                                                                                               */
+/**********************************************************************************************************************/
+.weather {
+
+}
+.weather .date {
+  font-size: 0.8em;
+  font-weight: 700;
+}
+.weather .time {
+  font-size: 1.0em;
+  font-weight: 700;
+}
+.weather .rain {
+  font-size: 1.0em;
+  font-weight: 700;
+  color: #1a237e;
+}
+.weather .unit {
+  font-size: 0.5em;
+  font-weight: 700;
+  color: #1a237e;
+}
+/**********************************************************************************************************************/
+/* 農肥情報                                                                                                                                                                                                                                                                                */
+/**********************************************************************************************************************/
+#totalnouyakubar {
+  color: #fafafa;
+  background-color: #1a237e;
+  padding: 4px;
+  padding-left: 0.5em;
+  font-size: 1.4rem;
+  min-height: 4rem;
+  width: 100%;
+  cursor: pointer;
+}
+#totalnouyakubar i {
+  margin: 0 0 0 auto;
+}
+#totalhiryoubar {
+  color: #fafafa;
+  background-color: #f57f17;
+  margin-top: 16px;
+  padding: 4px;
+  padding-left: 0.5em;
+  font-size: 1.4rem;
+  min-height: 4rem;
+  width: 100%;
+  cursor: pointer;
+}
+#totalhiryoubar i {
+  margin: 0 0 0 auto;
+}
+.nouhilist {
+
+}
+.nouhilist .nouhiitem {
+	width: 100%;
+  border-bottom: solid 1px #e0e0e0;
+  padding-top: 0.25em;
+  padding-bottom: 0.25em;
+}
+.nouhilist .no {
+  display: inline-block;
+  width: 4em;
+  background-color: #616161;
+  color : #eeeeee;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  text-align: center;
+  -webkit-border-radius: 0.25em;
+  border-radius: 0.25em;
+  margin-left: 8px;
+}
+.nouhilist .no.nouyaku {
+  background-color: #1976d2;
+}
+.nouhilist .no.hiryou {
+  background-color: #f57f17;
+}
+.nouhilist .name {
+  display: inline-block;
+  color : #1976d2;
+  font-size: 1.2rem;
+  font-weight: 400;
+  margin-left: 8px;
+}
+.nouhilist .date {
+  width: 6em;
+  color : #9e9e9e;
+  font-size: 0.8rem;
+  font-weight: 200;
+  margin-left: calc(5rem + 0.25rem);
+}
+.nouhilist .diffdate {
+  width: 6em;
+  color : #1976d2;
+  font-size: 1.0rem;
+  font-weight: 200;
+  margin-left: 8px;
+}
+.nouhilist .method {
+  color : #9e9e9e;
+  font-size: 0.8rem;
+  font-weight: 200;
+  margin-left: 8px;
+}
+.nouhilist .bairitu {
+  width: 6em;
+  color : #f57c00;
+  font-size: 1.0rem;
+  font-weight: 200;
+  margin-left: calc(5rem + 0.25rem);
+}
+.nouhilist .ryo {
+  color : #f57c00;
+  font-size: 1.0rem;
+  font-weight: 200;
+  margin-left: 8px;
+}
+.nouhilist .n {
+  width: 6em;
+  color : #f57c00;
+  font-size: 1.0rem;
+  font-weight: 200;
+  margin-left: calc(5rem + 0.25rem);
+}
+.nouhilist .p {
+  color : #f57c00;
+  font-size: 1.0rem;
+  font-weight: 200;
+  margin-left: 8px;
+}
+.nouhilist .k {
+  width: 6em;
+  color : #f57c00;
+  font-size: 1.0rem;
+  font-weight: 200;
+  margin-left: calc(5rem + 0.25rem);
+}
+.nouhilist .mg {
+  color : #f57c00;
+  font-size: 1.0rem;
+  font-weight: 200;
+  margin-left: 8px;
+}
+/**********************************************************************************************************************/
+/* ダッシュボード                                                                                                                                                                                                                                                                                */
+/**********************************************************************************************************************/
+.contents-none {
+  position: relative;
+	color: #888888;
+	font-size: 1.6rem;
+	margin-left: 1.0rem;
+	top: -0.2rem;
+}
+.dashboard {
+
+}
+.dashboard .analysis{
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #aaaaaa;
+}
+.dashboard .totallist {
+  overflow-x: auto;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+}
+.dashboard .totallist-li {
+  /* 横スクロール用 */
+  display: inline-block;
+  min-width: 48px;
+  width: 8rem;
+
+  /* 見た目調整 */
+  height: 20px;
+  margin: 8px;
+  text-align: center;
+}
+.dashboard .totallist-li .area {
+  position: relative;
+}
+.dashboard .totallist-li .area .shukakuRyo{
+  font-size: 1.0rem;
+  font-weight: 700;
+  color: #222222;
+}
+.dashboard .totallist-li .area .name{
+  font-size: 0.8rem;
+  color: #aaaaaa;
+}
+.dashboard .accountunit {
+  overflow-x: auto;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+}
+.dashboard .accountunit-li {
+  /* 横スクロール用 */
+  display: inline-block;
+  min-width: 48px;
+  min-height: 12rem;
+
+  /* 見た目調整 */
+  width: 16rem;
+  line-height: 12rem;
+  margin: 8px;
+  text-align: center;
+  vertical-align: top;
+  border-top: 1px solid #aaaaaa;
+  border-bottom: 1px solid #aaaaaa;
+  cursor:pointer;
+}
+.dashboard .accountunit-li .area {
+  position: relative;
+  line-height: calc(2rem + 8px);
+}
+.dashboard .accountunit-li .area .subarea {
+  position: relative;
+  height: 2.0rem;
+  line-height: 2.0rem;
+  margin-top: 8px;
+}
+.dashboard .accountunit-li .area .subarea .shukakuRyo{
+  position: absolute;
+	display: inline-block;
+  width: 6rem;
+  text-align: right;
+  font-size: 1.0rem;
+  color: #222222;
+  left: 4.0rem;
+}
+.dashboard .accountunit-li .area .subarea .unitsyukaku{
+  position: absolute;
+	display: inline-block;
+  width: 4rem;
+  font-size: 0.8rem;
+  color: #aaaaaa;
+  top: 0.5rem;
+  right: 0.5rem;
+  text-align: right;
+}
+.dashboard .accountunit-li .area .subarea .skill{
+  position: absolute;
+	display: inline-block;
+  width: 4rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #222222;
+  bottom: 0.5rem;
+  right: 0.5rem;
+  text-align: right;
+}
+.dashboard .accountunit-li .area .subarea .crop{
+  position: absolute;
+	display: inline-block;
+  width: 4rem;
+  font-size: 0.8rem;
+  color: #aaaaaa;
+  left: 0;
+}
+.dashboard .accountunit-li .area .name{
+  font-size: 0.8rem;
+  color: #aaaaaa;
+}
+.dashboard .title {
+  display: inline-block;
+  color: #222222;
+  font-size: 1.0rem;
+  font-weight: 700;
+  text-align:left;
+  width: 100%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+.dashboard .dateselect {
+	 overflow-x: auto;
+	 white-space: nowrap;
+	 -webkit-overflow-scrolling: touch;
+}
+.dashboard .dateselect .item {
+	/* 横スクロール用 */
+	display: inline-block;
+  min-width: 48px;
+  width: 8rem;
+
+	/* 見た目調整 */
+	height: 18px;
+	margin: 8px;
+	font-size: 0.8rem;
+	font-weight: 200;
+	color: #eeeeee;
+  background: #888888;
+  text-align: center;
+  border: 1px #888888 solid;
+  opacity: 0.6;
+}
+.dashboard .dateselect .item.select {
+  color: #e65100;
+	background: #ffcc80;
+  border: 1px #e65100 solid;
+  opacity: 1.0;
+}
+.dashboard .datainfo {
+  display: inline-block;
+  width: 100%;
+  height: 4rem;
+  text-align: left;
+  vertical-align: middle;
+  color: #aaaaaa;
+  font-size: 0.8rem;
+}
+.dashboard .datainfo .icon {
+  width: 40%;
+  min-width: 32px;
+  max-width: 64px;
+  margin-right: 16px;
+}
+.dashboard .datainfo .value {
+  font-size: 1.0rem;
+  font-weight: 700;
+  color: #212121;
+  margin-right: 4px;
+}
+.accountDetailDataArea {
+  position: relative;
+	z-index: 999;
+  width: 100%;
+  background: #FFFFFF;
+  opacity: 1.0;
+  margin-top: 64px;
+  height: 100%;
+}
+.accountDetailDataArea .name {
+  display: inline-block;
+  font-size: 1.2rem;
+}
+.accountDetailDataArea .date {
+  display: inline-block;
+  font-size: 0.8rem;
+  color: #888888;
+  margin-left: 8px;
+}
+.accountDetailDataArea .worktime {
+  position: absolute;
+	display: inline-block;
+  font-size: 1.0rem;
+  color: #000000;
+  margin-left: 8px;
+  right: 1.5rem;
+}
+.accountDetailDataArea .closebtn {
+  position: absolute;
+  display: inline-block;
+  right:  1.5rem;
+  bottom: 0.5rem;
+}
+.accountDetailDataList-item {
+  position: relative;
+}
+.accountDetailDataList-item .area {
+  display: inline-block;
+  width: 100%;
+}
+.accountDetailDataList-item .area .crop {
+  display: inline-block;
+  width: 6rem;
+  font-size: 1.0rem;
+}
+.accountDetailDataList-item .area .shukakuRyo {
+  display: inline-block;
+  width: 6rem;
+  font-size: 1.0rem;
+  color: #222222;
+  text-align: right;
+}
+.accountDetailDataList-item .area .worktime {
+  display: inline-block;
+  width: 4rem;
+  font-size: 0.8rem;
+  color: #888888;
+  text-align: right;
+}
+.accountDetailDataList-item .area .unitsyukaku {
+  position: relative;
+	display: inline-block;
+  width: 4rem;
+  font-size: 0.8rem;
+  color: #888888;
+  margin-left: 8px;
+  text-align: left;
+}
+.accountDetailDataList-item .area .skill {
+  position: relative;
+  display: inline-block;
+  width: 6rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #222222;
+  margin-left: 8px;
+  text-align: right;
+  border: #aaaaaa 1pt solid;
+}
+.accountDetailDataList-item .area .skill .skillbar {
+  position: absolute;
+	display: inline-block;
+  z-index: 1000;
+  width: 100%;
+  background: #222222;
+  opacity: 0.2;
+  top:  0;
+  left: 0;
+}
+/**********************************************************************************************************************/
+/* 区画並び順設定                                                                                                                                                                                                                                                    */
+/**********************************************************************************************************************/
+.sortSeqlist-group-item {
+  position: relative;
+	background: #ffffff;
+  color: #eeeeee;
+  margin-top: 0.5rem;
+  cursor: move;
+  font-size: 1.25rem;
+  text-align: center;
+}
+.sortSeqlist-group-item i {
+  position: absolute;
+  top  : 1.5rem;
+  right: 1.0rem;
+  cursor: pointer;
+}
+.sortSeqlist-kukaku-item {
+  color: #222222;
+	cursor: move;
+  font-size: 1.25rem;
+}
+/**********************************************************************************************************************/
+/* 栽培計画                                                                                                                                                                                                                                                             */
+/**********************************************************************************************************************/
+.planItemTitle {
+  display: block;
+  color: #6594e0;/*文字色*/
+  width: 100%;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+.planHeader {
+  background: #bbdefb;
+  color: #000000;
+}
+.planHeader th {
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: normal;
+  border: #aaaaaa 1px solid;
+}
+.planBody td {
+  text-align: center;
+  border: #aaaaaa 1px solid;
+}
+.planEdit {
+	margin: 1.5rem;
+}
+.planTable {
+	border: #aaaaaa 1px solid;
+}
+@media screen and (min-width: 481px) { /* タブレット縦：タブレット横：スマートフォン横 */
+	.planTable {
+	}
+}
+@media screen and (min-width: 1201px) { /* デスクトップ */
+  .planTable {
+  }
+}
+.planTr {
+  height: 0.5rem;
+  line-height: 0.5rem;
+}
+.planTr .title {
+	width: 8rem;
+	font-size: 0.8rem;
+}
+.planWeek {
+	background-color:#f5f5f5;
+  font-size: 0.25rem;
+}
+/*1*/
+.planWeek.pSaku{
+  background-color:#ffe0b2;
+}
+/*2*/
+.planWeek.jSaku{
+  background-color:#ffb74d;
+}
+/*3*/
+.planWeek.pKanri{
+  background-color:#b2dfdb;
+}
+/*4*/
+.planWeek.jKanri{
+  background-color:#4db6ac;
+}
+/*5*/
+.planWeek.pShukaku{
+  background-color:#ffcdd2;
+}
+/*6*/
+.planWeek.jShukaku{
+  background-color:#e57373;
+}
+.planGoalShukaku{
+  color:#888888;
+}
+.editGoalArea {
+  position: absolute;
+	z-index: 1000;
+	top:     0;
+  bottom:  0;
+  left:    0;
+  right:   0;
+  width:   28.0rem;
+  height: 20.0rem;
+  line-height: 1.5rem;
+  margin: auto auto;
+  background-color: #eeeeee;
+  opacity: 1.0;
+}
+.editGoalArea .title {
+  display: block;
+  background-color: #303f9f;
+  color: #eeeeee;
+  width: 100%;
+  height: 2.5rem;
+  line-height: 1.5rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  text-align: center;
+}
+.editGoalArea .crop {
+  display: block;
+  color: #222222;
+  height: 2.5rem;
+  line-height: 1.5rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  margin-left: 2.0rem;
+}
+.editGoalArea .shukakuryo {
+  display: block;
+  color: #888888;
+  height: 2.5rem;
+  line-height: 1.5rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  margin-left: 4.0rem;
+}
+.editGoalArea .goalShukaku {
+  display: block;
+  color: #888888;
+  height: 2.5rem;
+  line-height: 1.5rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  margin-left: 4.0rem;
+  width: 16.0rem;
+}
+.editGoalArea .cancel {
+  position: absolute;
+	color: #222222;
+  bottom: 0.5rem;
+  right: 8.0rem;
+}
+.editGoalArea .commit {
+  position: absolute;
+  color: #222222;
+  bottom: 0.5rem;
+  right: 2.0rem;
+}
+.planWorkArea {
+  position: absolute;
+  z-index: 1000;
+  top:     0;
+  bottom:  0;
+  left:    0;
+  right:   0;
+  width:   28.0rem;
+  height: 100%;
+  line-height: 1.5rem;
+  margin: auto auto;
+  background-color: #eeeeee;
+  opacity: 1.0;
+}
+@media screen and (min-width: 481px) { /* タブレット縦：タブレット横：スマートフォン横 */
+}
+@media screen and (min-width: 1201px) { /* デスクトップ */
+  .planWorkArea {
+	  height: 80%;
+  }
+}
+.planWorkArea .title {
+  display: block;
+  background-color: #303f9f;
+  color: #eeeeee;
+  width: 100%;
+  height: 2.5rem;
+  line-height: 1.5rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  text-align: center;
+}
+.planWorkArea .crop {
+  display: block;
+  color: #222222;
+  height: 2.5rem;
+  line-height: 1.5rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  margin-left: 2.0rem;
+}
+.planWorkArea .seiiku {
+  display: block;
+  color: #888888;
+  height: 2.5rem;
+  line-height: 1.5rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  margin-left: 4.0rem;
+}
+.planWorkArea .cancel {
+  position: absolute;
+  color: #222222;
+  bottom: 0.5rem;
+  left: 2.0rem;
+}
+.planWorkArea .commit {
+  position: absolute;
+  color: #222222;
+  bottom: 0.5rem;
+  right: 2.0rem;
+}
+/**********************************************************************************************************************/
+/* 作業指示書                                                                                                                                                                                                                                                          */
+/**********************************************************************************************************************/
+.workPlanArea {
+  position: relative;
+}
+.workPlanArea .workPlanTitle {
+  display: inline-block;
+  color: #6594e0;/*文字色*/
+  margin-top: 0.5rem;
+}
+.workPlanArea .workPlanTitle.close {
+  color: #aaaaaa;/*文字色*/
+}
+.workPlanArea .joukenSection {
+  position: relative;
+  height: 16rem;
+}
+.workPlanArea .joukenSection.close {
+  height: 2rem;
+}
+#hyoujiJken {
+  position: relative;
+}
+#hyoujiJken .workplanbackdays {
+  position: absolute;
+  font-size: 0.8rem;
+  top: 1.0rem;
+  right: 0.5rem;
+}
+.switchbtn {
+	padding: 0.25rem 0.5rem 0.25rem 0.5rem;
+  color: #FFFFFF;
+  background-color: #1a237e;
+  font-size: 0.8rem;
+
+}
+.switchbtn.off {
+  color: #FFFFFF;
+  background-color: #757575;
+
+}
+.workPlanArea .joukenSection .workdate{
+  width: 6rem;
+}
+.workPlanArea .joukenSection .workdate-text{
+  font-size: 0.8rem;
+  padding: 0;
+}
+@media screen and (min-width: 481px) { /* タブレット縦：タブレット横：スマートフォン横 */
+}
+@media screen and (min-width: 1201px) { /* デスクトップ */
+	.workPlanArea .joukenSection .workdate-text{
+	  font-size: 1.0rem;
+	}
+}
+.workPlanArea .joukenSection .btn-small{
+  margin: 2px;
+}
+.workPlanArea .joukenSection .navi-workdate {
+  position: relative;
+	display: inline-block;
+	width: 2rem;
+  height: 2rem;
+}
+.workPlanArea .joukenSection .navi-workdate i {
+  position: absolute;
+  left: 0.25rem;
+}
+.workPlanArea .joukenSection .tantousya{
+  font-size: 0.8rem;
+}
+@media screen and (min-width: 481px) { /* タブレット縦：タブレット横：スマートフォン横 */
+}
+@media screen and (min-width: 1201px) { /* デスクトップ */
+	.workPlanArea .joukenSection .tantousya{
+		font-size: 1.0rem;
+	}
+}
+.workPlanArea .joukenSection .crop {
+  font-size: 0.8rem;
+}
+@media screen and (min-width: 481px) { /* タブレット縦：タブレット横：スマートフォン横 */
+}
+@media screen and (min-width: 1201px) { /* デスクトップ */
+	.workPlanArea .joukenSection .crop {
+    font-size: 1.0rem;
+	}
+}
+.workPlanArea .listSection {
+  position: relative;
+}
+.workPlanArea .dateList {
+  height: 42rem;
+  overflow-x: auto;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+  margin: 0;
+  padding: 0;
+}
+.workPlanArea .dateList.close {
+  height: 50rem;
+}
+@media screen and (min-width: 481px) { /* タブレット縦：タブレット横：スマートフォン横 */
+}
+@media screen and (min-width: 1201px) { /* デスクトップ */
+}
+.workPlanArea .onedate {
+  position: relative;
+	display: inline-block;
+  width : 22rem;
+  height: 36rem;
+  background-color: #b2dfdb;
+  margin-left: 2.0rem;
+  overflow-y: auto;
+}
+.workPlanArea .onedate.close {
+  height: 46rem;
+}
+@media screen and (min-width: 481px) { /* タブレット縦：タブレット横：スマートフォン横 */
+}
+@media screen and (min-width: 1201px) { /* デスクトップ */
+	.workPlanArea .onedate {
+	  width : 26rem;
+	  height: 40rem;
+	}
+	.workPlanArea .onedate.close {
+	  height: 48rem;
+	}
+}
+.workPlanArea .onedate .folding-icon {
+  position: absolute;
+  display: inline-block;
+  text-align: left;
+  top: 0.5rem;
+  left: 1.0rem;
+  font-size: 0.6rem;
+  color: #009688;
+}
+.workPlanArea .onedate .date {
+  display: block;
+  width : 100%;
+  text-align: center;
+  margin-top: 0.5rem;
+  margin-bottom: 1.0rem;
+  font-weight: 700;
+  font-size: 0.8rem;
+  color: #00796b;
+  cursor: pointer;
+}
+@media screen and (min-width: 481px) { /* タブレット縦：タブレット横：スマートフォン横 */
+	.workPlanArea .onedate .date {
+	  font-size: 1.0rem;
+	}
+}
+@media screen and (min-width: 1201px) { /* デスクトップ */
+  .workPlanArea .onedate .date {
+    font-size: 1.2rem;
+  }
+}
+.workPlanArea .onedate .time {
+  position: absolute;
+	display: inline-block;
+  text-align: right;
+  top: 0.5rem;
+  right: 1.0rem;
+  font-size: 0.6rem;
+  color: #009688;
+}
+@media screen and (min-width: 481px) { /* タブレット縦：タブレット横：スマートフォン横 */
+  .workPlanArea .onedate .time {
+    font-size: 0.8rem;
+    right: 0.75rem;
+}
+}
+@media screen and (min-width: 1201px) { /* デスクトップ */
+  .workPlanArea .onedate .time {
+    font-size: 1.0rem;
+    right: 0.5rem;
+  }
+}
+.workPlanArea .onedate .workplandetail {
+	width: 21.0rem;
+	background:#ffffff;
+	margin-left: 0.5rem;
+  margin-bottom: 1.0rem;
+}
+@media screen and (min-width: 481px) { /* タブレット縦：タブレット横：スマートフォン横 */
+  .workPlanArea .onedate .workplandetail {
+  }
+}
+@media screen and (min-width: 1201px) { /* デスクトップ */
+	.workPlanArea .onedate .workplandetail {
+	  margin-left: 1.0rem;
+		width: 23rem;
+  }
+}
+.workPlanArea  .onedate .workplandetail.nomal {
+  color:#212121;
+  cursor: pointer;
+}
+.workPlanArea  .onedate .workplandetail.end {
+  background: #e0e0e0;
+  color:#212121;
+  cursor: default;
+}
+.workPlanArea  .onedate .workplandetail.working {
+  background: repeating-linear-gradient(-45deg,#e3f2fd 0,#e3f2fd 10px,#fff 10px,#fff 20px);
+  color:#212121;
+  cursor: pointer;
+}
+.workPlanArea  .onedate .workplandetail.prompt {
+  background: repeating-linear-gradient(-45deg,#ffcdd2 0,#ffcdd2 10px,#fff 10px,#fff 20px);
+  color:#212121;
+  cursor: pointer;
+}
+.workPlanArea  .onedate .workplandetail.fusen {
+  position: relative;
+  font-size: 1.0rem;
+  height: 100%;
+  padding-bottom: 0.5rem;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.workPlanArea  .onedate .workplandetail.fusen.up {
+  padding-bottom: 3.0rem;
+}
+.workPlanArea  .onedate .workplandetail.fusen .workName {
+  display: block;
+	margin-left: 0.5rem;
+}
+.workPlanArea  .onedate .workplandetail.fusen .workTime {
+  position: absolute;
+	display: block;
+	text-align: right;
+  top: 0.25rem;
+  right: 0.5rem;
+}
+.workPlanArea  .onedate .workplandetail.fusen .accountName {
+  display: block;
+	margin-left: 0.5rem;
+}
+.workPlanArea  .onedate .workplandetail.fusen .message {
+  display: block;
+  margin-top: 0.4rem;
+  margin-left: 0.25rem;
+  font-size: 0.6rem;
+}
+@media screen and (min-width: 481px) { /* タブレット縦：タブレット横：スマートフォン横 */
+  .workPlanArea  .onedate .workplandetail.fusen .message {
+  }
+}
+@media screen and (min-width: 1201px) { /* デスクトップ */
+  .workPlanArea  .onedate .workplandetail.fusen .message {
+	  margin-left: 0.5rem;
+		font-size: 0.8rem;
+  }
+}
+.workPlanArea  .onedate .workplandetail.fusen .edit {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 0.5rem;
+  cursor: pointer;
+}
+.workPlanArea  .onedate .workplandetail.fusen .commit {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 3.0rem;
+  cursor: pointer;
+}
+.workPlanArea  .onedate .workplandetail.fusen .copyall {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 8.0rem;
+  cursor: pointer;
+}
+.workPlanArea  .onedate .workplandetail.fusen .copy {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 5.6rem;
+  cursor: pointer;
+}
+.workPlanArea  .onedate .workplandetail.fusen .tantou {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.4rem;
+  cursor: pointer;
+}
+.workPlanArea  .onedate .workplandetail.fusen .event {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 3.0rem;
+  cursor: not-allowed;
+}
+.workPlanArea  .onedate .workplandetail.fusen .delete {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 3.0rem;
+  cursor: pointer;
+}
+.workPlanArea  .onedate .workplandetail.fusen .stop {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.4rem;
+  cursor: pointer;
+}
+.WorkPlanMenuArea {
+  position: absolute;
+  z-index: 1000;
+  top:     0;
+  bottom:  0;
+  left:    0;
+  right:   0;
+  width:   28.0rem;
+  height: 13.0rem;
+  line-height: 1.5rem;
+  margin: auto auto;
+  background-color: #1a237e;
+  opacity: 1.0;
+  font-size: 1.0rem;
+}
+.WorkPlanMenuArea .selectitem {
+	display: block;
+  padding: 1.0rem;
+  width: 100%;
+  background-color: #eeeeee;
+}
+.WorkPlanMenuArea .selectitem.top {
+  margin-top: 3.0rem;
+}
+.WorkPlanMenuArea .cancel {
+  position: absolute;
+  display: block;
+  color: #222222;
+  padding: 1.0rem;
+  width: 100%;
+  height: 3.0rem;
+  background-color: #eeeeee;
+}
+.WorkPlanAddArea {
+  position: absolute;
+  z-index: 1000;
+  top:     0;
+  bottom:  0;
+  left:    0;
+  right:   0;
+  width:   28.0rem;
+  height: 10.0rem;
+  line-height: 1.5rem;
+  margin: auto auto;
+  background-color: #eeeeee;
+  opacity: 1.0;
+  font-size: 1.0rem;
+}
+.WorkPlanAddArea .selectitem {
+  margin-top: 1.0rem;
+	margin-left: 1.0rem;
+}
+.WorkPlanAddArea .cancel {
+  position: absolute;
+  color: #222222;
+  bottom: 0.5rem;
+  left: 2.0rem;
+}
+.WorkPlanAddArea .commit {
+  position: absolute;
+  color: #222222;
+  bottom: 0.5rem;
+  right: 2.0rem;
+}
+.WorkPlanChainArea {
+  position: absolute;
+  z-index: 1000;
+  top:     0;
+  bottom:  0;
+  left:    0;
+  right:   0;
+  width:   28.0rem;
+  height: 24.0rem;
+  line-height: 1.5rem;
+  margin: auto auto;
+  background-color: #eeeeee;
+  opacity: 1.0;
+  font-size: 1.0rem;
+}
+.WorkPlanChainArea #WorkPlanChainDate{
+  margin-left: 1.0rem;
+  width: 60%
+}
+.WorkPlanChainArea #WorkPlanCopyCount{
+	margin-left: 1.0rem;
+  width: 60%
+}
+.WorkPlanChainArea .selectitem {
+  margin-top: 1.0rem;
+  margin-left: 1.0rem;
+}
+.WorkPlanChainArea .cancel {
+  position: absolute;
+  color: #222222;
+  bottom: 0.5rem;
+  left: 2.0rem;
+}
+.WorkPlanChainArea .commit {
+  position: absolute;
+  color: #222222;
+  bottom: 0.5rem;
+  right: 2.0rem;
+}
+.inline-input {
+  display: inline-block;
+}
+ul .date-group {
+  display: inline-block;
+  min-width: 100%;
+  min-height: 28rem;
+}
+.sortable-chosen {
+  transform: scale(1.1,1.1);
+  opacity: 0.8;
+  border: 1px #d32f2f dashed;
+}.sortable-drag {
+	transform: scale(1.0,1.0);
+  opacity: 0.8;
+  border: 1px #d32f2f dashed;
+}
+/**********************************************************************************************************************/
+/* 区画Ⅰ情報設定                                                                                                                                                                                                                                                     */
+/**********************************************************************************************************************/
+.CMArea {
+  -ms-user-select: none; /* IE 10+ */
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.CMArea #kukakuSection {
+}
+.CMArea .kukakuList {
+
+}
+.CMArea .kukakuList .groupdata {
+  position: relative;
+  padding: 0.25rem;
+  color: #eeeeee;
+  cursor:pointer;
+  font-size: 1.25rem;
+}
+.CMArea .kukakuList .kukakudata {
+  position: relative;
+  padding: 0.25rem;
+  cursor:pointer;
+  font-size: 1.25rem;
+}
+.CMArea .kukakuList .kukakudata .end {
+  position: absolute;
+  top    : 0.35rem;
+  right  : 0;
+  color: #aaaaaa;
+  font-size: 0.8rem;
+}
+.CMArea .mapsection {
+  position: relative;
+  width : 100%;
+  height: 24rem;
+}
+@media screen and (min-width: 481px) { /* タブレット縦：タブレット横：スマートフォン横 */
+	.CMArea .mapsection {
+	  height: 24rem;
+	}
+}
+@media screen and (min-width: 1201px) { /* デスクトップ */
+  .CMArea .mapsection {
+    height: 48rem;
+  }
+}
+.CMArea .mapsection .gmap {
+  position: absolute;
+  width : 90%;
+  height: 90%;
+  top   : 5%;
+  left  : 5%;
+}
+.CMArea .btnControl {
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  font-size: 1.0rem;
+}
+@media screen and (min-width: 481px) { /* タブレット縦：タブレット横：スマートフォン横 */
+  .CMArea .btnControl {
+  }
+}
+@media screen and (min-width: 1201px) { /* デスクトップ */
+  .CMArea .btnControl {
+	  width: 33%;
+		font-size: 0.8rem;
+  }
+}
+.CMArea .selectBox {
+  margin-top: 8.0rem;
+}
+@media screen and (min-width: 481px) { /* タブレット縦：タブレット横：スマートフォン横 */
+  .CMArea .selectBox {
+  }
+}
+@media screen and (min-width: 1201px) { /* デスクトップ */
+  .CMArea .selectBox {
+    margin-top: 2.5rem;
+	}
+}
+.CMArea .selectList {
+  position: relative;
+  min-height: 25rem;
+  border: 1px solid #222222;
+}
+.CMArea .selectList .selectdata {
+  position: relative;
+  padding: 0.25rem;
+  color: #222222;
+  cursor:pointer;
+  font-size: 1.25rem;
+}
+/**********************************************************************************************************************/
+/* 吹き出しアイコン                                                                                                                                                                                                                                                             */
+/**********************************************************************************************************************/
+.btn-description {
+  position: absolute;
+  left: -50px;
+  display: inline-block;
+  margin: 0 0.5em 1.0em 0;
+  padding: 0 5px;
+  width: 48px;
+  height: 36px;
+  line-height: 36px;
+  text-align: center;
+  color: #FFF;
+  font-size: 12px;
+  border-radius: 40%;
+  background: #70a6ff;
+  box-sizing: border-box;
+}
+.btn-description:before {
+  content: "";
+  position: absolute;
+  top: 52%;
+  right: -18px;
+  margin-top: -10px;
+  border: 10px solid transparent;
+  border-left: 10px solid #70a6ff;
+  z-index: 0;
+}

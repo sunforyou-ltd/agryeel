@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+
+<html lang="jp">
+      <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+        <title>AICA</title>
+
+        <!-- FONT  -->
+        <link href="https://fonts.googleapis.com/css?family=Lato:400,700|Noto+Sans+JP:400,700" rel="stylesheet">
+        <!-- CSS  -->
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/materialize.css")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/agryeel.css")" title="AICA標準">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+      </head>
+      <body>
+        <!-- ローディング領域 -->
+        <div id="LoadingArea" class="agryeel-loading center">
+          <div class="preloader-wrapper big active agryeel-loading-action">
+            <div class="spinner-layer spinner-green-only">
+              <div class="circle-clipper left">
+                <div class="circle"></div>
+              </div><div class="gap-patch">
+                <div class="circle"></div>
+              </div><div class="circle-clipper right">
+                <div class="circle"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- メインコンテンツ -->
+        <div id="MainContents">
+          <!-- ナビゲーションバー -->
+          <nav class="fixed-color" role="navigation">
+          </nav>
+          <!-- メインセクション -->
+          <div class="section no-pad-bot">
+            <div class="container">
+              <br>
+              <div class="row">
+                  <div class="col s12 m8 offset-m2 l6 offset-l3">
+                    <!-- タイトルカード -->
+                    <div class="card-panel top-panel">
+                   		<img class="top-image-logo" src="@routes.Assets.at("image/loginlogo.png")">
+                      <div class="center">
+                        <div class="row">
+                          <div class="col s10 offset-s1">
+                            <span class="substr-color">バージョンアップ情報や</span></br>
+                            <span class="substr-color">操作説明などの専用ページは<a href="https://www.facebook.com/aicasystem/" target="_blank">コチラ</a>。</span>
+                          </div>
+                        </div>
+                        <!-- ログイン情報入力フォーム -->
+                        <form>
+                          <div class="row">
+                            <div class="input-field col s10 offset-s1">
+                              <input id="G0001InAccountId" type="email" maxlength="12" class="string-color">
+                              <label for="G0001InAccountId">アカウントＩＤ</label>
+                            </div>
+                            <div class="input-field col s10 offset-s1">
+                              <input id="G0001InPassword" type="password" maxlength="30" class="string-color">
+                              <label for="G0001InPassword">パスワード</label>
+                            </div>
+                          </div>
+                        </form>
+                        <!-- ログインボタン -->
+                        <p><div id="G0001BtnLogin" class="waves-effect waves-light btn-flat string-color"><i class="material-icons small left string-color">work</i>LOGIN</div></p>
+                        <!-- <p><div id="G0001BtnGoogleLogin" class="waves-effect waves-light btn white-text red darken-2"><span class="icon-google-plus2"></span>&nbsp;&nbsp;<span class="buttonText">Sign Up</span></div></p>  -->
+                        <!-- お試し利用ボタン -->
+                        <p><div id="G0001BtnTrialLogin" class="waves-effect waves-light btn-flat string-color"><i class="material-icons small left string-color">how_to_reg</i>お試し利用</div></p>
+                    </div>
+                  </div>
+              </div>
+			  <!-- SNS認証 連携ＩＤ -->
+			  <input id="googleId" type="hidden" >
+              <div class="row">
+                  <div class="col s12 center">
+                  <p><a href="accountMakeMove"  class="waves-effect waves-light btn-flat string-color"><i class="material-icons small left string-color">account_box</i>アカウントの作成</a></p>
+                  <!-- 一時的に生産者登録を行わない様にする
+                  <p><a href="farmMakeMove"  class="waves-effect waves-light btn-flat white-text"><i class="material-icons small left white-text">home</i>生産者の登録</a></p>
+                   -->
+                  </div>
+              </div>
+            </div>
+          </div>
+          <!-- フッター -->
+          <footer class="page-footer fixed-color">
+            <div class="footer-version center">
+              	Ver&nbsp;02.210.20210331
+            </div>
+            <div class="footer-copyright">
+              <div class="container center">
+                &copy;Sun For You.Ltd
+              </div>
+            </div>
+          </footer>
+        </div>
+      </body>
+      <script src="https://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script>
+      <script src="@routes.Assets.at("javascripts/fingerprint2.js")" type="text/javascript"></script>
+      <script src="@routes.Assets.at("javascripts/materialize.js")" type="text/javascript"></script>
+      <script src="@routes.Assets.at("javascripts/agryeel.js")" type="text/javascript"></script>
+  	  <script src="@routes.Assets.at("javascripts/hello.all.js")" type="text/javascript"></script>
+      <script src="@routes.Assets.at("javascripts/init.js")" type="text/javascript"></script>
+      <script src="@routes.Assets.at("javascripts/index.js")" type="text/javascript"></script>
+
+ </html>

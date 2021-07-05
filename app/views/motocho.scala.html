@@ -1,0 +1,249 @@
+@(title: String)
+
+<!DOCTYPE html>
+
+<html lang="jp">
+      <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+        <title>AICA</title>
+
+        <!-- FONT  -->
+        <link href="https://fonts.googleapis.com/css?family=Lato:400,700|Noto+Sans+JP:400,700" rel="stylesheet">
+        <!-- CSS  -->
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/materialize.css")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/agryeel.css")">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+      </head>
+      <body>
+        <!-- ローディング領域 -->
+        <div id="LoadingArea" class="agryeel-loading center">
+          <div class="preloader-wrapper big active agryeel-loading-action">
+            <div class="spinner-layer spinner-green-only">
+              <div class="circle-clipper left">
+                <div class="circle"></div>
+              </div><div class="gap-patch">
+                <div class="circle"></div>
+              </div><div class="circle-clipper right">
+                <div class="circle"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- メインコンテンツ -->
+        <div id="MainContents">
+          <!-- ナビゲーションバー -->
+          <div class="navbar-fixed">
+            <nav class="red darken-4" role="navigation">
+              <div class="nav-wrapper">
+              </div>
+            </nav>
+          </div>
+          <!-- ホーム画面 -->
+          <!-- ハウス状況照会 -->
+          <div class="row">
+
+            <div class="col s12 m12 l4">
+              <div class="card">
+                <div class="card-content motochoinfo">
+                  <span class="icon" style="background-color:#1976d2; color: #ffffff;">Ａ</span>
+                  <span class="kukaku">Ａ－１</span>
+                  <span class="crop">水菜</span>
+                  <span class="countofyear">年内回転数：１</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="row">
+
+            <div class="col s3 warpmenu center">
+              <a href="#commoninfo"><span class="icon teal darken-2 white-text" >基</span><a>
+            </div>
+            <div class="col s3 warpmenu center">
+              <a href="#nouyakuinfo"><span class="icon indigo darken-2 white-text" >農</span><a>
+            </div>
+            <div class="col s3 warpmenu center">
+              <a href="#hiryoinfo"><span class="icon amber darken-2 white-text" >肥</span><a>
+            </div>
+            <div class="col s3 warpmenu center">
+              <a href="#timeinfo"><span class="icon purple darken-2 white-text" >タ</span><a>
+            </div>
+
+          </div>
+<!--
+          <div class="row">
+            <div class="col s12">
+              <div class="care-panel teal white-text z-depth-1 datatitle">
+              データ
+              </div>
+            </div>
+          </div>
+ -->
+          <div class="row">
+
+            <div class="col s12 m12 l3" id="commoninfo">
+              <div class="card">
+                <div class="card-content teal darken-2 white-text">
+                基本情報
+                </div>
+                <div class="card-action">
+                  <ul class="info">
+                  <li class="infolist"><span class="title">場所</span><span class="item">Ａ－１</span></li>
+                  <li class="infolist"><span class="title">品種</span><span class="item">京みぞれ</span></li>
+                  <li class="infolist"><span class="title">播種日</span><span class="item">2014/12/24</span></li>
+                  <li class="infolist"><span class="title">生育日数</span><span class="item">25日</span></li>
+                  <li class="infolist"><span class="title">収穫量</span><span class="item">2000g</span></li>
+                  <li class="infolist"><span class="title">収穫開始日</span><span class="item">2015/05/20</span></li>
+                  <li class="infolist"><span class="title">収穫終了日</span><span class="item">2015/05/20</span></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="col s12 m12 l3" id="nouyakuinfo">
+              <div class="card">
+                <div class="card-content indigo darken-2 white-text">
+                農薬
+                </div>
+                <div class="card-action">
+                  <div  style="border-left: 4px solid #303f9f;">
+                  <ul class="info" style="border-left: 4px solid #00796b;">
+                  <li class="infolist nouhi">
+                    <span class="nouhi"><span class="kind">殺虫１</span>アルバリン水和剤/</span><br>
+                    <span class="nouhi"><span class="kind">倍率</span>2000倍</span><br>
+                    <span class="nouhi"><span class="kind">日付</span>2015/05/13<span class="daycount">10日経過</span><span class="kind">量</span>30L</span><br>
+                    <span class="nouhi"><span class="kind">散布方法</span>背負動力散布機</span><br>
+                    <span class="nouhi"><span class="kind other">殺虫２</span></span><br>
+                    <span class="nouhi"><span class="kind">有支成分</span>ジノテフラン20%</span><br>
+                    <span class="nouhi"><span class="kind">10a当り</span>100L</span><br>
+                  </li>
+                  <li class="infolist nouhi">
+                    <span class="nouhi"><span class="kind">殺虫２</span>フォース粒剤</span><br>
+                    <span class="nouhi"><span class="kind">倍率</span>1000倍</span><br>
+                    <span class="nouhi"><span class="kind">日付</span>2015/05/13<span class="daycount">10日経過</span><span class="kind">量</span>5L</span><br>
+                    <span class="nouhi"><span class="kind">散布方法</span>背負動力散布機</span><br>
+                    <span class="nouhi"><span class="kind other">殺虫１</span></span><br>
+                    <span class="nouhi"><span class="kind">有支成分</span></span><br>
+                    <span class="nouhi"><span class="kind">10a当り</span></span><br>
+                  </li>
+                  </ul>
+                  <ul class="info" style="border-left: 4px solid #d32f2f;">
+                  <li class="infolist nouhi">
+                    <span class="nouhi"><span class="kind">殺虫１</span>アルバリン水和剤/</span><br>
+                    <span class="nouhi"><span class="kind">倍率</span>2000倍</span><br>
+                    <span class="nouhi"><span class="kind">日付</span>2015/05/13<span class="daycount">10日経過</span><span class="kind">量</span>30L</span><br>
+                    <span class="nouhi"><span class="kind">散布方法</span>背負動力散布機</span><br>
+                    <span class="nouhi"><span class="kind other">殺虫２</span></span><br>
+                    <span class="nouhi"><span class="kind">有支成分</span>ジノテフラン20%</span><br>
+                    <span class="nouhi"><span class="kind">10a当り</span>100L</span><br>
+                  </li>
+                  <li class="infolist nouhi">
+                    <span class="nouhi"><span class="kind">殺虫２</span>フォース粒剤/1000倍</span><br>
+                    <span class="nouhi"><span class="kind">日付</span>2015/05/13<span class="daycount">10日経過</span><span class="kind">量</span>5L</span><br>
+                    <span class="nouhi"><span class="kind">散布方法</span>背負動力散布機</span><br>
+                    <span class="nouhi"><span class="kind other">殺虫１</span></span><br>
+                    <span class="nouhi"><span class="kind">有支成分</span></span><br>
+                    <span class="nouhi"><span class="kind">10a当り</span></span><br>
+                  </li>
+                  </ul>
+                </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col s12 m12 l3" id="hiryoinfo">
+              <div class="card">
+                <div class="card-content amber darken-2 white-text">
+                肥料
+                </div>
+                <div class="card-action">
+                  <div  style="border-left: 4px solid #303f9f;">
+                  <ul class="info" style="border-left: 4px solid #00796b;">
+                  <li class="infolist nouhi">
+                    <span class="nouhi"><span class="kind">元肥１</span>みいの野菜１号</span><br>
+                    <span class="nouhi"><span class="kind">日付</span>2015/05/13<span class="daycount">10日経過</span><span class="kind">量</span>20Kg</span><br>
+                    <span class="nouhi"><span class="kind">成分量</span>N3Kg&nbsp;P2Kg&nbsp;K1Kg</span><br>
+                    <span class="nouhi"><span class="kind">散布方法</span>ブレンドキャスター</span><br>
+                    <span class="nouhi"><span class="kind other">元肥２</span><span class="kind other">元肥３</span><span class="kind other">元肥４</span></span><br>
+                    <span class="nouhi"><span class="kind">10a当り</span>40Kg&nbsp;N6Kg&nbsp;P4Kg&nbsp;K1Kg</span><br>
+                  </li>
+                  <li class="infolist nouhi">
+                    <span class="nouhi"><span class="kind">元肥２</span>炭酸苦土石灰</span><br>
+                    <span class="nouhi"><span class="kind">日付</span>2015/05/13<span class="daycount">10日経過</span><span class="kind">量</span>40Kg</span><br>
+                    <span class="nouhi"><span class="kind">成分量</span>N0Kg&nbsp;P0Kg&nbsp;K0Kg</span><br>
+                    <span class="nouhi"><span class="kind">散布方法</span>ブレンドキャスター</span><br>
+                    <span class="nouhi"><span class="kind other">元肥１</span><span class="kind other">元肥３</span><span class="kind other">元肥４</span></span><br>
+                    <span class="nouhi"><span class="kind">10a当り</span>80Kg&nbsp;N0Kg&nbsp;P0Kg&nbsp;K0Kg</span><br>
+                  </li>
+                  <li class="infolist nouhi">
+                    <span class="nouhi"><span class="kind">元肥３</span>RUSHボカシ１</span><br>
+                    <span class="nouhi"><span class="kind">日付</span>2015/05/13<span class="daycount">10日経過</span><span class="kind">量</span>10Kg</span><br>
+                    <span class="nouhi"><span class="kind">成分量</span>N0Kg&nbsp;P0Kg&nbsp;K0Kg</span><br>
+                    <span class="nouhi"><span class="kind">散布方法</span>ブレンドキャスター</span><br>
+                    <span class="nouhi"><span class="kind other">元肥１</span><span class="kind other">元肥２</span><span class="kind other">元肥４</span></span><br>
+                    <span class="nouhi"><span class="kind">10a当り</span>20Kg&nbsp;N0Kg&nbsp;P0Kg&nbsp;K0Kg</span><br>
+                  </li>
+                  <li class="infolist nouhi">
+                    <span class="nouhi"><span class="kind">元肥４</span>筑後の恵み</span><br>
+                    <span class="nouhi"><span class="kind">日付</span>2015/05/13<span class="daycount">10日経過</span><span class="kind">量</span>20Kg</span><br>
+                    <span class="nouhi"><span class="kind">成分量</span>N0Kg&nbsp;P0Kg&nbsp;K0Kg</span><br>
+                    <span class="nouhi"><span class="kind">散布方法</span>ブレンドキャスター</span><br>
+                    <span class="nouhi"><span class="kind other">元肥１</span><span class="kind other">元肥２</span><span class="kind other">元肥３</span></span><br>
+                    <span class="nouhi"><span class="kind">10a当り</span>40Kg&nbsp;N0Kg&nbsp;P0Kg&nbsp;K0Kg</span><br>
+                  </li>
+                  </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col s12 m12 l3" id="timeinfo">
+              <div class="card">
+                <div class="card-content purple darken-2 white-text">
+                タイムライン
+                </div>
+                <div class="card-action">
+                  <ul class="info">
+                  <li class="infolist">
+                    <span class="nouhi"><span class="kind" style="background-color: #4db6ac;">片付け</span>木村　修</span><br>
+                    <span class="nouhi"><span class="kind">日付</span>2014/12/24<span class="kind">時間</span>30分</span><br>
+                  </li>
+                  <li class="infolist">
+                    <span class="nouhi"><span class="kind" style="background-color: #4fc3f7;">肥料散布</span>永利　侑太朗</span><br>
+                    <span class="nouhi"><span class="kind">日付</span>2015/05/10<span class="kind">時間</span>30分</span><br>
+                    <span class="nouhi">みいの野菜１号&nbsp;&nbsp;20Kg</span><br>
+                    <span class="nouhi">炭酸苦土石灰&nbsp;&nbsp;40Kg</span><br>
+                    <span class="nouhi">RUSHボカシ１&nbsp;&nbsp;10Kg</span><br>
+                    <span class="nouhi">筑後の恵み&nbsp;&nbsp;20Kg</span><br>
+                  </li>
+                  <li class="infolist">
+                    <span class="nouhi"><span class="kind" style="background-color: #81c784;">耕す</span>永利　侑太朗</span><br>
+                    <span class="nouhi"><span class="kind">日付</span>2015/05/24<span class="kind">時間</span>120分</span><br>
+                  </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            </div>
+          </div>
+          <!-- フッター -->
+          <footer class="page-footer red darken-4">
+            <div class="footer-copyright">
+              <div class="container center">
+                &copy;Sun For You.Ltd
+              </div>
+            </div>
+          </footer>
+       </div>
+      </body>
+
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script>
+    <script src="@routes.Assets.at("javascripts/materialize.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.at("javascripts/chart.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.at("javascripts/agryeel.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.at("javascripts/init.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.at("javascripts/motocho.js")" type="text/javascript"></script>
+
+</html>

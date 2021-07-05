@@ -1,0 +1,1903 @@
+/**********************************************************************************************************************/
+/* AGRYEEL 共通スタイル定義 */
+/**********************************************************************************************************************/
+
+/**********************************************************************************************************************/
+/* 入力フィールド共通定義 */
+/**********************************************************************************************************************/
+/* Rangeフィールド スタイル定義 */
+input[type="range"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  position: relative;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  border:0;
+  width: 100%;
+  height:5px;
+  margin:3px 0;
+  box-shadow:5px 5px 0px #81d4fa inset;
+}
+/* Rangeフィールド スタイル定義 */
+input[type="range"]::-webkit-slider-thumb{
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: #81d4fa;
+  text-align:center;
+  width: 30px;
+  height: 30px;
+  border:1px solid transparent;
+  border-radius:30px;
+  cursor:pointer;
+  -moz-box-sizing:border-box;
+  -webkit-box-sizing:border-box;
+  box-sizing:border-box;
+}
+/* Rangeフィールド スタイル定義 */
+input[type="range"]::-webkit-slider-thumb:before {
+  content:"";
+  display:inline-block;
+  background-color: #29b6f6;
+  width: 20px;
+  height: 20px;
+  border:1px solid transparent;
+  border-radius:20px;
+  margin:4px auto 0;
+  -moz-box-sizing:border-box;
+  -webkit-box-sizing:border-box;
+  box-sizing:border-box;
+}
+/* Rangeフィールド スタイル定義 */
+input[type="range"]::-webkit-slider-thumb:hover {
+  background-color: #b3e5fc;
+}
+
+/* Rangeフィールド スタイル定義 */
+input[type="range"]:active::-webkit-slider-thumb {
+  background-color: #29b6f6;
+}
+/* Rangeフィールド スタイル定義 */
+input[type="range"]:active::-webkit-slider-thumb:before {
+  background-color: #03a9f4;
+}
+/* Rangeフィールド スタイル定義 */
+input[type="range"]:focus {
+  outline:none;
+}
+
+/**********************************************************************************************************************/
+body { background: #FFFFFF; }
+.container { margin: 0 auto; }
+
+/* Example wrapper */
+.wrap {
+  position: relative;
+  margin: 3em 0;
+}
+
+/* Frame */
+.frame {
+  height: 250px;
+  line-height: 250px;
+  overflow: visible;
+}
+.frame ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-size: 40px;
+}
+.frame ul li {
+  float: left;
+  width: 200px;
+  height: 100%;
+  margin: 0 1px 0 0;
+  padding: 0;
+  background: #333;
+  color: #ddd;
+  text-align: center;
+  cursor: pointer;
+}
+.frame ul li.active {
+  color: #fff;
+  background: #a03232;
+}
+
+/* Scrollbar */
+.scrollbar {
+  margin: 0 0 1em 0;
+  height: 2px;
+  background: #ccc;
+  line-height: 0;
+}
+.scrollbar .handle {
+  width: 100px;
+  height: 100%;
+  background: #292a33;
+  cursor: pointer;
+}
+.scrollbar .handle .mousearea {
+  position: absolute;
+  top: -9px;
+  left: 0;
+  width: 100%;
+  height: 20px;
+}
+
+/* Pages */
+.pages {
+  list-style: none;
+  margin: 20px 0;
+  padding: 0;
+  text-align: center;
+}
+.pages li {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  margin: 0 4px;
+  text-indent: -999px;
+  border-radius: 10px;
+  cursor: pointer;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,.2);
+}
+.pages li:hover {
+  background: #aaa;
+}
+.pages li.active {
+  background: #666;
+}
+
+/* Controls */
+.controls { margin: 25px 0; text-align: center; }
+
+/* One Item Per Frame example*/
+.oneperframe { height: 300px; line-height: 300px; }
+.oneperframe ul li { width: 1140px; }
+.oneperframe ul li.active { background: #333; }
+
+/* Crazy example */
+.crazy ul li:nth-child(2n) { width: 100px; margin: 0 4px 0 20px; }
+.crazy ul li:nth-child(3n) { width: 300px; margin: 0 10px 0 5px; }
+.crazy ul li:nth-child(4n) { width: 400px; margin: 0 30px 0 2px; }
+
+
+/**********************************************************************************************************************/
+/* トップ画面スタイル定義 */
+/**********************************************************************************************************************/
+.top-image-logo {
+  padding: 56px;
+  width:  100px;
+  height: 248px;
+}
+.top-navigation {
+  font-size: 0.6rem;
+}
+@media only screen and (min-width : 767px) {
+.top-navigation {
+	font-size: 1.2rem;
+}}
+@media only screen and (min-width : 1599px) {
+.top-navigation {
+	font-size: 1.2rem;
+}}
+/**********************************************************************************************************************/
+/* ナビゲーション用スタイル定義 */
+/**********************************************************************************************************************/
+/* アカウント画像(標準) */
+.account {
+  max-width: 55px;
+  height: 55px; }
+
+/* アカウント画像(解像度大) */
+@media only screen and (min-width : 601px) {
+.account {
+  width: 55px;
+  height: 65px; } }
+
+.farmicon {
+  position: absolute;
+  top: 0px;
+  left: 72px;
+  width: 55px;
+  height: 55px;
+  text-align: center;
+  -webkit-border-radius: 12px;
+  -moz-border-radius: 12px;
+  border-radius: 12px;}
+
+.nav-image-logo {
+  color: #FFFFFF;
+  padding: 		4px;
+  width:  		160px;
+  max-height: 	40px;
+}
+@media only screen and (min-width : 767px) {
+.nav-image-logo {
+  width:      240px;
+  max-height:   60px;
+}}
+@media only screen and (min-width : 1599px) {
+.nav-image-logo {
+  width:      240px;
+  max-height:   60px;
+}}
+
+.nav-user-menu {
+  color: #00FFFF;
+  padding:     4px;
+  width:  48px;
+  height: 48px;
+  text-align: center;
+  display:inline-block;
+}
+
+.nav-logout {
+	top: 36px;
+  width:  48px;
+  height: 48px;
+  right: 16px;
+}
+
+/**********************************************************************************************************************/
+
+/**********************************************************************************************************************/
+/* ホーム画面用スタイル定義 */
+/**********************************************************************************************************************/
+/* 第一ＴＡＢ定義 */
+.tab-menu {
+  position: fixed;
+  width: 100%;
+  z-index: 997;}
+
+.menu-scroll {
+}
+@media only screen and (min-width : 1599px) {
+.menu-scroll {
+}}
+
+/* ハウス状況照会スタイル定義 */
+/* ハウスグループアイコン */
+.house-groupdiv {
+  position: fixed;
+  top: 0px;
+  width: 80%;
+  z-index: 998;}
+}
+/* ハウス状況照会カテゴリ定義 */
+.house-working {
+  position: relative;
+  margin-top  : 56px;
+  }
+
+
+/* ハウス状況照会画像定義 */
+.house-working-img {
+  -webkit-border-radius: 2px 2px 0 0;
+  -moz-border-radius: 2px 2px 0 0;
+  border-radius: 2px 2px 0 0;
+  -webkit-opacity:0.8;
+  -moz-opacity: 0.8;
+  opacity: 0.8;
+  background-clip: padding-box;
+  position: relative;}
+    /* ハウス状況照会重ね色定義 */
+    .house-working-img .detailbox {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 4px;
+      left: 0;
+      padding-bottom:4px;
+      }
+      /* 赤 */
+      .house-working-img .detailbox.box-red {
+        background-color: rgba(244,67,54,0.5);}
+      /* 青 */
+      .house-working-img .detailbox.box-blue {
+        background-color: rgba(33,150,243,0.5);}
+      /* 緑 */
+      .house-working-img .detailbox.box-green {
+        background-color: rgba(139,195,74,0.5);}
+      /* 紫 */
+      .house-working-img .detailbox.box-purple {
+        background-color: rgba(186,104,200,0.5);}
+    /* ハウス状況照会説明分 */
+    .house-working-img span {
+    color: #ffffff;
+    font-size: 0.6rem;
+    margin-left: 4px;}
+
+/* ハウス状況照会 状況圃場名 */
+.house-working-title {
+    position: relative;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #fb8c00;}
+/* ハウス状況照会 状況圃場名(解像度大) */
+@media only screen and (min-width : 767px) {
+.house-working-title {
+    font-size: 2.6rem;}}
+@media only screen and (min-width : 1599px) {
+.house-working-title {
+    font-size: 2.8rem;}}
+/* ハウス状況照会 状況項目名 */
+.house-working-item {
+    font-size: 1.0rem;
+    font-weight: 700;
+    color: #000000;}
+/* ハウス状況照会 状況圃場名(解像度大) */
+@media only screen and (min-width : 767px) {
+.house-working-item {
+    font-size: 1.2rem;}}
+@media only screen and (min-width : 1599px) {
+.house-working-item {
+    font-size: 1.2rem;}}
+/* ハウス状況照会 状況項目値 */
+.house-working-item-tip {
+    font-size: 1.0rem;
+    font-weight: 700;
+    color: #fb8c00;
+    margin-left: 8px;
+    margin-right: 8px;}
+/* ハウス状況照会 状況項目値(解像度大) */
+@media only screen and (min-width : 767px) {
+.house-working-item-tip {
+    font-size: 1.2rem;}}
+/* ハウス状況照会 状況項目値(解像度特大) */
+@media only screen and (min-width : 1599px) {
+.house-working-item-tip {
+    font-size: 1.2rem;}}
+.house-working-item-tip.sub {
+    color: #ffcc80;
+    margin-left: 4px;}
+/* ハウス状況照会 進捗グラフ */
+.house-working-statusgraph {
+    position: absolute;
+    height: 100px;
+    width: 100px;
+    z-index:0;
+    top: 4px;
+    right: 10px;}
+/* ハウス状況照会 進捗グラフ（解像度代） */
+@media only screen and (min-width : 767px) {
+.house-working-statusgraph {
+    height: 140px;
+    width: 140px;
+    top: 4px;
+    right: 24px;}}
+/* ハウス状況照会 進捗グラフ（解像度代） */
+@media only screen and (min-width : 1599px) {
+.house-working-statusgraph {
+    height: 152px;
+    width: 152px;
+    top: 12px;
+    right: 24px;}}
+/* ハウス状況照会 進捗状況アイコン */
+.house-working-status {
+  position: absolute;
+  z-index:999;
+  top: 34px;
+  right: 40px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  width: 40px;
+  padding: 5px;
+  text-align: center;
+  font-size: 1.4rem;
+  line-height: inherit; }
+.house-working-status .work-icon {
+  font-size: 1.2rem;
+}
+
+/* ハウス状況照会 進捗状況アイコン（解像度大） */
+@media only screen and (min-width : 767px) {
+.house-working-status {
+  top: 40px;
+  right: 64px;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  border-radius: 8px;
+  width: 64px;
+  padding: 10px;
+  font-size: 1.6rem;}}
+/* ハウス状況照会 進捗状況アイコン（解像度特大） */
+@media only screen and (min-width : 1599px) {
+.house-working-status {
+  top: 52px;
+  right: 72px;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  border-radius: 8px;
+  width: 64px;
+  padding: 10px;
+  font-size: 1.0rem;}}
+  /* ハウス状況照会 進捗状況アイコン 灰 */
+  .house-working-status.w {
+    color: #000000;
+    background-color: #b0bec5;
+  }
+  /* ハウス状況照会 進捗状況アイコン 薄紫 */
+  .house-working-status.w1 {
+    color: #fff;
+    background-color: #8b1014;
+  }
+  /* ハウス状況照会 進捗状況アイコン 薄緑 */
+  .house-working-status.w2 {
+    color: #fff;
+    background-color: #a5d6a7;
+  }
+  /* ハウス状況照会 進捗状況アイコン 水色 */
+  .house-working-status.w3 {
+    color: #fff;
+    background-color: #1e88e5;
+  }
+  /* ハウス状況照会 進捗状況アイコン 黄緑 */
+  .house-working-status.w4 {
+    color: #fff;
+    background-color: #d4e157;
+  }
+  /* ハウス状況照会 進捗状況アイコン 朱色 */
+  .house-working-status.w5 {
+    color: #fff;
+    background-color: #f4511e;
+  }
+  /* ハウス状況照会 進捗状況アイコン 濃紫 */
+  .house-working-status.w6 {
+    color: #fff;
+    background-color: #4a148c;
+  }
+  /* ハウス状況照会 進捗状況アイコン 緑 */
+  .house-working-status.w7 {
+    color: #fff;
+    background-color: #2e7d32;
+  }
+  /* ハウス状況照会 進捗状況アイコン 濃黄緑 */
+  .house-working-status.w8 {
+    color: #fff;
+    background-color: #9e9d24;
+  }
+  /* ハウス状況照会 進捗状況アイコン オレンジ */
+  .house-working-status.w9 {
+    color: #fff;
+    background-color: #ef6c00;
+  }
+  /* ハウス状況照会 進捗状況アイコン 青 */
+  .house-working-status.w10 {
+    color: #fff;
+    background-color: #0277bd;
+  }
+/* ハウス状況照会 進捗状況タップイベント */
+.house-working-tap {
+  position: relative;
+  margin: 0;
+  height: 28ex;
+  top: 0;
+  left: 0px;
+  overflow-y:hidden;
+  -webkit-transition: height 1s ease,z-index 1s ease,top 1s ease,left 1s ease,position 1s ease,background-color 1s ease;
+  -moz-transition: height 1s ease,z-index 1s ease,top 1s ease,left 1s ease,position 1s ease,background-color 1s ease;
+  -o-transition: height 1s ease,z-index 1s ease,top 1s ease,left 1s ease,position 1s ease,background-color 1s ease;
+  -ms-transition: height 1s ease,z-index 1s ease,top 1s ease,left 1s ease,position 1s ease,background-color 1s ease;
+  transition: height 1s ease,z-index 1s ease,top 1s ease,left 1s ease,position 1s ease,background-color 1s ease;
+  z-index:0;}
+/* ハウス状況照会 進捗状況アイコン（解像度大） */
+@media only screen and (min-width : 767px) {
+.house-working-tap {
+  height: 32ex;}}
+/* ハウス状況照会 進捗状況アイコン（解像度特大） */
+@media only screen and (min-width : 1599px) {
+.house-working-tap {
+  height: 36ex;}}
+
+/* ハウス状況照会 進捗状況タップイベントアクティブ時 */
+.house-working-tap.active {
+  top: -4px;
+  left: -4px;
+	background-color: #fff3e0;
+  height: 60ex;
+  width: 100%;
+  z-index:110;
+  box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+/* ハウス状況照会 進捗状況アイコン（解像度大） */
+@media only screen and (min-width : 767px) {
+.house-working-tap.active {
+  height: 64ex;}}
+/* ハウス状況照会 進捗状況アイコン（解像度特大） */
+@media only screen and (min-width : 1599px) {
+.house-working-tap.active {
+  height: 68ex;}}
+.house-working-tap.motocho {
+  z-index: 2000;
+  overflow-y:visible;
+}
+/* ハウス状況照会 進捗状況フローティング(元帳照会) */
+.house-working-tap .house-working-floationg {
+    position: absolute;
+    display: block;
+    bottom: 10px;
+    right: 118px;}
+
+/* ハウス状況照会 進捗状況フローティング（クリップ） */
+.house-working-tap .house-working-floationg-detail {
+    position: absolute;
+    bottom: 10px;
+    right: 68px;}
+
+/* ハウス状況照会 進捗状況フローティング（進捗詳細） */
+.house-working-tap .house-working-floationg-tap {
+    position: absolute;
+    bottom: 10px;
+    right: 18px;}
+
+/* ハウス状況照会 表示アニメーション（エリア） */
+.initanime1 {
+  animation-fill-mode: both;
+  left: 0px;}
+.initanime1.ondisplay {
+  animation: initanime1translate 1s, initanime1fadein 2s;
+  -webkit-animation: initanime1translate 1s, initanime1fadein 2s; /* Safari & Chrome */}
+  @keyframes initanime1translate {
+    0%   { transform:  translate(0px, 0px);    }
+    100%  { transform:  translate(0px, 0px);   }}
+  @-webkit-keyframes initanime1translate {
+    0%   { -webkit-transform:  translate(0px, 0px) ;   }
+    100%  { -webkit-transform:  translate(0px, 0px);   }}
+  @keyframes initanime1fadein {
+    0%   { display: none; opacity: 0; }
+    1%   { display: block; opacity: 0; }
+  100%  { display: block; opacity: 1; }}
+  @-webkit-keyframes initanime1fadein {
+    0%   { display: none; opacity: 0; }
+    1%   { display: block; opacity: 0; }
+  100%  { display: block; opacity: 1; }}
+.initanime2 {
+  animation-fill-mode: both;
+  left: 0px;}
+.initanime2.ondisplay {
+  animation: initanime2translate 1s, initanime2fadein 2s;
+  -webkit-animation: initanime2translate 1s, initanime2fadein 2s; /* Safari & Chrome */}
+  @keyframes initanime2translate {
+    0%   { transform:  translate(0px, 0px);    }
+    100%  { transform:  translate(0px, 0px);   }}
+  @-webkit-keyframes initanime2translate {
+    0%   { -webkit-transform:  translate(0px, 0px) ;   }
+    100%  { -webkit-transform:  translate(0px, 0px);   }}
+  @keyframes initanime2fadein {
+    0%   { display: none; opacity: 0; }
+    1%   { display: block; opacity: 0; }
+  100%  { display: block; opacity: 1; }}
+  @-webkit-keyframes initanime2fadein {
+    0%   { display: none; opacity: 0; }
+    1%   { display: block; opacity: 0; }
+  100%  { display: block; opacity: 1; }}
+
+
+/* 作業スタイル定義 */
+/* 作業カテゴリ定義 */
+.work {
+  position: relative;
+  margin-top: 56px;}
+
+/* 作業画像定義 */
+.work-img {
+  -webkit-border-radius: 2px 2px 0 0;
+  -moz-border-radius: 2px 2px 0 0;
+  border-radius: 2px 2px 0 0;
+  background-clip: padding-box;
+  position: relative;
+  z-index: 10;}
+    /* 作業重ね色定義 */
+    .work-img .detailbox {
+      position: absolute;
+      color: #ffffff;
+      font-size: 1.0rem;
+      top: 0;
+      right: 0;
+      bottom: 4px;
+      left: 0;}
+      /* 赤 */
+      .work-img .detailbox.box-red {
+        background-color: rgba(244,67,54,0.5);}
+      /* 青 */
+      .work-img .detailbox.box-blue {
+        background-color: rgba(33,150,243,0.5);}
+      /* 緑 */
+      .work-img .detailbox.box-green {
+        background-color: rgba(139,195,74,0.5);}
+      /* 紫 */
+      .work-img .detailbox.box-purple {
+        background-color: rgba(186,104,200,0.5);}
+    /* 作業遷移アイコン定義 */
+    .work-img .detailbox .sendicon{
+      padding-right:20px;}
+    /* 作業予定ハウス一覧定義 */
+    .work-img .detailbox .house {
+      padding-top: 4px;
+      padding-left: 20px;
+      padding-bottom:4px;}
+    /* 作業予定ハウス一覧定義（下線） */
+    .work-img .detailbox .house.line {
+      border-bottom: 1px solid #ffffff;}
+    /* 作業項目名定義 */
+    .work-img .detailbox .worktitle {
+      position: relative;
+      background-color: rgba(0,0,0,0.5);
+      padding-top: 12px;
+      padding-bottom: 12px;
+      padding-left: 20px;
+      padding-right: 10px;}
+    /* 作業項目名対象ハウス件数定義 */
+    .work-img .detailbox .worktitle .worktitlebadge {
+      color: #ffffff;
+      background-color: #29b6f6;
+      min-width: 3rem;
+      padding: 4px 4px;
+      text-align: center;
+      font-size: 0.8rem;
+      line-height: inherit;
+      float: right;
+      -webkit-border-radius: 2px;
+      -moz-border-radius: 2px;
+      border-radius: 2px;
+      background-clip: padding-box;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box; }
+
+.work-card {
+  position: relative;
+  border-left: 8px solid #d32f2f;
+  min-height: 96px;
+}
+.work-card.sakuduke {
+  border-left: 8px solid #303f9f;
+}
+.work-card.kanri {
+  border-left: 8px solid #00796b;
+}
+.work-card.syukaku {
+  border-left: 8px solid #d32f2f;
+}
+
+
+.work-card .work-title {
+  position: relative;
+  width: 100%;
+  height: 12px;
+}
+@media only screen and (min-width : 767px) {
+.work-card .work-title {
+  height: 16px;
+  }}
+@media only screen and (min-width : 1599px) {
+.work-card .work-title {
+  height: 32px;
+  }}
+
+.work-card .work-title .work-icon {
+  position: absolute;
+  top: 16px;
+  left: 8px;
+  font-size: 1.6rem;
+
+}
+
+.work-card .work-title .work-text {
+  position: absolute;
+  top: 16px;
+  margin-left: 4.2rem;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #212121;
+}
+@media only screen and (min-width : 767px) {
+.work-card .work-title .work-text {
+  margin-left: 6.0rem;
+  font-size: 1.6rem;
+  }}
+@media only screen and (min-width : 1599px) {
+.work-card .work-title .work-text {
+  margin-left: 6.0rem;
+  font-size: 1.4rem;
+  }}
+.work-card .work-title .work-sub-text {
+  position: absolute;
+  top: 44px;
+  margin-left: 4.2rem;
+  font-size: 1.0rem;
+  font-weight: 700;
+  color: #757575;
+}
+@media only screen and (min-width : 767px) {
+.work-card .work-title .work-sub-text {
+  margin-left: 6.0rem;
+  font-size: 1.2rem;
+  }}
+@media only screen and (min-width : 1599px) {
+.work-card .work-title .work-sub-text {
+  margin-left: 6.0rem;
+  font-size: 1.0rem;
+  }}
+.work-card .work-title .work-badge {
+   color: #ffffff;
+   background-color: #1a237e;
+   width: 3.0rem;
+   height: 3.0rem;
+   margin-top: 16px;
+   padding-top: 0.6rem;
+   text-align: center;
+   font-size: 1.2rem;
+   font-weight: 700;
+   line-height: inherit;
+   float: right;
+   -webkit-border-radius: 50%;
+   -moz-border-radius: 50%;
+   border-radius: 50%;
+   background-clip: padding-box;
+   -webkit-box-sizing: border-box;
+   -moz-box-sizing: border-box;
+   box-sizing: border-box;
+}
+.work-card .work-list {
+	margin:0;
+	margin-top: 72px;
+	border-top: 2px solid #E0E0E0;
+	display: block;
+}
+.work-card .work-list.none{
+	display: none;
+}
+.work-card .work-list-item {
+  position: relative;
+  padding: 4px;
+  font-size: 1.0rem;
+  font-weight: 700;
+  color: #212121;
+  border-bottom: 2px solid #E0E0E0;
+  min-height: 6.4rem;
+}
+.work-card .work-list-item .work-icon {
+  position: absolute;
+  top: 16px;
+  left: 8px;
+  font-size: 1.6rem;
+}
+.work-card .work-list-item .kukaku-name {
+  position: absolute;
+  top: 16px;
+  margin-left: 4.2rem;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #212121;
+}
+@media only screen and (min-width : 767px) {
+.work-card .work-list-item .kukaku-name {
+  margin-left: 5.0rem;
+  font-size: 1.6rem;
+  }}
+@media only screen and (min-width : 1599px) {
+.work-card .work-list-item .kukaku-name {
+  margin-left: 6.0rem;
+  font-size: 1.4rem;
+  }}
+.work-card .work-list-item .kukaku-sub {
+  position: absolute;
+  top: 44px;
+  margin-left: 4.2rem;
+  font-size: 1.0rem;
+  font-weight: 700;
+  color: #757575;
+}
+@media only screen and (min-width : 767px) {
+.work-card .work-list-item .kukaku-sub {
+  margin-left: 5.0rem;
+  font-size: 1.2rem;
+  }}
+@media only screen and (min-width : 1599px) {
+.work-card .work-list-item .kukaku-sub {
+  margin-left: 6.0rem;
+  font-size: 1.0rem;
+  }}
+.initanime3 {
+  left: 150px;}
+.initanime4 {
+  left: 0px;}
+
+/*
+.collapsible-header.timeline {
+  position: relative;
+  min-height: 1em;
+  line-height: 2em;
+  overflow-y:hidden;}
+.collapsible-header.timeline .work-icon {
+  position: absolute;
+  font-size: 1.8em;
+  top: 2px;
+  left: 2px;
+}
+@media only screen and (min-width : 601px) {
+.collapsible-header.timeline .work-icon {
+  top: 2px;
+  font-size: 1.2em;}
+}
+.collapsible-header.timeline .edit-icon {
+  position: absolute;
+  font-size: 0.8em;
+  top: 12px;
+  right: 8px;
+}
+.collapsible-header.timeline .edit-icon .icon{
+  position: absolute;
+  top: -4px;
+  left: 4px;
+}
+.collapsible-header.timeline .timeline-kukakuname{
+    position: absolute;
+    top: 4px;}
+.timeline-updatetime {
+    position: absolute;
+    top: 12px;
+    right: 8px;
+	  font-size: 0.4em;
+    color: #bdbdbd;
+    margin-left: 16px;}
+.collapsible-header.timeline .timeline-workdate {
+    font-size: 0.6em;
+    color: #0288d1;}
+.timeline-worktime {
+    font-size: 0.6em;
+    color: #d32f2f;
+    margin-left: 4px;
+    margin-right: 8px;
+}
+.timeline-accountname {
+    position: absolute;
+    bottom:  12px;
+    right: 8px;
+    margin-left: 16px;}
+*/
+/*-----------------------------------------------------------------------------------------------*/
+/* タイムライン                                                                                                                                                                                                                         */
+/*-----------------------------------------------------------------------------------------------*/
+.timeline {
+}
+.timeline .timelinelist {
+	min-height: 64px;
+  border-bottom: 1px solid #eceff1;
+}
+.timeline .timelinelist .work-title {
+  position: relative;
+  min-height: 64px;
+}
+.timeline .timelinelist .work-title .work-icon {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 64px;
+  height: 64px;
+}
+.timeline .timelinelist .work-title .work-text {
+  position: absolute;
+  top: 2px;
+  left: 64px;
+  font-size: 1.0rem;
+  color: #222222;
+}
+.timeline .timelinelist .work-title .work-workdate-text {
+  position: absolute;
+  top: 2px;
+  right: 64px;
+  font-size: 1.0rem;
+  color: #222222;
+}
+.timeline .timelinelist .work-title .account-text {
+  position: absolute;
+  top: 24px;
+  left: 64px;
+  font-size: 1.0rem;
+  color: #aaaaaa;
+}
+.timeline .timelinelist .work-title .work-update-text {
+  position: absolute;
+  top: 24px;
+  right: 64px;
+  font-size: 0.8rem;
+  color: #aaaaaa;
+}
+.timeline .timelinelist .message {
+  position: relative;
+  font-size: 0.8rem;
+  color: #aaaaaa;
+  margin-bottom: 4px;
+  left: 8px;
+}
+/*
+ * AGRYEELオリジナルアイコン
+ *
+ */
+.btn-floating .agryeel-orgicon {
+  position: absolute;
+  top: 8px;
+  font-size: 2.2rem;
+  width: 56px;
+  height: 56px;
+  display: block;
+}
+@media only screen and (min-width : 601px) {
+  left: 0.6rem;
+}
+
+/*
+ * メニュー画面の各タイトル
+ */
+.title-timeline {
+  position: relative;
+  width: 100%;
+  height: 56px;
+  background-color: #039be5;
+  color: rgba(236, 239, 241, 0.6);
+  border-left: 16px solid #1565c0;
+  font-size: 1.8em;
+  font-weight: 700;
+  margin-top: -16px;
+  margin-bottom: 16px;
+  padding-top: 8px;
+  padding-left: 16px;
+}
+.title-house {
+  position: relative;
+  width: 100%;
+  height: 56px;
+  background-color: #f4511e;
+  color: rgba(236, 239, 241, 0.6);
+  border-left: 16px solid #c62828;
+  font-size: 1.8em;
+  font-weight: 700;
+  margin-top: 40px;
+  margin-bottom: 16px;
+  padding-top: 8px;
+  padding-left: 16px;
+}
+.title-work {
+  position: relative;
+  width: 100%;
+  height: 56px;
+  background-color: #43a047;
+  color: rgba(236, 239, 241, 0.6);
+  border-left: 16px solid #00695c;
+  font-size: 1.8em;
+  font-weight: 700;
+  margin-top: -16px;
+  margin-bottom: 16px;
+  padding-top: 8px;
+  padding-left: 16px;
+}
+
+/*
+ * 区画グループ検索設定
+ */
+.title-house-group {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 32px;
+  background-color: #9e9e9e ;
+  color: rgba(236, 239, 241, 0.6);
+  border-left: 16px solid #757575;
+  font-size: 1.0em;
+  font-weight: 700;
+  padding-top: 4px;
+  padding-left: 16px;
+  padding-bottom: 4px;
+  margin-bottom: 16px;
+}
+.title-house-group.active{
+
+  background-color: #f4511e;
+  border-left: 16px solid #c62828;
+
+}
+.house-group {
+  display: none;
+  width: 100%;
+  padding-bottom: 16px;
+}
+
+.house-group .housegroup {
+  position: relative;
+  width: 120px;
+  height: 28px;
+  background-color: #f4511e;
+  color: rgba(236, 239, 241, 0.6);
+  font-size: 0.8em;
+  font-weight: 700;
+  top: 8px;
+  left: 16px;
+  padding: 8px 16px 8px 16px;
+  -webkit-border-radius: 16px;
+  -moz-border-radius: 16px;
+  border-radius: 16px;
+}
+.house-group .housegrouptarget {
+  position: relative;
+  top: 24px;
+}
+.house-group .housegrouptarget .house-groupIcon {
+	position: relative;
+	margin-left: 8px;
+	width: 32px;
+	height: 32px;
+	font-size: 1.0rem;
+	font-weight: 700;
+	text-align: center;
+  	color: #FFFFFF;
+  	padding: 4px;
+}
+.house-group .housegrouptarget .house-groupIcon i {
+	position: relative;
+	font-size: 1.4rem;
+}
+@media only screen and (min-width : 601px) {
+.house-group .housegrouptarget .house-groupIcon {
+  width: 56px;
+  height: 56px;
+  font-size: 1.8rem;
+  padding: 8px;
+  font-weight: 400;
+}
+}
+
+/*
+ * タイムライン検索条件
+ */
+.title-search-where {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 32px;
+  background-color: #9e9e9e ;
+  color: rgba(236, 239, 241, 0.6);
+  border-left: 16px solid #757575;
+  font-size: 1.0em;
+  font-weight: 700;
+  padding-top: 4px;
+  padding-left: 16px;
+  padding-bottom: 4px;
+  margin-bottom: 16px;
+}
+.title-search-where.active{
+
+  background-color: #039be5;
+  border-left: 16px solid #1565c0;
+
+}
+.search-where {
+  display: none;
+  width: 100%;
+  padding-bottom: 16px;
+}
+
+.search-where .worktime {
+  position: relative;
+  width: 120px;
+  height: 28px;
+  background-color: #039be5;
+  color: rgba(236, 239, 241, 0.6);
+  font-size: 0.8em;
+  font-weight: 700;
+  top: 8px;
+  padding: 8px 16px 8px 16px;
+  -webkit-border-radius: 16px;
+  -moz-border-radius: 16px;
+  border-radius: 16px;
+}
+
+.search-where .workdate {
+  position: relative;
+  top: 8px;
+}
+
+.search-where .workwork {
+  position: relative;
+  width: 120px;
+  height: 28px;
+  background-color: #039be5;
+  color: rgba(236, 239, 241, 0.6);
+  font-size: 0.6em;
+  font-weight: 700;
+  top: 8px;
+  padding: 8px 16px 8px 16px;
+  -webkit-border-radius: 16px;
+  -moz-border-radius: 16px;
+  border-radius: 16px;
+}
+.search-where .worktarget {
+  position: relative;
+  top: 24px;
+}
+
+.title-search {
+  color: rgba(30, 136, 229, 0.4);
+  font-size: 1.0em;
+  font-weight: 900;
+}
+
+/**********************************************************************************************************************/
+
+/**********************************************************************************************************************/
+/* 作業対象圃場スタイル定義 */
+/**********************************************************************************************************************/
+/* 作業対象圃場カテゴリ定義 */
+.work-target-house {
+  position: relative;
+  margin-top: 56px;}
+
+/* 作業対象圃場 カードパネル */
+.work-target-house-card {
+  position: relative;
+  height: 120px;
+  top: 0;
+  left: 0px;
+  z-index:0;
+}
+  /* 作業対象圃場 カードパネル 切替フローティングボタン */
+  .work-target-house-card .work-target-house-floationg {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;}
+
+/* 作業対象圃場 状況圃場名 */
+.work-target-house-title {
+    font-size: 1.2rem;
+    margin-right: 4px;
+    color: #fb8c00;}
+/* 作業対象圃場 状況項目値 */
+.work-target-house-item-tip {
+    float: right;
+    font-size: 0.8rem;
+    color: #fb8c00;
+    margin-left: 4px;
+    margin-right: 4px;}
+
+/**********************************************************************************************************************/
+
+/* ==========================================================================
+   カスタマイズ部分
+   ========================================================================== */
+ .list-group {
+  border-radius: 0;
+}
+.list-group .list-group-item {
+  background-color: transparent;
+  overflow: hidden;
+  border: 0;
+  border-radius: 0;
+  padding: 0 8px;
+}
+.list-group .list-group-item.baseline {
+  border-bottom: 1px solid #cecece;
+}
+.list-group .list-group-item.baseline:last-child {
+  border-bottom: none;
+}
+.list-group .list-group-item .row-picture,
+.list-group .list-group-item .row-action-primary {
+  float: left;
+  display: inline-block;
+  padding-right: 16px;
+}
+.list-group .list-group-item .row-picture img,
+.list-group .list-group-item .row-action-primary img,
+.list-group .list-group-item .row-picture i,
+.list-group .list-group-item .row-action-primary i,
+.list-group .list-group-item .row-picture label,
+.list-group .list-group-item .row-action-primary label {
+  display: block;
+  width: 56px;
+  height: 56px;
+}
+.list-group .list-group-item .row-picture img,
+.list-group .list-group-item .row-action-primary img {
+  background: rgba(0, 0, 0, 0.1);
+  padding: 1px;
+}
+.list-group .list-group-item .row-picture img.circle,
+.list-group .list-group-item .row-action-primary img.circle {
+  border-radius: 100%;
+}
+.list-group .list-group-item .row-picture i,
+.list-group .list-group-item .row-action-primary i {
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 100%;
+  text-align: center;
+  line-height: 56px;
+  font-size: 16px;
+  color: white;
+}
+.list-group .list-group-item .row-picture label,
+.list-group .list-group-item .row-action-primary label {
+  margin-left: 7px;
+  margin-right: -7px;
+  margin-top: 5px;
+  margin-bottom: -5px;
+}
+.list-group .list-group-item .row-content {
+  display: inline-block;
+  width: calc(100% - 92px);
+  min-height: 66px;
+}
+.list-group .list-group-item .row-content .action-secondary {
+  position: absolute;
+  right: 16px;
+  top: 16px;
+}
+.list-group .list-group-item .row-content .action-secondary i {
+  font-size: 18px;
+  color: rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+}
+.list-group .list-group-item .row-content .action-secondary ~ * {
+  max-width: calc(100% - 30px);
+}
+.list-group .list-group-item .row-content .least-content {
+  position: absolute;
+  right: 16px;
+  top: 0px;
+  color: rgba(0, 0, 0, 0.54);
+  font-size: 12px;
+}
+.list-group .list-group-item .list-group-item-heading {
+  color: rgba(0, 0, 0, 0.77);
+  font-size: 18px;
+  line-height: 29px;
+}
+.list-group .list-group-item.active:hover,
+.list-group .list-group-item.active:focus {
+  background: rgba(0, 0, 0, 0.15);
+  outline: 10px solid rgba(0, 0, 0, 0.15);
+}
+.list-group .list-group-item.active .list-group-item-heading,
+.list-group .list-group-item.active .list-group-item-text {
+  color: rgba(0, 0, 0, 0.84);
+}
+.list-group .list-group-separator {
+  clear: both;
+  overflow: hidden;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.list-group .list-group-separator:before {
+  content: "";
+  width: calc(100% - 90px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  float: right;
+}
+/**********************************************************************************************************************/
+/* 作業記録日誌画面 共通スタイル定義 */
+/**********************************************************************************************************************/
+/* blockquote共通定義 */
+blockquote {
+  margin: 20px 0;
+  font-size: 1.0rem;
+  font-weight: 700;
+  padding-left: 1.5rem;
+  border-left: 5px solid #a5d6a7; }
+.blockquote-tip {
+  padding-left: 1.0rem;
+    color: #ef6c00;}
+.blockquote-input {
+  padding-left: 1.0rem;
+    color: #ef6c00;}
+.blockquote-inputOption {
+    color: #ef6c00;}
+.blockquote-display {
+  padding-left: 1.0rem;
+    color: #64b5f6;}
+.blockquote-displayOption {
+    color: #64b5f6;}
+
+/* 作業記録日誌画面 数値入力用電卓モーダル */
+.calc-modal {
+  display: none;
+  position: fixed;
+  left: 0;
+  right: 0;
+  background-color: #eee;
+  padding: 0px;
+  height:400px;
+  width: 100%;
+  max-width:360px;
+  font-size: 20px;
+  margin: auto;
+  z-index: 1000;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  background-clip: padding-box;
+  -webkit-transform: translate(0);
+  -moz-transform: translate(0);
+  -ms-transform: translate(0);
+  -o-transform: translate(0);
+  transform: translate(0);
+  will-change: top, opacity; }
+
+/* 作業記録日誌画面 数値入力用電卓モーダル タイポグラフィ*/
+  .calc-modal h1, .calc-modal h2, .calc-modal h3, .calc-modal h4 {
+    margin-top: 0; }
+  .calc-modal .calc-value {
+    height:120px;
+    width: 100%;
+    font-size: 40px;
+    font-weight: 700;
+    text-align: right;
+    padding-top: 24px;
+    padding-right: 12px;
+    padding-bottom: 24px;
+    background-color: #ef9a9a !important;
+  }
+/* 作業記録日誌画面 数値入力用電卓数字ボタン */
+  .calc-modal .calc-button {
+    float: left;
+    height:90px;
+    font-size: 36px;
+    font-weight: 700;
+    width: 25%;
+    padding-top: 20px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    color: #FFFFFF !important;
+    background-color: #42a5f5 !important;
+  }
+/* 作業記録日誌画面 数値入力用電卓特殊ボタン */
+  .calc-modal .calc-button.special {
+      background-color: #ef5350 !important;
+    }
+/* 作業記録日誌画面 数値入力用電卓テキスト */
+  .calc-modal .span-calc-text {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    color:red;
+  }
+/* 作業記録日誌画面 日誌登録アニメーション */
+.workdiary-commit {
+  overflow-x: visible;
+  left: 0px;}
+.workdiary-commit.commit {
+  animation: workdiary-committranslate 2s;
+  -webkit-animation: workdiary-committranslate 2s; /* Safari & Chrome */}
+  @keyframes workdiary-committranslate {
+    0%   { transform:  translate(0px, 0px);    }
+    100%  { transform:  translate(0px, -1980px);   }}
+  @-webkit-keyframes workdiary-committranslate {
+    0%   { -webkit-transform:  translate(0px, 0px) ;   }
+    100%  { -webkit-transform:  translate(0px, -1980px);   }}
+/**********************************************************************************************************************/
+
+/**********************************************************************************************************************/
+/* 元帳照会専用スタイル定義 */
+/**********************************************************************************************************************/
+/* 元帳照会フローティングボタン定義 */
+ #G0002MainHouseWorking .motocho-button {
+  z-index: 0;
+  display : block;
+  border-radius: 50%;}
+
+/* 元帳照会フローティングボタン定義(元帳照会オープン時) */
+ #G0002MainHouseWorking .motocho-button.active {
+    position: fixed;
+    z-index: 8000;
+    left: 0;
+    top: 0;
+    cursor: default;
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+    -webkit-transition: all .4s ease-out;
+    transition: all .4s ease-out;
+    border-radius: 0%;
+    background-color: #ffffff !important;
+    width: 100%;
+    height: 100%;
+    overflow-y:auto;
+    }
+/**********************************************************************************************************************/
+
+/**********************************************************************************************************************/
+/* 収量まとめ画面 共通スタイル定義 */
+/**********************************************************************************************************************/
+/* 収量まとめナビゲーション定義 */
+.syuryo-nav-top {
+  display: inline ;
+  position: relative;
+  width: 100px;
+  top: 0;
+  left: 0px;
+  z-index:0;}
+
+/* 収量まとめ カードパネル 切替フローティングボタン */
+.syuryo-nav-top .syuryo-nav-floationg {
+      display: block ;
+      top: -100px;
+  width: 37px;
+  height: 37px;
+  line-height: 37px;
+      z-index:10;}
+
+/* 収量まとめカテゴリ定義 */
+.syuryo-main {
+  position: relative;
+  width: 100%;
+  top: 60px;
+  z-index:0;}
+
+/* 収量まとめグラフ用キャンバス設定 */
+.syuryo-canvas {
+  height: auto !important;
+  width: 100% !important;
+}
+/* 収量まとめカード用 */
+.syuryo-working-item {
+    font-size: 0.8rem;
+    color: #000000;}
+
+/* 収量まとめ 状況項目値 */
+.syuryo-working-item-tip {
+    font-size: 0.8rem;
+    color: #fb8c00;
+    margin-left: 4px;
+    margin-right: 4px;}
+
+/* 収量まとめ クリップボタン */
+.syuryo-working-tap .syuryo-working-floationg-detail {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;}
+
+/* 収量まとめ 進捗状況タップイベント */
+.syuryo-working-tap {
+  position: relative;
+  height: 800px;
+  top: 0;
+  left: 0px;
+  overflow-y:hidden;
+  -webkit-transition: height 1s ease,z-index 1s ease,top 1s ease,left 1s ease,position 1s ease,background-color 1s ease;
+  -moz-transition: height 1s ease,z-index 1s ease,top 1s ease,left 1s ease,position 1s ease,background-color 1s ease;
+  -o-transition: height 1s ease,z-index 1s ease,top 1s ease,left 1s ease,position 1s ease,background-color 1s ease;
+  -ms-transition: height 1s ease,z-index 1s ease,top 1s ease,left 1s ease,position 1s ease,background-color 1s ease;
+  transition: height 1s ease,z-index 1s ease,top 1s ease,left 1s ease,position 1s ease,background-color 1s ease;
+  z-index:0;}
+/**********************************************************************************************************************/
+
+/**********************************************************************************************************************/
+/* 共通モーダル画面専用スタイル定義 */
+/**********************************************************************************************************************/
+/* モーダル画面タイトル */
+.modal {
+	width: 95%;
+	max-width: 800px;
+}
+.modal-title {
+    font-size: 1.2rem;
+    font-weight: 400;
+}
+/* モーダル画面一覧表 */
+.modal-list {
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+/**********************************************************************************************************************/
+
+/**********************************************************************************************************************/
+/* 共通ローディング専用スタイル定義 */
+/**********************************************************************************************************************/
+/* ローディングエリア */
+.agryeel-loading {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    background-color: #ffffff !important;
+}
+/* ローディングアニメーションエリア（モバイル） */
+.agryeel-loading-action {
+    position: absolute;
+    top: 45%;
+    left: 40%;
+}
+/* ローディングアニメーションエリア（タブレット） */
+@media only screen and (min-width : 767px) {
+  .agryeel-loading-action {
+    left: 45%;}}
+/* ローディングアニメーションエリア（ＰＣ） */
+@media only screen and (min-width : 1599px) {
+.agryeel-loading-action {
+    left: 45%;}}
+/**********************************************************************************************************************/
+/**********************************************************************************************************************/
+/* 元帳照会専用スタイル定義 */
+/**********************************************************************************************************************/
+/* 元帳情報 */
+.motochoinfo {
+  height: 80px;
+  position: relative;}
+/* 区画グループアイコン */
+.motochoinfo .icon {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  width: 64px;
+  padding: 8px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 2.4rem;}
+ /* 区画名 */
+.motochoinfo .kukaku {
+  position: absolute;
+  top: 8px;
+  left: 82px;
+  color: #fb8c00;
+  font-weight: 700;
+font-size: 1.6rem;}
+/* 生産物 */
+.motochoinfo .crop {
+  position: absolute;
+  top: 44px;
+  left: 82px;
+  color: #bdbdbd;
+  font-weight: 700;
+  font-size: 1.4rem;}
+/* 年内回転数 */
+.motochoinfo .countofyear {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  color: #fb8c00;
+  font-size: 1.0rem;}
+/* ワープアイコン */
+.warpmenu {
+  height: 100px;
+  position: relative;}
+.warpmenu .icon {
+  position: relative;
+  top: 24px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  width: 64px;
+  padding: 24px;
+  margin-left: 0px;
+  margin-right: 16px;
+  text-align: center;
+  font-size: 2.0rem;}
+/* データタイトル */
+.datatitle {
+  font-weight: 700;
+	font-size: 1.4rem;}
+/* 情報リスト */
+.info {
+    margin-left: 4px;
+  }
+@media only screen and (min-width : 1599px) {
+.info {
+    mix-height: 7rem;
+    margin-left: 4px;
+    overflow-y:auto;}
+  }
+/* 情報リスト */
+.infolist {
+    padding-top: 1rem;
+    padding-bottom: 0.2rem;
+    border-bottom: 1px solid;}
+.infolist.nouhi {
+    mix-height: 7rem;
+    overflow-y:hidden;}
+    .infolist .title {
+      position: absolute;
+      left: 1.4rem;
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: #000000;}
+    .infolist .item {
+      position: absolute;
+      font-size: 1.2rem;
+      color: #fb8c00;
+      right: 1.4rem;}
+    .infolist .nouhi {
+      font-weight: 500;
+	    font-size: 1.0rem;
+      color: #000000;}
+    .infolist .nouhi .kind {
+        -webkit-border-radius: 0.2rem;
+        -moz-border-radius: 0.2rem;
+        border-radius: 0.2rem;
+        width: 1.2rem;
+        padding-top: 0.2rem;
+        padding-bottom: 0.2rem;
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+        padding-top: 0.2rem;
+        margin-right: 0.8rem;
+        margin-left: 0.4rem;
+        line-height: 2;
+        text-align: center;
+        background-color: #0288d1;
+        color: #ffffff;}
+    .infolist .nouhi .kind.other {
+        background-color: #388e3c;}
+    .infolist .nouhi .daycount {
+        margin-left: 0.2rem;
+        font-size: 0.6rem;
+        color: #0288d1;}
+
+.infolist .work-title {
+  position: relative;
+  width: 100%;
+  min-height: 6rem;
+
+}
+
+.infolist .work-title .work-icon {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  font-size: 24px;
+
+}
+@media only screen and (min-width : 767px) {
+.infolist .work-title .work-icon {
+  top: 8px;
+  left: 8px;
+	font-size: 28px;
+  }}
+@media only screen and (min-width : 1599px) {
+.infolist .work-title .work-icon {
+  top: 8px;
+  left: 8px;
+  font-size: 28px;
+  }}
+
+.infolist .work-title .work-text {
+  display: block;
+  position: absolute;
+  top: 8px;
+  left: 72px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #212121;
+}
+@media only screen and (min-width : 767px) {
+.infolist .work-title .work-text {
+  top: 8px;
+  left: 96px;
+  font-size: 20px;
+  }}
+@media only screen and (min-width : 1599px) {
+.infolist .work-title .work-text {
+  top: 8px;
+  left: 96px;
+  font-size: 20px;
+  }}
+.infolist .work-title .work-sub-text {
+  display: inline-block;
+  position: absolute;
+  top: 24px;
+  left: 72px;
+  font-size: 12px;
+  color: #757575;
+}
+@media only screen and (min-width : 767px) {
+.infolist .work-title .work-sub-text {
+  top: 32px;
+  left: 96px;
+  font-size: 20px;
+  }}
+@media only screen and (min-width : 1599px) {
+.infolist .work-title .work-sub-text {
+  top: 32px;
+  left: 96px;
+  font-size: 20px;
+  }}
+.infolist .work-title .work-sub2-text {
+  display: inline-block;
+  position: absolute;
+  top: 40px;
+  left: 72px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #757575;
+}
+@media only screen and (min-width : 767px) {
+.infolist .work-title .work-sub2-text {
+  top: 54px;
+  left: 96px;
+  font-size: 20px;
+  }}
+@media only screen and (min-width : 1599px) {
+.infolist .work-title .work-sub2-text {
+  top: 54px;
+	left: 96px;
+  font-size: 20px;
+  }}
+.infolist .message {
+  display: block;
+	position: relative;
+  padding-top: 4px;
+  height: 100%;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+@media only screen and (min-width : 767px) {
+.infolist .message {
+  font-size: 1.2rem;
+  }}
+@media only screen and (min-width : 1599px) {
+.infolist .message {
+  font-size: 1.2rem;
+  }}
+/**********************************************************************************************************************/
+/**********************************************************************************************************************/
+/* 生産者登録 */
+/**********************************************************************************************************************/
+.title-farmmake {
+  position: relative;
+  width: 100%;
+  height: 56px;
+  background-color: #7CB342;
+  color: rgba(174,213,129 ,0.6);
+  border-left: 16px solid #558B2F;
+  font-size: 1.6em;
+  font-weight: 700;
+  margin-top: -16px;
+  margin-bottom: 16px;
+  padding-top: 8px;
+  padding-left: 16px;
+}
+/**********************************************************************************************************************/
+/* タイムライン編集モーダル */
+/**********************************************************************************************************************/
+.editModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9998;
+  width: 100%;
+  height: 100%;
+  background-color: rgba( 0, 0, 0,0.8);
+}
+.editModal .editModalWrap {
+  position: absolute;
+  width: 300px;
+  height: 196px;
+  top: 50%;
+  left: 50%;
+  margin-top: -98px;
+  margin-left: -150px;
+  z-index: 9999;
+}
+.editModal .editModalWrap .editModalDetail {
+  position: relative;
+	width: 100%;
+  line-height: 3;
+  background-color: #FAFAFA;
+  font-size: 1.0rem;
+  padding-top: 8px;
+  padding-left: 8px;
+}
+.editModal .editModalWrap .editModalDetail .firstLine {
+  position: absolute;
+  top:  -20px;
+  left: 64px;
+  color: #F57C00;
+  font-size: 1.0rem;
+  font-weight: 700;
+}
+.editModal .editModalWrap .editModalDetail .secondLine {
+  position: absolute;
+  bottom:  -16px;
+  left: 64px;
+  color: #1976D2;
+  font-size: 1.0rem;
+  font-weight: 700;
+}
+.editModal .editModalWrap .editModalButton {
+  text-align: center;
+  width: 100%;
+  height: 64px;
+  padding-top: 16px;
+  font-size: 1.6em;
+  font-weight: 700;
+}
+.editModal .editModalWrap .editModalButton.edit {
+  background-color: #F57C00;
+  border-left: 16px solid #EF6C00;
+  color: #FFFFFF;
+}
+.editModal .editModalWrap .editModalButton.delete {
+  background-color: #D32F2F;
+  border-left: 16px solid #C62828;
+  color: #FFFFFF;
+}
+.editModal .editModalWrap .editModalButton.back {
+  background-color: #1976D2;
+  border-left: 16px solid #1565C0;
+  color: #FFFFFF;
+}
+/**********************************************************************************************************************/
+/* スクロールバー特殊処理 */
+#G0002WorkList::-webkit-scrollbar {
+  display: none;
+}
+
+@media only screen and (min-width : 1599px) {
+#G0002WorkList {
+	height: 680px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}}
+#G0002HouseList::-webkit-scrollbar {
+  display: none;
+}
+
+@media only screen and (min-width : 1599px) {
+#G0002HouseList {
+  height: 580px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}}
+#G0002TimeLine::-webkit-scrollbar {
+  display: none;
+}
+
+@media only screen and (min-width : 1599px) {
+#G0002TimeLine {
+  height: 580px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}}
+/**********************************************************************************************************************/
+/* メインメニュー                                                                                                     */
+/**********************************************************************************************************************/
+#mainmenu {
+  width: 360px;
+}
+.menuitem {
+  border-left-style: solid;
+  border-left-width: 8px;
+  border-left-color: #455A64; /* スタイルシートで指定されない場合 */
+}
+.menuitem span {
+	margin-left: 16px;
+	font-size: 1.6rem;
+	color: #616161;
+}
+/**********************************************************************************************************************/
+/* マルチセレクトモーダル                                                                                                                                                                                                                                                              */
+/**********************************************************************************************************************/
+.mselect-item {
+  position: relative;
+	min-height: 32px;
+	color: #222222;
+}
+.mselect-item i.status {
+	float: right;
+}
+.mselect-item i.status.add {
+  color:#e53935;
+  contents:add;
+}
+.mselect-item i.status.done {
+  color:#00897b;
+  contents:done;
+}

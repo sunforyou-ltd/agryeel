@@ -1,0 +1,641 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+# ログイン画面 コントローラー
+GET     /                                       controllers.Login.sessionOK()
+GET     /move                                   controllers.Login.move()
+GET     /uimove                                 controllers.UI.move()
+POST    /accountLogin                           controllers.Login.accountLogin()
+GET     /pushService                            controllers.Application.getPushUpdate()
+GET     /menuMove                               controllers.Application.menuMove()
+POST    /getCompartment                         controllers.Application.getCompartment()
+POST    /getCompartmentDisplay                  controllers.Application.getFieldDetail()
+POST    /getFieldDetail                         controllers.Application.getFieldDetail()
+POST    /getKukakuDetail                        controllers.Application.getKukakuDetail()
+GET     /:kukakuid/getKukakuStatus              controllers.Application.getKukakuStatus(kukakuid: Double)
+GET     /getWork                                controllers.Application.getWork()
+POST    /getKukakuOfWorkJson                    controllers.Application.getKukakuOfWorkJson()
+POST    /getTimeLine               	            controllers.Application.getTimeLine()
+GET     /getGroupFarmList                       controllers.Application.getGroupFarmList()
+GET     /getSearchWhere                         controllers.Application.getSearchWhere()
+GET     /getHouseGroupWhere                     controllers.Application.getHouseGroupWhere()
+GET     /:kukakuGroupId/changeHouseGroupWhere   controllers.Application.changeHouseGroupWhere(kukakuGroupId: Double)
+GET     /:workId/changeSearchWhere              controllers.Application.changeSearchWhere(workId: Double)
+GET     /userLogout           		              controllers.Application.userLogout()
+POST    /farmChange           		              controllers.Application.farmChange()
+POST    /addClip                                controllers.Application.addClip()
+GET     /workTargetMove                         controllers.Application.workTargetMove()
+POST    /workTargetInit                         controllers.Application.workTargetInit()
+POST    /workTargetUpdate                       controllers.Application.workTargetUpdate()
+POST    /getMotocho           		              controllers.Application.getMotocho()
+GET     /getSystemMessage                       controllers.Application.getSystemMessage()
+GET     /:key/commitSystemMessage               controllers.Application.commitSystemMessage(key: String)
+GET     /commitAllSystemMessage                 controllers.Application.commitAllSystemMessage()
+GET     /:messageKind/changeMessageKind         controllers.Application.changeMessageKind(messageKind: Integer)
+POST    /changeFieldGroup                       controllers.Application.changeFieldGroup()
+POST    /changeWorkChain                        controllers.Application.changeWorkChain()
+POST    /selectKukakuWorkChain                  controllers.Application.selectKukakuWorkChain()
+POST    /selectKukakuCrop                       controllers.Application.selectKukakuCrop()
+POST    /selectMultiKukakuCrop                  controllers.Application.selectMultiKukakuCrop()
+GET     /inputTargetMove                        controllers.FarmField.inputTargetMove()
+POST    /inputTargetInit                        controllers.FarmField.inputTargetInit()
+POST    /inputTargetSet                         controllers.FarmField.inputTargetSet()
+GET     /accountMakeMove                        controllers.AccounMake.accountMakeMove()
+POST    /accountIdCheck                         controllers.AccounMake.accountIdCheck()
+POST    /registrationCodeCheck                  controllers.AccounMake.registrationCodeCheck()
+POST    /accountRegistLimitCheck                controllers.AccounMake.accountRegistLimitCheck()
+POST    /accountMake		                        controllers.AccounMake.accountMake()
+GET     /:workid/:kukakuid/workDiaryMove        controllers.WorkDiary.workDiaryMove(workid: String, kukakuid: String)
+GET     /:workDiaryId/workDiaryEdit             controllers.WorkDiary.workDiaryEditMove(workDiaryId: Double)
+GET     /:workPlanId/workPlanEditMove           controllers.WorkDiary.workPlanEditMove(workPlanId: Double)
+#localStorage共通化に伴い、アクションを廃止（混乱を避けるため）
+#GET     /:workDiaryId/:back/:accountId/:workdate/workDiaryEditMoveBack   controllers.WorkDiary.workDiaryEditMoveBack(workDiaryId: Double, back: String, accountId: String, workdate: String)
+GET     /workDiaryInit            	            controllers.WorkDiary.workDiaryInit()
+POST    /submitWorkDiary                        controllers.WorkDiary.submitWorkDiary()
+POST    /:workDiaryId/submitWorkDiaryEdit       controllers.WorkDiary.submitWorkDiaryEdit(workDiaryId: Double)
+GET     /:workDiaryId/workDiaryDelete           controllers.WorkDiary.workDiaryDelete(workDiaryId: Double)
+POST    /submitWorkPlan                         controllers.WorkDiary.submitWorkPlan()
+POST    /planToDiary                            controllers.WorkDiary.planToDiary()
+POST    /planToDiaryTimeCommit                  controllers.WorkDiary.planToDiaryTimeCommit()
+POST    /checkNouhi                             controllers.WorkDiary.checkNouhi()
+POST    /getNouhiValue            	            controllers.WorkDiary.getNouhiValue()
+POST    /getAttachmentList        	            controllers.WorkDiary.getAttachmentList()
+POST    /selectAccount        		              controllers.AccounSetting.selectAccount()
+POST    /returnAccount	        	              controllers.AccounSetting.returnAccount()
+GET     /syuryoSummaryMove                      controllers.SyuryoSummary.syuryoSummaryMove()
+POST    /syuryoSummaryGet                       controllers.SyuryoSummary.syuryoSummaryGet()
+
+GET     /:hashValue/hashLogin                   controllers.Login.hashLogin(hashValue: String)
+POST    /googleLogin                controllers.Login.googleLogin()
+
+#-------------------------------------------------------------------------------
+# MainController
+#-------------------------------------------------------------------------------
+GET     /getFieldGroupSPD                       controllers.MainController.getFieldGroupSPD()
+GET     /getFieldGroupSP                        controllers.MainController.getFieldGroupSP()
+GET     /:groupId/getKukakuSP                   controllers.MainController.getKukakuSP(groupId:Double)
+
+#-------------------------------------------------------------------------------
+# MasterSettingController
+#-------------------------------------------------------------------------------
+GET     /masterSettingMove                      controllers.MasterSetting.move()
+
+#-------------------------------------------------------------------------------
+# WorkingController
+#-------------------------------------------------------------------------------
+GET     /workingmove                            controllers.Working.move()
+POST    /initparam                              controllers.Working.initparam()
+GET     /workinginit                            controllers.Working.init()
+GET     /workingcommit                          controllers.Working.workingcommit()
+GET     /workingstop                            controllers.Working.workingstop()
+#-------------------------------------------------------------------------------
+# WorkingAccountController
+#-------------------------------------------------------------------------------
+GET     /workingaccountmove                     controllers.WorkingAccount.move()
+#localStorage共通化に伴い、アクションを廃止（混乱を避けるため）
+#GET     /:back/:accountId/:workdate/workingaccountbackmove controllers.WorkingAccount.backmove(back: String, accountId: String, workdate: String)
+GET     /workingaccountinit                     controllers.WorkingAccount.init()
+GET     /:accountid/workingaccouninfo           controllers.WorkingAccount.accountinfo(accountid: String)
+GET     /:accountid/:workdate/getworkdata       controllers.WorkingAccount.getworkdata(accountid: String, workdate: String)
+#-------------------------------------------------------------------------------
+# DashBoardController
+#-------------------------------------------------------------------------------
+GET     /dashBoardMove                          controllers.DashBoard.move()
+#-------------------------------------------------------------------------------
+# SortSeqController
+#-------------------------------------------------------------------------------
+GET     /sortSeqmove                            controllers.SortSeq.move()
+GET     /sortSeqinit                            controllers.SortSeq.init()
+POST    /sortSequpdate                          controllers.SortSeq.update()
+POST    /fieldGroupUpdate                       controllers.SortSeq.fieldGroupUpdate()
+#-------------------------------------------------------------------------------
+# SaibaiPlanController
+#-------------------------------------------------------------------------------
+GET     /saibaiPlanMove                         controllers.SaibaiPlanController.move()
+POST    /makePlan                               controllers.SaibaiPlanController.makePlan()
+POST    /commitGoalPlan                         controllers.SaibaiPlanController.commitGoalPlan()
+POST    /commitPlanWork                         controllers.SaibaiPlanController.commitPlanWork()
+GET     /:cropId/:hashuDate/getHinsyuOfCropHashuJson controllers.SaibaiPlanController.getHinsyuOfCropHashuJson(cropId:Double, hashuDate:String)
+#-------------------------------------------------------------------------------
+# WorkPlanController
+#-------------------------------------------------------------------------------
+GET     /workPlanMove                                 controllers.WorkPlanController.move()
+GET     /workPlanAccountMove                          controllers.WorkPlanController.accountmove()
+GET     /:targetDate/:accountId/:crop/getWorkPlan     controllers.WorkPlanController.getWorkPlan(targetDate:String, accountId:String, crop:Double)
+GET     /:targetDate/:accountId/getWorkPlanAccount    controllers.WorkPlanController.getWorkPlanAccount(targetDate:String, accountId:String)
+GET     /:workPlanId/startWorkPlan                    controllers.WorkPlanController.startWorkPlan(workPlanId: Double)
+GET     /:workPlanId/:accountId/workPlanTantouChange  controllers.WorkPlanController.tantouChange(workPlanId: Double, accountId:String)
+GET     /:workPlanId/:workDate/workPlanDateChange     controllers.WorkPlanController.workDateChange(workPlanId: Double, workDate:String)
+GET     /:workPlanId/workPlanDelete                   controllers.WorkPlanController.workPlanDelete(workPlanId: Double)
+GET     /:workPlanId/:kukakuId/workPlanCopy           controllers.WorkPlanController.workPlanCopy(workPlanId: Double, kukakuId:Double)
+POST    /workPlanUuidOnDayChange                      controllers.WorkPlanController.workPlanUuidOnDayChange()
+#-------------------------------------------------------------------------------
+# CompartmentMapping
+#-------------------------------------------------------------------------------
+GET     /compartmentmappingMove                       controllers.CompartmentMapping.move()
+GET     /compartmentmappingInit                       controllers.CompartmentMapping.init()
+POST    /compartmentmappingUpdate                     controllers.CompartmentMapping.latLngUpdate()
+POST    /compartmentmappingDelete                     controllers.CompartmentMapping.latLngDelete()
+
+#-------------------------------------------------------------------------------
+# CommonController
+#-------------------------------------------------------------------------------
+GET     /getCrop                                controllers.CommonController.getCrop()
+GET     /:farmId/getCrop                        controllers.CommonController.getCropOfFarm(farmId:Double)
+GET     /:farmId/getCropOfFarmAll               controllers.CommonController.getCropOfFarmAll(farmId:Double)
+GET     /getHinsyu                              controllers.CommonController.getHinsyu()
+GET     /:farmId/:cropGroupId/getCrop           controllers.CommonController.getCropOfFarmSel(farmId:Double, cropGroupId:Double)
+GET     /:farmId/:cropId/getHinsyu              controllers.CommonController.getHinsyuOfFarmSel(farmId:Double, cropId:Double)
+GET     /:farmId/:landlordId/getLandlord        controllers.CommonController.getLandlordOfFarmSel(farmId:Double, landlordId:Double)
+GET     /getFieldGroup                          controllers.CommonController.getFieldGroup()
+GET     /:farmId/:fieldGroupId/getField         controllers.CommonController.getFieldOfFarmSel(farmId:Double, fieldGroupId:Double)
+GET     /:farmId/:fieldId/getCompartmentOfFieldSel      controllers.CommonController.getCompartmentOfFieldSel(farmId:Double, fieldId:Double)
+GET     /:farmId/:kikiId/getAttachmentOfFarmSel controllers.CommonController.getAttachmentOfFarmSel(farmId:Double, kikiId:Double)
+GET     /getAccountInfo                         controllers.CommonController.getAccountInfo()
+GET     /:farmId/:accountId/getMenuRoleSel      controllers.CommonController.getMenuRoleSel(farmId:Double, accountId:String)
+GET     /getWorkOfFarm                          controllers.CommonController.getWorkOfFarm()
+GET     /:kukakuId/getWorkOfKukaku              controllers.CommonController.getWorkOfKukaku(kukakuId:String)
+GET     /getAccountOfFarm                       controllers.CommonController.getAccountOfFarm()
+GET     /getAccountOfFarmAll                    controllers.CommonController.getAccountOfFarmAll()
+POST    /timelineStatusCommit                   controllers.CommonController.timelineStatusCommit()
+POST    /kukakusearchCommit                     controllers.CommonController.kukakusearchCommit()
+GET     /getTimeLineData                        controllers.CommonController.getTimeLineData()
+GET     /getTimeLineInitData                    controllers.CommonController.getTimeLineInitData()
+GET     /getWorkChainOfFarm                     controllers.CommonController.getWorkChainOfFarm()
+GET     /getUniqueWorkOfFarmJson                controllers.CommonController.getUniqueWorkOfFarmJson()
+GET     /getCompartmentOfFarm                   controllers.CommonController.getCompartmentOfFarm()
+GET     /getSanpu                               controllers.CommonController.getSanpu()
+GET     /getKansui                              controllers.CommonController.getKansui()
+GET     /getNisugata                            controllers.CommonController.getNisugata()
+GET     /:nisugataId/getNisugataInfo            controllers.CommonController.getNisugataInfo(nisugataId: Double)
+GET     /getShitu                               controllers.CommonController.getShitu()
+GET     /getSize                                controllers.CommonController.getSize()
+GET     /getSizai                               controllers.CommonController.getSizai()
+GET     /getMulti                               controllers.CommonController.getMulti()
+GET     /getUseBaido                            controllers.CommonController.getUseBaido()
+GET     /:kukakuId/getMotochoHistry             controllers.CommonController.getMotochoHistry(kukakuId: Double)
+GET     /getDisplayStatus                       controllers.CommonController.getDisplayStatus()
+GET     /getWorkTargetDisplay                   controllers.CommonController.getWorkTargetDisplay()
+GET     /getWorkCommitAfter                     controllers.CommonController.getWorkCommitAfter()
+GET     /getDisplayChain                        controllers.CommonController.getDisplayChain()
+GET     /getNisugataRireki                      controllers.CommonController.getNisugataRireki()
+GET     /getCompartmentStatusSkip               controllers.CommonController.getCompartmentStatusSkip()
+GET     /getWorkDateAutoSet                     controllers.CommonController.getWorkDateAutoSet()
+GET     /getWorkStartPrompt                     controllers.CommonController.getWorkStartPrompt()
+GET     /getWorkChangeDisplay                   controllers.CommonController.getWorkChangeDisplay()
+GET     /getRadius                              controllers.CommonController.getRadius()
+GET     /getWorkPlanInitId                      controllers.CommonController.getWorkPlanInitId()
+GET     /getAreaUnit                            controllers.CommonController.getAreaUnit()
+GET     /getKisyo                               controllers.CommonController.getKisyo()
+GET     /getNouhiCheck                          controllers.CommonController.getNouhiCheck()
+GET     /getWorkPlanAutoMove                    controllers.CommonController.getWorkPlanAutoMove()
+GET     /getContractPlan                        controllers.CommonController.getContractPlan()
+GET     /getDataUsePermission                   controllers.CommonController.getDataUsePermission()
+GET     /getMessageKind                         controllers.CommonController.getMessageKind()
+GET     /getHistoryReference                    controllers.CommonController.getHistoryReference()
+GET     /getWorkPlanAutoCreate                  controllers.CommonController.getWorkPlanAutoCreate()
+GET     /getWorkDiaryDiscription                controllers.CommonController.getWorkDiaryDiscription()
+GET     /getTimeLineWorking                     controllers.CommonController.getTimeLineWorking()
+GET     /:workId/:kukakuId/getKikiOfWorkJson    controllers.CommonController.getKikiOfWorkJson(workId: Double, kukakuId: Double)
+GET     /:kikiId/getAttachmentOfKikiJson        controllers.CommonController.getAttachmentOfKikiJson(kikiId: Double)
+GET     /:workId/:kukakuId/getNouhiOfWorkJson   controllers.CommonController.getNouhiOfWorkJson(workId: Double, kukakuId: Double)
+GET     /:cropId/getHinsyuOfCropToCropJson      controllers.CommonController.getHinsyuOfCropToCropJson(cropId: Double)
+GET     /:kukakuId/getHinsyuOfCropJson          controllers.CommonController.getHinsyuOfCropJson(kukakuId: Double)
+GET     /getHinsyuOfFarmJson                    controllers.CommonController.getHinsyuOfFarmJson()
+GET     /getBeltoOfFarmJson                     controllers.CommonController.getBeltoOfFarmJson()
+GET     /:accountid/:year/getWorkTimeOfYear     controllers.CommonController.getWorkTimeOfYear(accountid: String, year: Integer)
+GET     /:accountid/:year/:month/getWorkTimeOfMonth     controllers.CommonController.getWorkTimeOfMonth(accountid: String, year: Integer, month: Integer)
+GET     /getOneMessage                          controllers.CommonController.getOneMessage()
+GET     /:systemKind/getSystemManage            controllers.CommonController.getSystemManage(systemKind: Integer)
+GET     /:systemKind/:majorVersion/:minorVersion/:patchVersion/:compUpdate/commitSystemManage            controllers.CommonController.commitSystemManage(systemKind: Integer, majorVersion: Integer, minorVersion: Integer, patchVersion: Integer, compUpdate: Integer)
+
+#-------------------------------------------------------------------------------
+# ServiceController
+#-------------------------------------------------------------------------------
+GET     /:name/:mail/mailSend                   controllers.ServiceController.mailSend(name:String ,mail:String)
+#-------------------------------------------------------------------------------
+# RFarmController
+#-------------------------------------------------------------------------------
+GET     /shukakuInput                           controllers.RFarmController.convertInput()
+#-------------------------------------------------------------------------------
+# OBussanController
+#-------------------------------------------------------------------------------
+GET     /:motocho/convertInput                  controllers.OBussanController.convertInput(motocho: Boolean)
+GET     /obussanMakeMaster                      controllers.OBussanController.obussanMakeMaster()
+GET     /obussanDeleteData                      controllers.OBussanController.obussanDeleteData()
+GET     /NouhiInput                             controllers.OBussanController.NouhiInput()
+GET     /ReData                                 controllers.OBussanController.ReData()
+#-------------------------------------------------------------------------------
+# ColoringController
+#-------------------------------------------------------------------------------
+GET     /:motocho/:kisyo/colorConvertInput      controllers.ColoringController.colorConvertInput(motocho: Boolean, kisyo: Boolean)
+GET     /coloringMakeMaster                     controllers.ColoringController.coloringMakeMaster()
+GET     /coloringDeleteData                     controllers.ColoringController.coloringDeleteData()
+GET     /coloringNouhiInput                     controllers.ColoringController.coloringNouhiInput()
+GET     /coloringReData                         controllers.ColoringController.coloringReData()
+#-------------------------------------------------------------------------------
+# AICAController
+#-------------------------------------------------------------------------------
+#- 気温予測
+GET     /test                                   controllers.AICAController.test()
+GET     /:point/SimpleRegressionTest            controllers.AICAController.SimpleRegressionTest(point: String)
+GET     /:point/:start/:end/dataTest            controllers.AICAController.dataTest(point: String, start: String, end: String)
+GET     /:point/:start/:end/data10              controllers.AICAController.data10(point: String, start: String, end: String)
+#- AICADATA算出
+GET     /AicaDataCalc                           controllers.AICAController.AicaDataCalc()
+#- RushFarm用データ作成
+GET     /makeRushData                           controllers.AICAController.MakeRushData()
+#- 気温データ実績出力
+GET     /:point/:start/:end/:prev/OutKionJiseki controllers.AICAController.OutKionJiseki(point: String, start: String, end: String, prev: Integer)
+#- 降水量データ実績出力
+GET     /:point/:start/:end/:prev/OutRainJiseki controllers.AICAController.OutRainJiseki(point: String, start: String, end: String, prev: Integer)
+#- 気温データ実予出力
+GET     /:point/:start/:end/OutKionJituyo       controllers.AICAController.OutKionJituyo(point: String, start: String, end: String)
+#- 出荷予測元データ出力
+GET     /shukakuYosoku                          controllers.AICAController.shukakuYosoku()
+#- 作業記録出力
+GET     /:farmId/:targetMonth/outWorkdiary      controllers.AICAController.outWorkdiary(farmId:Double, targetMonth: String)
+#- 作業記録出力
+GET     /:farmId/:dateFrom/:dateTo/:cropId/AICADataoutput    controllers.AICAController.AICADataoutput(farmId: Double, dateFrom: String, dateTo: String, cropId: Double)
+#- 作業明細出力
+GET     /:farmId/:dateFrom/:dateTo/WorkDiaryDataoutput       controllers.AICAController.WorkDiaryDataoutput(farmId: Double, dateFrom: String, dateTo: String)
+#- 収穫分析情報出力
+GET     /:farmId/:dateFrom/:dateTo/:cropId/ShukakuDataOutput controllers.AICAController.ShukakuDataOutput(farmId: Double, dateFrom: String, dateTo: String, cropId: String)
+#- 収穫分析情報出力
+GET     /:farmId/:dateFrom/:dateTo/TotalShukakuDataOutput controllers.AICAController.TotalShukakuDataOutput(farmId: Double, dateFrom: String, dateTo: String)
+#- 収穫分析情報出力
+GET     /:kukakuId/:dateTo/ShukakuKukakuDataOutput       controllers.AICAController.ShukakuKukakuDataOutput(kukakuId: Double, dateTo: String)
+#- 作業分析情報出力
+GET     /:farmId/:dateFrom/:dateTo/:accounts/:works/:crops/TotalWorkDataOutput controllers.AICAController.TotalWorkDataOutput(farmId: Double, dateFrom: String, dateTo: String, accounts: String, works: String, crops: String)
+#- 区画一覧出力(スプレッド用)
+GET     /:farmId/getCompartmentSpreadOfFarm     controllers.AICAController.getCompartmentSpreadOfFarm(farmId: Double)
+#- 茶園一覧表を取得する
+GET     /:farmId/:year/getChaenList             controllers.AICAController.getChaenList(farmId: Double, year: Integer)
+#- 病害虫防除記録を取得する
+GET     /:farmId/:year/getByouGaiBoujoList      controllers.AICAController.getByouGaiBoujoList(farmId: Double, year: Integer)
+#- 施肥記録を取得する
+GET     /:farmId/:year/getShihiList             controllers.AICAController.getShihiList(farmId: Double, year: Integer)
+#- 摘採記録を取得する
+GET     /:farmId/:year/getTekisaiList           controllers.AICAController.getTekisaiList(farmId: Double, year: Integer)
+#- 担当者別生産物単位収穫量取得
+GET     /:farmId/:dateFrom/:dateTo/AccountUnitDataOutput controllers.AICAController.AccountUnitDataOutput(farmId: Double, dateFrom:String, dateTo: String)
+#- 担当者別日別単位収穫量取得
+GET     /:accountId/:cropId/:dateFrom/:dateTo/AccountDateDataOutput controllers.AICAController.AccountDateDataOutput(accountId: String, cropId: String, dateFrom:String, dateTo: String)
+#- AI栽培管理予測結果
+GET     /:kukakuId/aicaSaibaiManage             controllers.AICAController.aicaSaibaiManage(kukakuId: Double)
+#- AI試験用メソッド
+GET     /aicaDataBase                           controllers.AICAController.aicaDataBase()
+#- AI栽培管理検証結果
+GET     /aicaSaibaiVerification       			controllers.AICAController.aicaSaibaiVerification()
+#- 機械学習用教師データの取得
+GET     /getMLData       						controllers.AICAController.getMLData()
+#- 機械学習用教師データの取得(積算気温予測)
+GET     /getMLData2       						controllers.AICAController.getMLData2()
+#- ＡＩ収穫予測検証データ
+GET     /getFeedBackData       					controllers.AICAController.getFeedBackData()
+
+#-------------------------------------------------------------------------------
+# OpenAPI
+#-------------------------------------------------------------------------------
+#- アカウントログイン認証
+GET     /:accountId/:password/accountlogin                          controllers.APIController.accountlogin(accountId: String, password: String)
+#- 全生産者一覧取得
+GET     /getallfarm                           						controllers.APIController.getallfarm()
+#- 生産者別全作業一覧取得
+GET     /:farmId/getallworkoffarm                           		controllers.APIController.getallworkoffarm(farmId: Double)
+#- 生産者別作業一覧取得
+GET     /:accountId/getworkoffarm                  		            controllers.APIController.getworkoffarm(accountId: String)
+GET     /:accountId/:pLat/:pLng/getworkoffarmRadius               controllers.APIController.getworkoffarmRadius(accountId: String, pLat: Double, pLng: Double)
+#- 生産者別全担当者一覧取得
+GET     /:farmId/getallaccountoffarm                           		controllers.APIController.getallaccountoffarm(farmId: Double)
+#- 生産者別全圃場グループ一覧取得
+GET     /:farmId/getallfieldgrouptoffarm                         	controllers.APIController.getallfieldgrouptoffarm(farmId: Double)
+#- 生産者別全区画一覧取得
+GET     /:farmId/getallcompartmentoffarm                         	controllers.APIController.getallcompartmentoffarm(farmId: Double)
+#- 生産者別ワークチェイン一覧取得
+GET     /:farmId/getworkchainoffarm                           		controllers.APIController.getworkchainoffarm(farmId: Double)
+#- 生産者別区画一覧取得
+GET     /:farmId/getkukakuoffarm                					controllers.APIController.getkukakuoffarm(farmId: Double)
+GET     /:accountId/:workId/:pLat/:pLng/getkukakuoffarmRadius       controllers.APIController.getkukakuoffarmRadius(accountId: String, workId: Double, pLat: Double, pLng: Double)
+#- ワークチェイン選択変更
+GET     /:accountId/:chainId/changeworkchain                        controllers.APIController.changeworkchain(accountId: String, chainId: Double)
+#- 作業中情報取得
+GET     /:accountId/getworking                           			controllers.APIController.getworking(accountId: String)
+#- 作業開始
+GET     /:accountId/:workId/:kukakuId/workingstart                 	controllers.APIController.workingstart(accountId: String, workId: Double, kukakuId: Double)
+#- 作業終了
+GET     /:accountId/:farmId/:workId/:kukakuId/:steps/:distance/:calorie/:heartRate/workingend	controllers.APIController.workingend(accountId: String, farmId: Double, workId: Double, kukakuId: Double, steps: Int, distance: Double, calorie: Int, heartRate: Int)
+#- 作業中断
+GET     /:accountId/workingstop                 					controllers.APIController.workingstop(accountId: String)
+#- 作業計画開始
+GET     /:accountId/:workPlanId/startworkplan                       controllers.APIController.startworkplan(accountId: String, workPlanId: Double)
+#- 作業中メッセージ取得
+GET     /:accountId/getworkingmessage                     			controllers.APIController.getworkingmessage(accountId: String)
+#- ハウス状況照会取得
+GET    /:accountId/:farmId/getcompartment       					controllers.APIController.getcompartment(accountId: String, farmId: Double)
+GET    /:accountId/:farmId/getfieldgroupSPD       					controllers.APIController.getfieldgroupSPD(accountId: String, farmId: Double)
+GET    /:accountId/:farmId/getfieldgroupSP       					controllers.APIController.getfieldgroupSP(accountId: String, farmId: Double)
+#- ハウス状況照会区画取得
+GET    /:accountId/:farmId/:groupId/getkukakuSP                     controllers.APIController.getkukakuSP(accountId: String, farmId: Double, groupId:Double)
+#- 圃場詳細情報取得
+POST    /:accountId/:farmId/getfielddetail                          controllers.APIController.getfielddetail(accountId: String, farmId: Double)
+#- 区画詳細情報取得
+POST    /:accountId/:farmId/getkukakudetail                         controllers.APIController.getkukakudetail(accountId: String, farmId: Double)
+#- 元帳一覧取得
+GET    /:kukakuId/getmotochohistry              					controllers.APIController.getmotochohistry(kukakuId: Double)
+#- 状況照会取得
+GET     /getdisplaystatus                							controllers.APIController.getdisplaystatus()
+#- アカウントID別圃場グループ取得
+GET    /:accountId/getfieldgroupofaccount       					controllers.APIController.getfieldgroupofaccount(accountId: String)
+#- 区画検索条件をアカウント状況に反映
+POST    /:accountId/kukakusearchcommit                              controllers.APIController.kukakusearchcommit(accountId: String)
+#- 区画生産物変更要求
+POST    /:accountId/selectkukakucrop                                controllers.APIController.selectkukakucrop(accountId: String)
+#- 複数区画生産物変更要求
+POST    /:accountId/selectmultikukakucrop                           controllers.APIController.selectmultikukakucrop(accountId: String)
+#- 区画ワークチェイン変更要求
+POST    /:accountId/selectkukakuworkchain                           controllers.APIController.selectkukakuworkchain(accountId: String)
+#- 作業別機器情報取得
+GET     /:farmId/:workId/:kukakuId/getkikiofwork                    controllers.APIController.getkikiofwork(farmId: Double, workId: Double, kukakuId: Double)
+#- 機器別アタッチメント情報取得
+GET     /:kikiId/getattachmentofkiki                    			controllers.APIController.getattachmentofkiki(kikiId: Double)
+#- 作業別農肥情報取得
+GET     /:farmId/:workId/:kukakuId/getnouhiofwork                   controllers.APIController.getnouhiofwork(farmId: Double, workId: Double, kukakuId: Double)
+#- 生産者別ベルト一覧取得
+GET     /:farmId/getbeltooffarm                						controllers.APIController.getbeltooffarm(farmId: Double)
+#- 生産物別品種情報取得
+GET     /:farmId/:kukakuId/gethinsyuofcrop                   		controllers.APIController.gethinsyuofcrop(farmId: Double, kukakuId: Double)
+#- 生産者別品種一覧取得
+GET     /:farmId/gethinsyuoffarm                					controllers.APIController.gethinsyuoffarm(farmId: Double)
+#- 生産者別荷姿一覧取得
+GET     /:farmId/getnisugataoffarm                					controllers.APIController.getnisugataoffarm(farmId: Double)
+#- 生産者別質一覧取得
+GET     /:farmId/getshituoffarm                						controllers.APIController.getshituoffarm(farmId: Double)
+#- 生産者別サイズ一覧取得
+GET     /:farmId/getsizeoffarm                						controllers.APIController.getsizeoffarm(farmId: Double)
+#- 資材取得(資材マスタ移行後削除)
+GET     /getsizai                									controllers.APIController.getsizai()
+GET     /:farmId/getsizaioffarm                						controllers.APIController.getsizaioffarm(farmId: Double)
+#- マルチ取得(資材マスタ移行後削除)
+GET     /getmulti                									controllers.APIController.getmulti()
+GET     /:farmId/getmultioffarm                						controllers.APIController.getmultioffarm(farmId: Double)
+#- 使用培土取得(資材マスタ移行後削除)
+GET     /getusebaido                								controllers.APIController.getusebaido()
+GET     /:farmId/getbaidooffarm                						controllers.APIController.getbaidooffarm(farmId: Double)
+#- 散布方法取得
+GET     /getsanpu                									controllers.APIController.getsanpu()
+#- 潅水方法取得
+GET     /getkansui                									controllers.APIController.getkansui()
+#- 作業計画初期表示データ取得
+GET     /:accountId/:accountName/:farmId/:workPlanId/workplaninit	controllers.APIController.workplaninit(accountId: String, accountName: String, farmId: Double, workPlanId: Double)
+#- 作業日誌初期表示データ取得
+GET     /:accountId/:accountName/:farmId/:workId/:kukakuId/:workDiaryId/workdiaryinit	controllers.APIController.workdiaryinit(accountId: String, accountName: String, farmId: Double, workId: Double, kukakuId: Double, workDiaryId: Double)
+#- 作業日誌保存
+POST    /:accountId/:farmId/:workDiaryId/submitworkdiary       		controllers.APIController.submitworkdiary(accountId: String, farmId: Double, workDiaryId: Double)
+#- 作業計画削除
+GET    /:accountId/:farmId/:workPlanId/workplandelete       		controllers.APIController.workplandelete(accountId: String, farmId: Double, workPlanId: Double)
+#- 作業日誌削除
+GET    /:accountId/:farmId/:workDiaryId/workdiarydelete       		controllers.APIController.workdiarydelete(accountId: String, farmId: Double, workDiaryId: Double)
+#- 作業計画保存
+POST    /:accountId/:farmId/submitworkplan       					controllers.APIController.submitworkplan(accountId: String, farmId: Double)
+#- 作業計画記録完了
+POST    /:accountId/plantodiary       								controllers.APIController.plantodiary(accountId: String)
+#- 作業計画記録完了(計測なし)
+POST    /:accountId/plantodiarycommit       						controllers.APIController.plantodiarycommit(accountId: String)
+#- タイムライン初期表示データ取得
+GET     /:accountId/gettimelineinitdata                           	controllers.APIController.gettimelineinitdata(accountId: String)
+#- タイムライン表示データ取得
+GET     /:accountId/gettimelinedata                           		controllers.APIController.gettimelinedata(accountId: String)
+#- タイムライン検索条件確定要求
+POST    /timelinestatuscommit                           			controllers.APIController.timelinestatuscommit()
+#- タイムライン作業取得
+GET     /gettimelineworking                           				controllers.APIController.gettimelineworking()
+#- Push通知要求
+GET     /:farmId/:message/postNotifications                         controllers.APIController.postNotifications(farmId: Double, message: String)
+#- システムメッセージ登録要求
+POST    /systemmessagemake                           				controllers.APIController.systemmessagemake()
+#- システムメッセージ取得
+GET     /:accountId/getsystemmessage                           		controllers.APIController.getsystemmessage(accountId: String)
+#- システムメッセージ更新要求
+POST    /commitsystemmessage                           				controllers.APIController.commitsystemmessage()
+#- ワンメッセージ取得
+GET     /:accountId/getonemessage                           		controllers.APIController.getonemessage(accountId: String)
+#- 作業担当者一覧取得
+GET     /:farmId/getaccount                                         controllers.APIController.getaccount(farmId: Double)
+#- 生産物一覧取得
+GET     /:farmId/getcropoffarm                                      controllers.APIController.getcropoffarm(farmId: Double)
+#- 担当者別収量一覧取得
+GET     /:farmId/:start/:end/tantousyuryo                           controllers.APIController.tantousyuryo(farmId: Double, start:String, end: String)
+#- 担当者別作業時間一覧取得
+GET     /:farmId/:start/:end/tantouworktime                         controllers.APIController.tantouworktime(farmId: Double, start:String, end: String)
+#- 総収穫分析情報出力
+GET     /:farmId/:dateFrom/:dateTo/totalshukakudataoutput           controllers.APIController.totalshukakudataoutput(farmId: Double, dateFrom: String, dateTo: String)
+#- 収穫分析情報出力
+GET     /:farmId/:dateFrom/:dateTo/:cropId/shukakudataoutput        controllers.APIController.shukakudataoutput(farmId: Double, dateFrom: String, dateTo: String, cropId: String)
+#- 収穫分析情報出力
+GET     /:kukakuId/:dateTo/shukakukukakudataoutput                  controllers.APIController.shukakukukakudataoutput(kukakuId: Double, dateTo: String)
+#- 作業分析情報出力
+GET     /:farmId/:dateFrom/:dateTo/:accounts/:works/:crops/totalworkdataoutput controllers.APIController.totalworkdataoutput(farmId: Double, dateFrom: String, dateTo: String, accounts: String, works: String, crops: String)
+#- 作業指示書の取得
+GET     /:targetDate/:accountId/getWorkPlanAPI                      controllers.APIController.getWorkPlan(targetDate:String, accountId:String)
+#- 作業指示書の取得（複数）
+GET     /:targetDate/:accountId/:accounts/getWorkPlansAPI           controllers.APIController.getWorkPlans(targetDate:String, accountId:String, accounts:String)
+#- 作業指示書の取得
+POST    /:accountId/workplanuuidondaychange                         controllers.APIController.workplanuuidondaychange(accountId:String)
+#- AI栽培管理予測結果
+GET     /:accountId/:kukakuId/aicasaibaimanage                      controllers.APIController.aicasaibaimanage(accountId:String, kukakuId: Double)
+#- アクティブログ取得
+GET     /:startDate/:endDate/getactivelog                           controllers.APIController.getactivelog(startDate:String, endDate:String)
+#- 全生産者作業記録情報取得
+GET     /getallfarmworkdiaryinfo                                    controllers.APIController.getallfarmworkdiaryinfo()
+#- 生産者作業記録情報取得
+GET     /:farmId/getfarminfo                                        controllers.APIController.getfarminfo(farmId: Double)
+#- 生産者契約プラン保存
+POST    /:farmId/submitcontractplan	                                controllers.APIController.submitContractPlan(farmId: Double)
+
+#-------------------------------------------------------------------------------
+# AicAAPI
+#-------------------------------------------------------------------------------
+#- 作付計画元帳データ取得
+GET     /:kukakuId/:cropId/:hashu/:prev/:next/:prevyear/plandata              controllers.APIController.plandata(kukakuId: Double, cropId: Double, hashu: String, prev: Integer, next: Integer, prevyear: Integer)
+
+#-------------------------------------------------------------------------------
+# システムメッセージ登録画面
+#-------------------------------------------------------------------------------
+#- 画面遷移
+GET     /systemMessageMakeMove                           controllers.SystemMessageMake.systemMessageMakeMove()
+#- システムメッセージ登録
+POST    /systemMessageMakeSubmit                         controllers.SystemMessageMake.systemMessageMakeSubmit()
+
+#-------------------------------------------------------------------------------
+# 生産者登録画面
+#-------------------------------------------------------------------------------
+#- 画面遷移
+GET     /farmMakeMove                           controllers.FarmMake.move()
+#- メールアドレス重複チェック
+GET     /:mailAddress/farmMakeCheckMailAddress  controllers.FarmMake.farmMakeCheckMailAddress(mailAddress: String)
+#- 生産者登録
+POST    /farmMakeSubmit                         controllers.FarmMake.farmMakeSubmit()
+
+#-------------------------------------------------------------------------------
+# マスタメンテナンス画面
+#-------------------------------------------------------------------------------
+#- マスタメンテナンス一覧画面
+GET     /:farmId/:mstGmnId/masterMntMove        controllers.MasterMaintenance.move(farmId: Double, mstGmnId: Int)
+GET     /masterMntInit                          controllers.MasterMaintenance.masterMntInit()
+#- 生産者マスタ画面
+GET     /:farmId/farmSettingMove  				controllers.FarmSetting.farmSettingMove(farmId: Double)
+GET     /farmSettingInit        	            controllers.FarmSetting.farmSettingInit()
+POST    /submitFarm	        		            controllers.FarmSetting.submitFarm()
+#- アカウントマスタ画面
+GET     /:farmId/:accountId/accountSettingMove  controllers.AccounSetting.accountSettingMove(farmId: Double, accountId: String)
+GET     /accountSettingInit        	            controllers.AccounSetting.accountSettingInit()
+POST    /submitAccount	        	            controllers.AccounSetting.submitAccount()
+POST    /deleteAccount	        	            controllers.AccounSetting.deleteAccount()
+#- 地主マスタ画面
+GET     /:farmId/:landlordId/landlordSettingMove  controllers.LandlordSetting.landlordSettingMove(farmId: Double, landlordId: Double)
+GET     /landlordSettingInit        	        controllers.LandlordSetting.landlordSettingInit()
+POST    /submitLandlord	        	        	controllers.LandlordSetting.submitLandlord()
+POST    /deleteLandlord	        	        	controllers.LandlordSetting.deleteLandlord()
+#- 圃場グループマスタ画面
+GET     /:farmId/:fieldGroupId/fieldGroupSettingMove  controllers.FieldGroupSetting.fieldGroupSettingMove(farmId: Double, fieldGroupId: Double)
+GET     /fieldGroupSettingInit        	        controllers.FieldGroupSetting.fieldGroupSettingInit()
+POST    /submitFieldGroup	        	        controllers.FieldGroupSetting.submitFieldGroup()
+POST    /deleteFieldGroup	        	        controllers.FieldGroupSetting.deleteFieldGroup()
+#- 圃場マスタ画面
+GET     /:farmId/:fieldId/fieldSettingMove      controllers.FieldSetting.fieldSettingMove(farmId: Double, fieldId: Double)
+GET     /fieldSettingInit        	        	controllers.FieldSetting.fieldSettingInit()
+POST    /submitField	        	        	controllers.FieldSetting.submitField()
+POST    /deleteField	        	        	controllers.FieldSetting.deleteField()
+#- 区画マスタ画面
+GET     /:farmId/:kukakuId/compartmentSettingMove      controllers.CompartmentSetting.compartmentSettingMove(farmId: Double, kukakuId: Double)
+GET     /compartmentSettingInit        	        	controllers.CompartmentSetting.compartmentSettingInit()
+POST    /submitCompartment	        	        	controllers.CompartmentSetting.submitCompartment()
+POST    /deleteCompartment	        	        	controllers.CompartmentSetting.deleteCompartment()
+#- 生産物グループマスタ画面
+GET     /:farmId/:cropGroupId/cropGroupSettingMove  controllers.CropGroupSetting.cropGroupSettingMove(farmId: Double, cropGroupId: Double)
+GET     /cropGroupSettingInit        	        controllers.CropGroupSetting.cropGroupSettingInit()
+POST    /submitCropGroup	        	        controllers.CropGroupSetting.submitCropGroup()
+POST    /deleteCropGroup	        	        controllers.CropGroupSetting.deleteCropGroup()
+#- 生産物マスタ画面
+GET     /:farmId/:cropId/cropSettingMove  		controllers.CropSetting.cropSettingMove(farmId: Double, cropId: Double)
+GET     /cropSettingInit        	        	controllers.CropSetting.cropSettingInit()
+POST    /submitCrop		        	        	controllers.CropSetting.submitCrop()
+#- 農肥マスタ画面
+GET     /:farmId/:nouhiId/nouhiSettingMove  	controllers.NouhiSetting.nouhiSettingMove(farmId: Double, nouhiId: Double)
+GET     /nouhiSettingInit        	        	controllers.NouhiSetting.nouhiSettingInit()
+POST    /submitNouhi		        	      	controllers.NouhiSetting.submitNouhi()
+POST    /deleteNouhi		        	       	controllers.NouhiSetting.deleteNouhi()
+#- 品種マスタ画面
+GET     /:farmId/:hinsyuId/hinsyuSettingMove  	controllers.HinsyuSetting.hinsyuSettingMove(farmId: Double, hinsyuId: Double)
+GET     /hinsyuSettingInit        	        	controllers.HinsyuSetting.hinsyuSettingInit()
+POST    /submitHinsyu		        	      	controllers.HinsyuSetting.submitHinsyu()
+POST    /deleteHinsyu		        	       	controllers.HinsyuSetting.deleteHinsyu()
+#- ベルトマスタ画面
+GET     /:farmId/:beltoId/beltoSettingMove  	controllers.BeltoSetting.beltoSettingMove(farmId: Double, beltoId: Double)
+GET     /beltoSettingInit        	        	controllers.BeltoSetting.beltoSettingInit()
+POST    /submitBelto		        	      	controllers.BeltoSetting.submitBelto()
+POST    /deleteBelto		        	       	controllers.BeltoSetting.deleteBelto()
+#- 機器マスタ画面
+GET     /:farmId/:kikiId/kikiSettingMove  		controllers.KikiSetting.kikiSettingMove(farmId: Double, kikiId: Double)
+GET     /kikiSettingInit        	        	controllers.KikiSetting.kikiSettingInit()
+POST    /submitKiki		        	      		controllers.KikiSetting.submitKiki()
+POST    /deleteKiki		        	       		controllers.KikiSetting.deleteKiki()
+#- アタッチメントマスタ画面
+GET     /:farmId/:attachmentId/attachmentSettingMove  	controllers.AttachmentSetting.attachmentSettingMove(farmId: Double, attachmentId: Double)
+GET     /attachmentSettingInit        	        		controllers.AttachmentSetting.attachmentSettingInit()
+POST    /submitAttachment		        	      		controllers.AttachmentSetting.submitAttachment()
+POST    /deleteAttachment		        	       		controllers.AttachmentSetting.deleteAttachment()
+#- 荷姿マスタ画面
+GET     /:farmId/:nisugataId/nisugataSettingMove  	controllers.NisugataSetting.nisugataSettingMove(farmId: Double, nisugataId: Double)
+GET     /nisugataSettingInit        	        	controllers.NisugataSetting.nisugataSettingInit()
+POST    /submitNisugata		        	      	controllers.NisugataSetting.submitNisugata()
+POST    /deleteNisugata		        	       	controllers.NisugataSetting.deleteNisugata()
+#- 質マスタ画面
+GET     /:farmId/:shituId/shituSettingMove  	controllers.ShituSetting.shituSettingMove(farmId: Double, shituId: Double)
+GET     /shituSettingInit        	        	controllers.ShituSetting.shituSettingInit()
+POST    /submitShitu		        	      	controllers.ShituSetting.submitShitu()
+POST    /deleteShitu		        	       	controllers.ShituSetting.deleteShitu()
+#- サイズマスタ画面
+GET     /:farmId/:sizeId/sizeSettingMove  	controllers.SizeSetting.sizeSettingMove(farmId: Double, sizeId: Double)
+GET     /sizeSettingInit        	        	controllers.SizeSetting.sizeSettingInit()
+POST    /submitSize		        	      	controllers.SizeSetting.submitSize()
+POST    /deleteSize		        	       	controllers.SizeSetting.deleteSize()
+#- 資材マスタ画面
+GET     /:farmId/:sizaiId/sizaiSettingMove  controllers.SizaiSetting.sizaiSettingMove(farmId: Double, sizaiId: Double)
+GET     /sizaiSettingInit        	        controllers.SizaiSetting.sizaiSettingInit()
+POST    /submitSizai		        	    controllers.SizaiSetting.submitSizai()
+POST    /deleteSizai		        	    controllers.SizaiSetting.deleteSizai()
+
+#-------------------------------------------------------------------------------
+# システムバッチ
+#-------------------------------------------------------------------------------
+#- 圃場状況照会 作業進捗データ作成
+GET     /makeCompartmentStatus  	controllers.SystemBatch.makeCompartmentStatus()
+#- 圃場状況照会 作業進捗データ作成
+GET     /makeCompartmentWorkStatus  controllers.SystemBatch.makeCompartmentWorkStatus()
+#- 圃場状況照会 最終作業更新日
+GET     /updateFinalEndDate   		controllers.SystemBatch.updateFinalEndDate()
+#- 圃場状況照会 圃場状況照会 現在の作業記録から圃場状況照会を作成する
+GET    	/:kukakuId/updateCompartmentStatus   controllers.SystemBatch.updateCompartmentStatus(kukakuId: Double)
+#- 圃場状況照会 圃場状況照会 現在の作業記録から圃場状況照会を作成する
+GET    	/:accountId/makeTargetCompartment   controllers.SystemBatch.makeTargetCompartment(accountId: String)
+#- タイムライン検索条件
+GET    	/makeSearchWhere   controllers.SystemBatch.makeSearchWhere()
+#- 区画グループ検索条件
+GET    	/makeHouseGroupWhere   controllers.SystemBatch.makeHouseGroupWhere()
+#- タイムライン作業日
+GET    	/updateTimeLineWorkData   controllers.SystemBatch.updateTimeLineWorkData()
+#- 元帳照会再生成
+GET    	/motochoRemake   	controllers.SystemBatch.motochoRemake()
+#- テスト圃場状況照会
+GET    	/:kukakuId/kukakuTest   controllers.SystemBatch.kukakuTest(kukakuId: Double)
+#- テストメソッド
+#GET    	/test   controllers.SystemBatch.test()
+#- 圃場状況照会 作業進捗データに定植を追加
+GET     /addTeisyokuWorkStatus  controllers.SystemBatch.addTeisyokuWorkStatus()
+#- タイムライン検索条件に定植を追加
+GET     /addTeisyokuSearchWhere  controllers.SystemBatch.addTeisyokuSearchWhere()
+#- 指定した区画に必要な全ての情報を作成する
+GET     /:kukakuIdS/:kukakuIdE/makeKukaku   controllers.SystemBatch.makeCompartmentALL(kukakuIdS: Double, kukakuIdE: Double)
+#- agryeeldb→agryelldbデータ移行
+GET     /migrationDb  	controllers.MigrationDb.migrationDb()
+#- 区画状況に積算温度を反映する
+GET     /calcSolarRadiation    controllers.SystemBatch.calcSolarRadiation()
+#- 農肥使用回数を再集計する
+GET     /useCountUpdate        controllers.SystemBatch.useCountUpdate()
+#- 収穫量データを移行する
+GET     /shukakuDataIko        controllers.SystemBatch.shukakuDataIko()
+#- 並び順の初期設定を行う
+GET     /sortSeq               controllers.SystemBatch.sortSeq()
+#- 同一日内指示番号を設定する
+GET     /:from/:to/setUuidOfDay controllers.SystemBatch.setUuidOfDay( from:String, to:String)
+#- 生産者別情報の集計を行う
+GET     /:year/execInfoOfFarm controllers.SystemBatch.execInfoOfFarm( year:Integer)
+#-------------------------------------------------------------------------------
+# AICA SCORE
+#-------------------------------------------------------------------------------
+#- 生産者別年間および品目情報の取得
+GET     /:farmId/:year/getInfo controllers.AICASCOREController.getInfo( farmId:Double, year:Integer)
+#-------------------------------------------------------------------------------
+# AICA 出退勤管理
+#-------------------------------------------------------------------------------
+#- 勤務記録の登録
+GET     /:accountId/:kinmuFlag/addKinmuDiary controllers.KinmuController.addKinmuDiary( accountId:String, kinmuFlag:Integer)
+#- 勤務状況の取得
+GET     /:accountId/:year/:month/:day/getKinmuStatus controllers.KinmuController.getKinmuStatus( accountId:String, year:Integer, month:Integer, day:Integer)
+#-------------------------------------------------------------------------------
+# AICA 経営管理
+#-------------------------------------------------------------------------------
+#- 圃場別経費の取得
+GET     /:farmId/:cropId/:year/getCostOfCompartment controllers.ManagementController.getCostOfCompartment( farmId:Double, cropId:Double, year:Integer)
+#- 生産者別経費の取得
+GET     /:farmId/:year/getCost controllers.ManagementController.getCost( farmId:Double, year:Integer)
+#- 経費の更新
+GET     /:farmId/:year/updateCost controllers.ManagementController.updateCost( farmId:Double, year:Integer)
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /.well-known/pki-validation/77f87aa94637ec331663bed5bbc5dca4.txt controllers.UI.sslserverfile()
+GET     /assets/*file               controllers.Assets.at(path="/public", file)

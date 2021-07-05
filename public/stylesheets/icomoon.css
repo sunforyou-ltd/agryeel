@@ -1,0 +1,882 @@
+/*----- オリジナルアイコン定義 -----*/
+@font-face {
+    font-family: 'icomoon';
+    src:    url('../font/icomoon/icomoon.eot?ew6nkk');
+    src:    url('../font/icomoon/icomoon.eot?ew6nkk#iefix') format('embedded-opentype'),
+            url('../font/icomoon/icomoon.ttf?ew6nkk') format('truetype'),
+            url('../font/icomoon/icomoon.woff?ew6nkk') format('woff'),
+            url('../font/icomoon/icomoon.svg?ew6nkk#icomoon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'icomoon' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+/*---------------------------------*/
+[class*="path"] {
+  font-size: 2.0em;
+}
+@media only screen and (min-width: 600px) and (max-width: 992px) {
+  [class*="path"] {
+    font-size: 2.5em;
+  }
+}
+@media only screen and (min-width: 993px) {
+  [class*="path"] {
+    font-size: 3.0em;
+  }
+}
+
+.icon-295px .path1:before {
+    content: "\e96e";
+}
+.icon-295px .path2:before {
+    content: "\e96f";
+    margin-left: -1em;
+}
+.icon-295px .path3:before {
+    content: "\e970";
+    margin-left: -1em;
+}
+.icon-295px .path4:before {
+    content: "\e971";
+    margin-left: -1em;
+}
+.icon-295px .path5:before {
+    content: "\e972";
+    margin-left: -1em;
+}
+.icon-295px .path6:before {
+    content: "\e973";
+    margin-left: -1em;
+}
+.icon-295px .path7:before {
+    content: "\e974";
+    margin-left: -1em;
+}
+.icon-295px .path8:before {
+    content: "\e975";
+    margin-left: -1em;
+}
+.icon-295px .path9:before {
+    content: "\e976";
+    margin-left: -1em;
+}
+.icon-295px .path10:before {
+    content: "\e977";
+    margin-left: -1em;
+}
+.icon-295px .path11:before {
+    content: "\e978";
+    margin-left: -1em;
+}
+.icon-295px .path12:before {
+    content: "\e979";
+    margin-left: -1em;
+}
+.icon-295px2 .path1:before {
+    content: "\e97a";
+}
+.icon-295px2 .path2:before {
+    content: "\e97b";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-295px2 .path3:before {
+    content: "\e97c";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-295px2 .path4:before {
+    content: "\e97d";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-295px2 .path5:before {
+    content: "\e97e";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-295px2 .path6:before {
+    content: "\e97f";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-295px2 .path7:before {
+    content: "\e980";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-295px2 .path8:before {
+    content: "\e981";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-295px2 .path9:before {
+    content: "\e982";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-295px2 .path10:before {
+    content: "\e983";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-295px2 .path11:before {
+    content: "\e984";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-295px3 .path1:before {
+    content: "\e985";
+}
+.icon-295px3 .path2:before {
+    content: "\e986";
+    margin-left: -1em;
+}
+.icon-295px3 .path3:before {
+    content: "\e987";
+    margin-left: -1em;
+}
+.icon-295px3 .path4:before {
+    content: "\e988";
+    margin-left: -1em;
+}
+.icon-295px3 .path5:before {
+    content: "\e989";
+    margin-left: -1em;
+}
+.icon-295px3 .path6:before {
+    content: "\e98a";
+    margin-left: -1em;
+}
+.icon-295px3 .path7:before {
+    content: "\e98b";
+    margin-left: -1em;
+}
+.icon-295px3 .path8:before {
+    content: "\e98c";
+    margin-left: -1em;
+}
+.icon-295px3 .path9:before {
+    content: "\e98d";
+    margin-left: -1em;
+}
+.icon-295px3 .path10:before {
+    content: "\e98e";
+    margin-left: -1em;
+}
+.icon-295px3 .path11:before {
+    content: "\e98f";
+    margin-left: -1em;
+}
+.icon-295px4 .path1:before {
+    content: "\e990";
+}
+.icon-295px4 .path2:before {
+    content: "\e991";
+    margin-left: -1em;
+}
+.icon-295px4 .path3:before {
+    content: "\e992";
+    margin-left: -1em;
+}
+.icon-295px4 .path4:before {
+    content: "\e993";
+    margin-left: -1em;
+}
+.icon-295px4 .path5:before {
+    content: "\e994";
+    margin-left: -1em;
+}
+.icon-295px4 .path6:before {
+    content: "\e995";
+    margin-left: -1em;
+}
+.icon-295px4 .path7:before {
+    content: "\e996";
+    margin-left: -1em;
+}
+.icon-295px4 .path8:before {
+    content: "\e997";
+    margin-left: -1em;
+}
+.icon-295px4 .path9:before {
+    content: "\e998";
+    margin-left: -1em;
+}
+.icon-295px4 .path10:before {
+    content: "\e999";
+    margin-left: -1em;
+}
+.icon-295px4 .path11:before {
+    content: "\e99a";
+    margin-left: -1em;
+}
+.icon-295px5:before {
+    content: "\e99b";
+}
+.icon-agryeel_icon_S_01 .path1:before {
+    content: "\e900";
+}
+.icon-agryeel_icon_S_01 .path2:before {
+    content: "\e901";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_01 .path3:before {
+    content: "\e902";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_01 .path4:before {
+    content: "\e903";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_02 .path1:before {
+    content: "\e904";
+}
+.icon-agryeel_icon_S_02 .path2:before {
+    content: "\e905";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_02 .path3:before {
+    content: "\e906";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_02 .path4:before {
+    content: "\e907";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_02 .path5:before {
+    content: "\e908";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_02 .path6:before {
+    content: "\e909";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_02 .path7:before {
+    content: "\e90a";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_02 .path8:before {
+    content: "\e90b";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_02 .path9:before {
+    content: "\e90c";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_02 .path10:before {
+    content: "\e90d";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_02 .path11:before {
+    content: "\e90e";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_02 .path12:before {
+    content: "\e90f";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_02 .path13:before {
+    content: "\e910";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_02 .path14:before {
+    content: "\e911";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_02 .path15:before {
+    content: "\e912";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_02 .path16:before {
+    content: "\e913";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_02 .path17:before {
+    content: "\e914";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_02 .path18:before {
+    content: "\e915";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_02 .path19:before {
+    content: "\e916";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_02 .path20:before {
+    content: "\e917";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_03 .path1:before {
+    content: "\e918";
+}
+.icon-agryeel_icon_S_03 .path2:before {
+    content: "\e919";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_03 .path3:before {
+    content: "\e91a";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_03 .path4:before {
+    content: "\e91b";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_03 .path5:before {
+    content: "\e91c";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_03 .path6:before {
+    content: "\e91d";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_03 .path7:before {
+    content: "\e91e";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_03 .path8:before {
+    content: "\e91f";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_03 .path9:before {
+    content: "\e920";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_04 .path1:before {
+    content: "\e921";
+}
+.icon-agryeel_icon_S_04 .path2:before {
+    content: "\e922";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_04 .path3:before {
+    content: "\e923";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_04 .path4:before {
+    content: "\e924";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_04 .path5:before {
+    content: "\e925";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_04 .path6:before {
+    content: "\e926";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_04 .path7:before {
+    content: "\e927";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_04 .path8:before {
+    content: "\e928";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_04 .path9:before {
+    content: "\e929";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_04 .path10:before {
+    content: "\e92a";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_04 .path11:before {
+    content: "\e92b";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_05 .path1:before {
+    content: "\e92c";
+}
+.icon-agryeel_icon_S_05 .path2:before {
+    content: "\e92d";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_05 .path3:before {
+    content: "\e92e";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_05 .path4:before {
+    content: "\e92f";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_05 .path5:before {
+    content: "\e930";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_05 .path6:before {
+    content: "\e931";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_05 .path7:before {
+    content: "\e932";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_05 .path8:before {
+    content: "\e933";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_05 .path9:before {
+    content: "\e934";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_05 .path10:before {
+    content: "\e935";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_05 .path11:before {
+    content: "\e936";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_05 .path12:before {
+    content: "\e937";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_05 .path13:before {
+    content: "\e938";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_05 .path14:before {
+    content: "\e939";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_05 .path15:before {
+    content: "\e93a";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_05 .path16:before {
+    content: "\e93b";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_05 .path17:before {
+    content: "\e93c";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_05 .path18:before {
+    content: "\e93d";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_05 .path19:before {
+    content: "\e93e";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_05 .path20:before {
+    content: "\e93f";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_05 .path21:before {
+    content: "\e940";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_05 .path22:before {
+    content: "\e941";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_06 .path1:before {
+    content: "\e942";
+}
+.icon-agryeel_icon_S_06 .path2:before {
+    content: "\e943";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_06 .path3:before {
+    content: "\e944";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_06 .path4:before {
+    content: "\e945";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_06 .path5:before {
+    content: "\e946";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_06 .path6:before {
+    content: "\e947";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_06 .path7:before {
+    content: "\e948";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_06 .path8:before {
+    content: "\e949";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_06 .path9:before {
+    content: "\e94a";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_06 .path10:before {
+    content: "\e94b";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_06 .path11:before {
+    content: "\e94c";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_07 .path1:before {
+    content: "\e94d";
+}
+.icon-agryeel_icon_S_07 .path2:before {
+    content: "\e94e";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_07 .path3:before {
+    content: "\e94f";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_08 .path1:before {
+    content: "\e950";
+}
+.icon-agryeel_icon_S_08 .path2:before {
+    content: "\e951";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_08 .path3:before {
+    content: "\e952";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_08 .path4:before {
+    content: "\e953";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_08 .path5:before {
+    content: "\e954";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_08 .path6:before {
+    content: "\e955";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_08 .path7:before {
+    content: "\e956";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_08 .path8:before {
+    content: "\e957";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_08 .path9:before {
+    content: "\e958";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_08 .path10:before {
+    content: "\e959";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_08 .path11:before {
+    content: "\e95a";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_08 .path12:before {
+    content: "\e95b";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_08 .path13:before {
+    content: "\e95c";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_08 .path14:before {
+    content: "\e95d";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_09 .path1:before {
+    content: "\e95e";
+}
+.icon-agryeel_icon_S_09 .path2:before {
+    content: "\e95f";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_09 .path3:before {
+    content: "\e960";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_09 .path4:before {
+    content: "\e961";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_09 .path5:before {
+    content: "\e962";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_09 .path6:before {
+    content: "\e963";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_09 .path7:before {
+    content: "\e964";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_09 .path8:before {
+    content: "\e965";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_09 .path9:before {
+    content: "\e966";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_010 .path1:before {
+    content: "\e967";
+}
+.icon-agryeel_icon_S_010 .path2:before {
+    content: "\e968";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_010 .path3:before {
+    content: "\e969";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_010 .path4:before {
+    content: "\e96a";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_010 .path5:before {
+    content: "\e96b";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_010 .path6:before {
+    content: "\e96c";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_011 .path1:before {
+    content: "\e975";
+}
+.icon-agryeel_icon_S_011 .path2:before {
+    content: "\e976";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_011 .path3:before {
+    content: "\e977";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_011 .path4:before {
+    content: "\e978";
+    margin-left: -1em;
+    color: rgb(0, 0, 0);
+}
+.icon-agryeel_icon_S_011 .path5:before {
+    content: "\e979";
+    margin-left: -1em;
+    color: rgb(0, 0, 0);
+}
+.icon-agryeel_icon_S_011 .path6:before {
+    content: "\e97a";
+    margin-left: -1em;
+    color: rgb(0, 0, 0);
+}
+.icon-agryeel_icon_S_011 .path7:before {
+    content: "\e97b";
+    margin-left: -1em;
+    color: rgb(0, 0, 0);
+}
+.icon-agryeel_icon_S_011 .path8:before {
+    content: "\e97c";
+    margin-left: -1em;
+    color: rgb(0, 0, 0);
+}
+.icon-agryeel_icon_S_011 .path9:before {
+    content: "\e97d";
+    margin-left: -1em;
+    color: rgb(0, 0, 0);
+}
+.icon-agryeel_icon_S_011 .path10:before {
+    content: "\e97e";
+    margin-left: -1em;
+    color: rgb(0, 0, 0);
+}
+.icon-agryeel_icon_S_011 .path11:before {
+    content: "\e97f";
+    margin-left: -1em;
+    color: rgb(0, 0, 0);
+}
+.icon-agryeel_icon_S_011 .path12:before {
+    content: "\e980";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_011 .path13:before {
+    content: "\e981";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_011 .path14:before {
+    content: "\e982";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_011 .path15:before {
+    content: "\e983";
+    margin-left: -1em;
+    color: rgb(255, 255, 255);
+}
+.icon-agryeel_icon_S_011 .path16:before {
+    content: "\e984";
+    margin-left: -1em;
+    color: rgb(0, 0, 0);
+}
+.icon-agryeel_icon_S_011 .path17:before {
+    content: "\e985";
+    margin-left: -1em;
+    color: rgb(0, 0, 0);
+}
+.icon-agryeel_icon_S_011 .path18:before {
+    content: "\e986";
+    margin-left: -1em;
+    color: rgb(0, 0, 0);
+}
+.icon-agryeel_icon_S_011 .path19:before {
+    content: "\e987";
+    margin-left: -1em;
+    color: rgb(0, 0, 0);
+}
+.icon-agryeel_icon_S_011 .path20:before {
+    content: "\e988";
+    margin-left: -1em;
+    color: rgb(0, 0, 0);
+}
+.icon-agryeel_icon_S_011 .path21:before {
+    content: "\e989";
+    margin-left: -1em;
+    color: rgb(0, 0, 0);
+}
+.icon-agryeel_icon_S_011 .path22:before {
+    content: "\e98a";
+    margin-left: -1em;
+    color: rgb(0, 0, 0);
+}
+.icon-agryeel_icon_S_011 .path23:before {
+    content: "\e98b";
+    margin-left: -1em;
+    color: rgb(0, 0, 0);
+}
+.icon-agryeel_icon_S_012:before {
+    content: "\e974";
+}
+.icon-google-plus2:before {
+    content: "\e96d";
+}
+
+.icon-block {
+  padding: 0 15px;
+}
+.icon-block .material-icons {
+	font-size: inherit;
+
+}

@@ -1,0 +1,59 @@
+@(title: String)
+
+<!DOCTYPE html>
+
+<html lang="jp">
+      <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+        <title>AICA</title>
+
+        <!-- FONT  -->
+        <link href="https://fonts.googleapis.com/css?family=Lato:400,700|Noto+Sans+JP:400,700" rel="stylesheet">
+        <!-- CSS  -->
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/materialize.css")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/agryeel.css")">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+      </head>
+      <body>
+      <!-- ナビゲーションバー -->
+      <div class="navbar-fixed">
+        <nav class="red darken-4" role="navigation">
+          <div class="nav-wrapper">
+          </div>
+        </nav>
+      </div>
+      <!-- メインセクション -->
+      <!-- 作業対象圃場 -->
+      <div id="mainWorkTargetHouse" class="col s12 work-target-house">
+        <div id="G0003targetCompartmentList" class="row">
+        </div>
+      </div>
+      <!-- アクションボタン -->
+      <div class="fixed-action-btn" style="bottom: 24px; right: 24px;">
+        <a class="btn-floating btn-large red">
+          <i class="material-icons large">mode_edit</i>
+        </a>
+        <ul>
+          <li><a class="btn-floating blue" href="./menuMove"><i class="large material-icons">arrow_back</i></a></li>
+        </ul>
+      </div>
+      <!-- フッター -->
+      <footer class="page-footer red darken-4">
+        <div class="footer-copyright">
+          <div class="container center">
+            &copy;Sun For You.Ltd
+          </div>
+        </div>
+      </footer>
+      </body>
+
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script>
+    <script src="@routes.Assets.at("javascripts/materialize.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.at("javascripts/chart.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.at("javascripts/agryeel.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.at("javascripts/init.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.at("javascripts/worktarget.js")" type="text/javascript"></script>
+
+</html>
