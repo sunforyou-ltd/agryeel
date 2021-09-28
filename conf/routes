@@ -218,6 +218,10 @@ GET     /:systemKind/getSystemManage            controllers.CommonController.get
 GET     /:systemKind/:majorVersion/:minorVersion/:patchVersion/:compUpdate/commitSystemManage            controllers.CommonController.commitSystemManage(systemKind: Integer, majorVersion: Integer, minorVersion: Integer, patchVersion: Integer, compUpdate: Integer)
 
 #-------------------------------------------------------------------------------
+# SyukkaController
+#-------------------------------------------------------------------------------
+GET     /:farmid/shipmentData                   controllers.SyukkaController.shipmentData(farmid:Double)
+#-------------------------------------------------------------------------------
 # ServiceController
 #-------------------------------------------------------------------------------
 GET     /:name/:mail/mailSend                   controllers.ServiceController.mailSend(name:String ,mail:String)

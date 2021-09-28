@@ -1,5 +1,8 @@
 package models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Entity;
 
 import play.db.ebean.Model;
@@ -67,5 +70,32 @@ public class Nisugata extends Model {
      */
     public static Nisugata getNisugataInfo(double pNisugataId) {
     	return Nisugata.find.where().eq("nisugata_id", pNisugataId).findUnique();
+    }
+
+    /**
+     * 名称からＩＤに変換する
+     * @param pName
+     * @param pFarmId
+     * @return
+     */
+    public static double convertId(String pName, double pFarmId) {
+      double result = 0;
+
+      List<NisugataOfFarm> nofs = NisugataOfFarm.find.where().eq("farm_id", pFarmId).orderBy("nisugata_id").findList();
+      List<Double> keys = new ArrayList<Double>();
+
+      for (NisugataOfFarm nof: nofs) {
+        keys.add(new Double(nof.nisugataId));
+      }
+
+      List<Nisugata> nisugatas = Nisugata.find.where()
+                                     .eq("nisugata_name", pName)
+                                     .in("nisugata_id", keys)
+                                     .findList();
+      if (nisugatas.size() == 1) { //該当レコードが１件のみ
+        result = nisugatas.get(0).nisugataId;
+      }
+
+      return result;
     }
 }
