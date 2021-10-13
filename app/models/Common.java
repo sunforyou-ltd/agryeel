@@ -287,5 +287,9 @@ public class Common extends Model {
          * 収穫入力人数
          */
         public static final int     SYUKAKUINPUTCOUNT = 57;
+        /**
+         * 育苗機能
+         */
+        public static final int     IKUBYOFUNCTION = 63;
     }
 }

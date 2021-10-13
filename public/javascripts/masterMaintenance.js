@@ -175,6 +175,14 @@
         case 16:	//生産者の場合
             url = "/" + farmID + "/farmSettingMove";
             break;
+
+        case 17:	//容器の場合
+            url = "/" + farmID + "/" + mstID + "/youkiSettingMove";
+            break;
+
+        case 18:	//土の場合
+            url = "/" + farmID + "/" + mstID + "/soilSettingMove";
+            break;
         }
 
 	    window.location.href = url;	                    				//各マスタ編集に遷移する

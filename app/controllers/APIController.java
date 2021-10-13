@@ -26,10 +26,13 @@ import models.Farm;
 import models.FieldGroup;
 import models.Hinsyu;
 import models.HinsyuOfFarm;
+import models.IkubyoPlan;
+import models.IkubyoPlanLine;
 import models.Kiki;
 import models.KikiOfFarm;
 import models.MessageOfAccount;
 import models.MotochoBase;
+import models.NaeStatus;
 import models.Nisugata;
 import models.NisugataOfFarm;
 import models.Nouhi;
@@ -39,12 +42,14 @@ import models.ShituOfFarm;
 import models.Sizai;
 import models.Size;
 import models.SizeOfFarm;
+import models.Soil;
 import models.SystemMessage;
 import models.TimeLine;
 import models.Work;
 import models.WorkChain;
 import models.WorkChainItem;
 import models.WorkDiary;
+import models.Youki;
 import play.Logger;
 import play.libs.Json;
 import play.mvc.Controller;
@@ -75,6 +80,7 @@ import compornent.MabikiCompornent;
 import compornent.MotochoCompornent;
 import compornent.MultiCompornent;
 import compornent.NaehashuCompornent;
+import compornent.NaeStatusCompornent;
 import compornent.NichoChoseiCompornent;
 import compornent.NomalCompornent;
 import compornent.NoukouCompornent;
@@ -1024,6 +1030,48 @@ public class APIController extends Controller {
 
           listJson.add(jd);
 
+        }
+
+        resultJson.put("datalist" , listJson);
+
+        return ok(resultJson);
+    }
+
+    /**
+     * 生産物別品種情報取得
+     * @return
+     */
+    public static Result gethinsyuofcroptocrop(double farmId, double cropId) {
+
+        /* 戻り値用JSONデータの生成 */
+        ObjectNode resultJson = Json.newObject();
+        ObjectMapper mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
+        ArrayNode listJson = mapper.createArrayNode();
+
+        //----- 生産者別機器情報を取得 -----
+        List<HinsyuOfFarm> hofs = HinsyuOfFarm.getHinsyuOfFarm(farmId);
+        List<Double>hinsyus = new ArrayList<Double>();
+        for (HinsyuOfFarm hof : hofs) {
+          if (hof.deleteFlag == 1) { // 削除済みの場合
+            continue;
+          }
+          hinsyus.add(hof.hinsyuId);
+        }
+        //----- 対象機器の取得 -----
+        List<Hinsyu> hinsyuList = Hinsyu.find.where().in("hinsyu_id", hinsyus).eq("crop_id", cropId).order("hinsyu_id ASC").findList();
+        for (Double key : hinsyus) {
+          for (Hinsyu hinsyu : hinsyuList) {
+            if (key.doubleValue() == hinsyu.hinsyuId) {
+              ObjectNode jd = Json.newObject();
+
+              jd.put("id"   , hinsyu.hinsyuId);
+              jd.put("name" , hinsyu.hinsyuName);
+              jd.put("flag" , 0);
+
+              listJson.add(jd);
+              break;
+            }
+          }
         }
 
         resultJson.put("datalist" , listJson);
@@ -2847,4 +2895,391 @@ public class APIController extends Controller {
 
       return ok(resultJson);
     }
+
+    /**
+     * 育苗作業情報を取得する
+     * @return 育苗作業情報JSON
+     */
+    public static Result getikubyowork() {
+      session(AgryeelConst.SessionKey.API, "true");
+
+      return controllers.IkubyoController.getIkubyoWork();
+    }
+
+    /**
+     * 苗状況照会を取得する
+     * @return 苗状況照会JSON
+     */
+    public static Result getnaesp(String accountId) {
+      session(AgryeelConst.SessionKey.ACCOUNTID, accountId);                //アカウントIDをセッションに格納
+      session(AgryeelConst.SessionKey.API, "true");
+
+      return controllers.IkubyoController.getNaeSP();
+    }
+
+    /**
+     * 苗詳細情報を取得する
+     * @return 苗状況照会JSON
+     */
+    public static Result getnaedetail(String accountId) {
+      session(AgryeelConst.SessionKey.ACCOUNTID, accountId);                //アカウントIDをセッションに格納
+      session(AgryeelConst.SessionKey.API, "true");
+
+      return controllers.IkubyoController.getNaeDetail();
+    }
+
+    /**
+     * 初期検索育苗ラインデータを取得する
+     */
+    public static Result getikubyolineinitdata(String accountId) {
+
+      session(AgryeelConst.SessionKey.ACCOUNTID, accountId);                //アカウントIDをセッションに格納
+      session(AgryeelConst.SessionKey.API, "true");
+
+      return controllers.IkubyoController.getIkubyoLineInitData();
+    }
+
+    /**
+     * 育苗ライン検索条件をもとに育苗ライン情報を取得する
+     */
+    public static Result getikubyolinedata(String accountId) {
+
+      session(AgryeelConst.SessionKey.ACCOUNTID, accountId);                //アカウントIDをセッションに格納
+      session(AgryeelConst.SessionKey.API, "true");
+
+      return controllers.IkubyoController.getIkubyoLineData();
+    }
+
+    /**
+     * 苗状況照会検索条件をアカウント状況に反映する
+     * @return
+     */
+    public static Result naesearchcommit(String accountId) {
+      session(AgryeelConst.SessionKey.ACCOUNTID, accountId);								//アカウントIDをセッションに格納
+
+      return controllers.IkubyoController.naesearchCommit();
+    }
+
+    /**
+     * 育苗ライン検索条件をアカウント状況に反映する
+     * @return
+     */
+    public static Result ikubyolinestatuscommit(String accountId) {
+      session(AgryeelConst.SessionKey.ACCOUNTID, accountId);								//アカウントIDをセッションに格納
+
+      return controllers.IkubyoController.ikubyolineStatusCommit();
+    }
+
+    /**
+     * 生産者IDから苗情報一覧を取得する
+     * @return
+     */
+    public static Result getnaeoffarm(double pFarmId) {
+
+      /* 戻り値用JSONデータの生成 */
+      ObjectMapper mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
+      ObjectNode resultJson = Json.newObject();
+      ArrayNode listJson = mapper.createArrayNode();
+
+      int result = NaeStatusCompornent.getNaeOfFarmJsonArray(pFarmId, listJson);
+
+      resultJson.put("datalist" , listJson);
+      resultJson.put("flag"     , 0);
+      resultJson.put("result"   , "SUCCESS");
+
+      return ok(resultJson);
+    }
+
+    /**
+     * 苗Noから苗情報一覧を取得する
+     * @return
+     */
+    public static Result getnaeinfolist(String naeNo) {
+
+      /* 戻り値用JSONデータの生成 */
+      ObjectMapper mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
+      ObjectNode resultJson = Json.newObject();
+      ArrayNode listJson = mapper.createArrayNode();
+
+      int result = NaeStatusCompornent.getNaeInfoJsonArray(naeNo, listJson);
+
+      resultJson.put("datalist" , listJson);
+      resultJson.put("result"   , "SUCCESS");
+
+      return ok(resultJson);
+    }
+
+    /**
+     * 育苗計画初期表示データ取得
+     * @return
+     */
+    public static Result ikubyoplaninit(String accountId, String accountName, double farmId, double ikubyoPlanId) {
+        session(AgryeelConst.SessionKey.IKUBYOPLANID, String.valueOf(ikubyoPlanId));
+        return ikubyodiaryinit(accountId, accountName, farmId, 0, "NONE", -99999);
+    }
+
+    /**
+     * 【AGRYEEL】育苗日誌初期表示データ取得
+     * @return
+     */
+    public static Result ikubyodiaryinit(String accountId, String accountName, double farmId, double workId, String naeNo, double ikubyoDiaryId) {
+
+    	session(AgryeelConst.SessionKey.ACCOUNTID, accountId);								//アカウントIDをセッションに格納
+    	session(AgryeelConst.SessionKey.ACCOUNTNAME, accountName);							//アカウント名をセッションに格納
+    	session(AgryeelConst.SessionKey.FARMID, String.valueOf(farmId));
+        if(workId != 0){
+    	    session(AgryeelConst.SessionKey.WORKID, String.valueOf(workId));
+        }else{
+    	    session(AgryeelConst.SessionKey.WORKID, "");
+        }
+        session(AgryeelConst.SessionKey.NAENO, naeNo.replace("NONE", ""));
+        if(ikubyoDiaryId != 0 && ikubyoDiaryId != -99999){
+            session(AgryeelConst.SessionKey.IKUBYODIARYID, String.valueOf(ikubyoDiaryId));
+        }else{
+            session(AgryeelConst.SessionKey.IKUBYODIARYID, "");
+        }
+        if(ikubyoDiaryId != -99999){
+            session(AgryeelConst.SessionKey.IKUBYOPLANID, "");
+        }
+        session(AgryeelConst.SessionKey.API, "true");
+
+        /* 戻り値用JSONデータの生成 */
+        ObjectNode 	resultJson = Json.newObject();
+/*
+        resultJson = controllers.IkubyoDiary.ikubyoDiaryInit();
+
+        return ok(resultJson);
+*/
+        return controllers.IkubyoDiary.ikubyoDiaryInit();
+    }
+
+    /**
+     * 【AGRYEEL】育苗日誌記録処理
+     * @return
+     */
+    public static Result submitikubyodiary(String accountId, double farmId, double ikubyoDiaryId) {
+
+        /* 戻り値用JSONデータの生成 */
+        ObjectNode 	resultJson = Json.newObject();
+
+        /* JSONデータを取得 */
+        JsonNode input = request().body().asJson();
+
+    	session(AgryeelConst.SessionKey.ACCOUNTID, accountId);								//アカウントIDをセッションに格納
+    	session(AgryeelConst.SessionKey.FARMID, String.valueOf(farmId));
+
+        controllers.IkubyoDiary.updateIkubyoDiary(resultJson, input, ikubyoDiaryId, true);
+
+        return ok(resultJson);
+    }
+
+    /**
+     * 育苗作業中断要求
+     * @return
+     */
+    public static Result workingikubyostop(String accountId) {
+
+        session(AgryeelConst.SessionKey.ACCOUNTID, accountId);								//アカウントIDをセッションに格納
+
+        return controllers.WorkingIkubyo.workingstop();
+    }
+
+    /**
+     * 【AGRYEEL】育苗日誌削除処理
+     * @return
+     */
+    public static Result ikubyodiarydelete(String accountId, double farmId, double ikubyoDiaryId) {
+
+        /* 戻り値用JSONデータの生成 */
+        ObjectNode 	resultJson = Json.newObject();
+
+    	session(AgryeelConst.SessionKey.ACCOUNTID, accountId);								//アカウントIDをセッションに格納
+    	session(AgryeelConst.SessionKey.FARMID, String.valueOf(farmId));
+
+        controllers.IkubyoDiary.ikubyoDiaryDelete(ikubyoDiaryId);
+
+        return ok(resultJson);
+    }
+
+    /**
+     * 【AGRYEEL】育苗計画記録処理
+     * @return
+     */
+    public static Result submitikubyoplan(String accountId, double farmId) {
+
+        /* 戻り値用JSONデータの生成 */
+        ObjectNode 	resultJson = Json.newObject();
+
+        /* JSONデータを取得 */
+        JsonNode input = request().body().asJson();
+
+    	session(AgryeelConst.SessionKey.ACCOUNTID, accountId);								//アカウントIDをセッションに格納
+    	session(AgryeelConst.SessionKey.FARMID, String.valueOf(farmId));
+
+        controllers.IkubyoDiary.updateIkubyoPlan(resultJson, input, true);
+
+        return ok(resultJson);
+    }
+
+    /**
+     * 【AGRYEEL】育苗計画記録完了処理
+     * @return
+     */
+    public static Result plantodiaryikubyo(String accountId) {
+
+      Logger.info("[ PLANTODIARYIKUBYO_API ] ACCOUNTID={}", accountId);
+      ObjectNode  resultJson = Json.newObject();
+
+      session(AgryeelConst.SessionKey.ACCOUNTID, accountId);								//アカウントIDをセッションに格納
+      Account ac = Account.getAccount(accountId);
+      if (ac != null) {
+        session(AgryeelConst.SessionKey.FARMID, String.valueOf(ac.farmId));
+      }
+      else {
+        resultJson.put(AgryeelConst.Result.RESULT, AgryeelConst.Result.NOTFOUND);
+        return ok(resultJson);
+      }
+
+      return controllers.IkubyoDiary.planToDiaryIkubyo();
+    }
+
+    /**
+     * 生産者別容器情報取得
+     * @return
+     */
+    public static Result getyoukioffarm(double farmId) {
+
+        /* 戻り値用JSONデータの生成 */
+        ObjectNode resultJson = Json.newObject();
+        ObjectMapper mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
+        ArrayNode listJson = mapper.createArrayNode();
+
+        List<Youki> datas = Youki.getYoukiOfFarm(farmId);
+
+        for (Youki data : datas) {
+          if (data.deleteFlag == 1) { // 削除済みの場合
+            continue;
+          }
+
+          ObjectNode jd = Json.newObject();
+
+          jd.put("id"   , data.youkiId);
+          jd.put("name" , data.youkiName);
+          jd.put("flag" , 0);
+
+          listJson.add(jd);
+        }
+
+        resultJson.put("datalist" , listJson);
+
+        return ok(resultJson);
+    }
+
+    /**
+     * 生産者別土情報取得
+     * @return
+     */
+    public static Result getsoiloffarm(double farmId, int soilKind) {
+
+        /* 戻り値用JSONデータの生成 */
+        ObjectNode resultJson = Json.newObject();
+        ObjectMapper mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
+        ArrayNode listJson = mapper.createArrayNode();
+
+        List<Soil> datas = Soil.getSoilOfFarm(farmId);
+
+        for (Soil data : datas) {
+          if (data.deleteFlag == 1) { // 削除済みの場合
+            continue;
+          }
+
+          if (data.soilKind != soilKind) {
+            continue;
+          }
+
+          ObjectNode jd = Json.newObject();
+
+          jd.put("id"   , data.soilId);
+          jd.put("name" , data.soilName);
+          jd.put("flag" , 0);
+
+          listJson.add(jd);
+        }
+
+        resultJson.put("datalist" , listJson);
+
+        return ok(resultJson);
+    }
+
+
+	/**
+	 * 育苗作業中情報を取得する
+	 * @param accountId アカウントＩＤ
+	 * @return 取得結果
+	 */
+    public static Result getikubyoworking(String accountId) {
+        SimpleDateFormat sts = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+
+        /* 戻り値用JSONデータの生成 */
+        ObjectNode resultJson = Json.newObject();
+
+		//アカウントIDをキーにアカウント情報を取得する
+		Account account = Account.find.where().eq("account_id", accountId).findUnique();
+
+    	if (account != null) { //アカウントが取得できた場合
+
+      		resultJson.put("field"   , account.fieldId);
+            if (account.workPlanId != 0) {
+              List<models.WorkPlan> workplans = models.WorkPlan.find.where().eq("work_plan_id", account.workPlanId).eq("account_id", account.accountId).orderBy("work_plan_id").findList();
+              String sKukaku = "";
+              for (models.WorkPlan workplan: workplans) {
+                Compartment cd = FieldComprtnent.getCompartment(workplan.kukakuId);
+                if (cd != null) {
+                  if (!"".equals(sKukaku)) {
+                    sKukaku += ",";
+                  }
+                  sKukaku += cd.kukakuName;
+                }
+              }
+              resultJson.put("fieldnm", sKukaku);
+            }
+            else {
+              Compartment cp = Compartment.getCompartmentInfo(account.fieldId);
+              if(cp != null){
+                resultJson.put("fieldnm"    , cp.kukakuName);
+              }else{
+                resultJson.put("fieldnm"    , "");
+              }
+            }
+      		resultJson.put("work"    , account.workId);
+      		Work wk = Work.getWork(account.workId);
+      		if(wk != null){
+    	  		resultJson.put("worknm"    , wk.workName);
+      		}else{
+    	  		resultJson.put("worknm"    , "");
+      		}
+      		if (account.workStartTime == null) {
+        		resultJson.put("start"    , "");
+      		}
+      		else {
+        		resultJson.put("start"    , sts.format(account.workStartTime));
+      		}
+      		resultJson.put("workPlanId"    , account.workPlanId);
+
+            IkubyoPlanLine ipl = IkubyoPlanLine.find.where().eq("ikubyo_plan_id", account.workPlanId).findUnique();
+            String[] sNaeNos = ipl.naeNo.split("-");
+            NaeStatus ns = NaeStatus.find.where().eq("nae_no", ipl.naeNo).findUnique();
+            if (ns != null) {
+              resultJson.put("naeName"   , ns.hinsyuName + "(" + sNaeNos[1] + ")");                             //苗名
+            }
+            else {
+              IkubyoPlan ip = IkubyoPlan.find.where().eq("ikubyo_plan_id", ipl.ikubyoPlanId).findUnique();
+              resultJson.put("naeName"   ,  Hinsyu.getMultiHinsyuName(ip.hinsyuId) + "(" + sNaeNos[1] + ")");   //苗名
+            }
+
+    	}
+
+        return ok(resultJson);
+	}
+
 }

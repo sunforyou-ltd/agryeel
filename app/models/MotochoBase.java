@@ -16,7 +16,7 @@ import play.db.ebean.Model;
 public class MotochoBase extends Model {
 
     /**
-   * 
+   *
    */
   private static final long serialVersionUID = 7750338831469394975L;
     /**
@@ -151,6 +151,10 @@ public class MotochoBase extends Model {
      * 予測収穫量
      */
     public double predictionShukakuRyo;
+    /**
+     * 苗No
+     */
+    public String naeNo;
 
     public static Finder<Long, MotochoBase> find = new Finder<Long, MotochoBase>(Long.class, MotochoBase.class);
 

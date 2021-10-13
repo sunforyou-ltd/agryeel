@@ -113,6 +113,7 @@ public class FarmSetting extends Controller {
             resultJson.put("historyReference"	, fc.farmStatusData.historyReference);	//履歴参照
             resultJson.put("syukakuInputCount"	, fc.farmStatusData.syukakuInputCount);	//収穫入力数
             resultJson.put("paymentKubun"		, fc.farmStatusData.paymentKubun);		//支払区分
+            resultJson.put("ikubyoFunction"		, fc.farmStatusData.ikubyoFunction);	//育苗機能
             //最終回収日
             String kaisyuday = "";
             if(String.valueOf(fc.farmStatusData.lastCollectionDate) != "null"){
@@ -174,6 +175,7 @@ public class FarmSetting extends Controller {
         fc.farmStatusData.workPlanAutoMove = input.get("workPlanAutoMove").asInt();
         fc.farmStatusData.historyReference = input.get("historyReference").asInt();
         fc.farmStatusData.syukakuInputCount = input.get("syukakuInputCount").asInt();
+        fc.farmStatusData.ikubyoFunction = input.get("ikubyoFunction").asInt();
         fc.farmStatusData.update();
 
         resultJson.put(AgryeelConst.Result.RESULT, AgryeelConst.Result.SUCCESS);

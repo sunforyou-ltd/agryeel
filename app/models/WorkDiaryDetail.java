@@ -71,6 +71,31 @@ public class WorkDiaryDetail extends Model {
      * 収穫人数
      */
     public int syukakuNinzu;
+    /**
+     * 苗No
+     */
+    public String naeNo;
+    /**
+     * 個数
+     */
+    public double kosu;
+    /**
+     * 列数
+     */
+    public double retusu;
+    /**
+     * 条間
+     */
+    public double joukan;
+    /**
+     * 条数
+     */
+    public double jousu;
+    /**
+     * 作付距離
+     */
+    public double plantingDistance;
+
     public static Finder<Long, WorkDiaryDetail> find = new Finder<Long, WorkDiaryDetail>(Long.class, WorkDiaryDetail.class);
 
     public static List<WorkDiaryDetail> getWorkDiaryDetailList(double pWorkDiaryId) {

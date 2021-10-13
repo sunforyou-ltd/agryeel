@@ -71,6 +71,31 @@ public class WorkPlanDetail extends Model {
      * 収穫人数
      */
     public int syukakuNinzu;
+    /**
+     * 苗No
+     */
+    public String naeNo;
+    /**
+     * 個数
+     */
+    public double kosu;
+    /**
+     * 列数
+     */
+    public double retusu;
+    /**
+     * 条間
+     */
+    public double joukan;
+    /**
+     * 条数
+     */
+    public double jousu;
+    /**
+     * 作付距離
+     */
+    public double plantingDistance;
+
     public static Finder<Long, WorkPlanDetail> find = new Finder<Long, WorkPlanDetail>(Long.class, WorkPlanDetail.class);
 
     public static List<WorkPlanDetail> getWorkPlanDetailList(double pWorkPlanId) {

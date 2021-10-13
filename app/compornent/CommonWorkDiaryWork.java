@@ -13,6 +13,7 @@ import models.CompartmentWorkChainStatus;
 import models.Crop;
 import models.Hinsyu;
 import models.Kiki;
+import models.NaeStatus;
 import models.Nisugata;
 import models.Nouhi;
 import models.NouhiOfCrop;
@@ -405,6 +406,15 @@ public abstract class CommonWorkDiaryWork implements AgryellInterface {
               this.shukakuryo    += wdd.shukakuRyo;
               break;
 
+            case AgryeelConst.WorkTemplate.TEISHOKU:
+              wdd.naeNo    = workHistryDetail.naeNo;                                //苗No
+              wdd.kosu     = workHistryDetail.kosu;                                 //個数
+              wdd.retusu   = workHistryDetail.retusu;                               //列数
+              wdd.joukan   = workHistryDetail.joukan;                               //条間
+              wdd.jousu    = workHistryDetail.jousu;                                //条数
+              wdd.plantingDistance = workHistryDetail.plantingDistance;             //作付距離
+              break;
+
             case AgryeelConst.WorkTemplate.SENKA:
               wdd.syukakuSitsu    = workHistryDetail.syukakuSitsu;                                //質
               wdd.syukakuSize     = workHistryDetail.syukakuSize;                                 //サイズ
@@ -491,6 +501,46 @@ public abstract class CommonWorkDiaryWork implements AgryellInterface {
                 this.shukakuryo    += wdd.shukakuRyo;
                 break;
 
+              case AgryeelConst.WorkTemplate.TEISHOKU:
+                String naeNo = detailInfoList.get(seqIndex).get("naeNo").asText();
+                if (naeNo.indexOf("-") != -1) {
+                  wdd.naeNo = naeNo;                                                                                   //苗No
+                }
+                else {
+                  wdd.naeNo = "";                                                                                      //苗No
+                }
+                try {
+                  wdd.kosu = Double.parseDouble(detailInfoList.get(seqIndex).get("kosu").asText());                    //個数
+                }
+                catch (Exception e) {
+                  wdd.kosu = 0;
+                }
+                try {
+                  wdd.retusu    = Double.parseDouble(detailInfoList.get(seqIndex).get("retusu").asText());             //列数
+                }
+                catch (Exception e) {
+                  wdd.retusu    = 0;
+                }
+                try {
+                  wdd.joukan     = Double.parseDouble(detailInfoList.get(seqIndex).get("joukan").asText());            //条間
+                }
+                catch (Exception e) {
+                  wdd.joukan     = 0;
+                }
+                try {
+                  wdd.jousu     = Double.parseDouble(detailInfoList.get(seqIndex).get("jousu").asText());              //条数
+                }
+                catch (Exception e) {
+                  wdd.jousu     = 0;
+                }
+                try {
+                  wdd.plantingDistance = Double.parseDouble(detailInfoList.get(seqIndex).get("pDistance").asText());   //作付距離
+                }
+                catch (Exception e) {
+                  wdd.plantingDistance      = 0;
+                }
+                break;
+
               case AgryeelConst.WorkTemplate.SENKA:
                 try {
                   wdd.syukakuSitsu    = Integer.parseInt(detailInfoList.get(seqIndex).get("sitsu").asText());                                      //質
@@ -559,6 +609,7 @@ public abstract class CommonWorkDiaryWork implements AgryellInterface {
 
         JsonNode detailInfoList = input.get("detailInfo");
         double   farmId        = Double.parseDouble(this.session.get((AgryeelConst.SessionKey.FARMID)));
+        String   naeNo = "";
 
         if (detailInfoList != null && detailInfoList.size() > 0) {
 
@@ -595,6 +646,21 @@ public abstract class CommonWorkDiaryWork implements AgryellInterface {
               wdd.syukakuKosu     = Double.parseDouble(detailInfoList.get(seqIndex).get("kosu").asText());                                       //個数
               wdd.shukakuRyo      = Double.parseDouble(detailInfoList.get(seqIndex).get("shukakuRyo").asText());                               //収穫量
               this.shukakuryo    += wdd.shukakuRyo;
+              break;
+
+            case AgryeelConst.WorkTemplate.TEISHOKU:
+              naeNo = detailInfoList.get(seqIndex).get("naeNo").asText();
+              if (naeNo.indexOf("-") != -1) {
+                wdd.naeNo = detailInfoList.get(seqIndex).get("naeNo").asText();                                      //苗No
+              }
+              else {
+                wdd.naeNo = "";                                                                                      //苗No
+              }
+              wdd.kosu   = Double.parseDouble(detailInfoList.get(seqIndex).get("kosu").asText());                    //個数
+              wdd.retusu = Double.parseDouble(detailInfoList.get(seqIndex).get("retusu").asText());                  //列数
+              wdd.joukan = Double.parseDouble(detailInfoList.get(seqIndex).get("joukan").asText());                  //条間
+              wdd.jousu  = Double.parseDouble(detailInfoList.get(seqIndex).get("jousu").asText());                   //条数
+              wdd.plantingDistance = Double.parseDouble(detailInfoList.get(seqIndex).get("pDistance").asText());     //作付距離
               break;
 
             case AgryeelConst.WorkTemplate.SENKA:
@@ -1638,6 +1704,31 @@ public abstract class CommonWorkDiaryWork implements AgryellInterface {
 
         }
       }
+      else if (wk.workTemplateId == AgryeelConst.WorkTemplate.TEISHOKU) { //定植の場合
+        for (WorkHistryDetail workHistryDetail : whd.listWorkHistryDetail) {
+          ObjectNode dt    = Json.newObject();
+          dt.put("naeNo" , workHistryDetail.naeNo);
+          if (!workHistryDetail.naeNo.equals("")) {
+            NaeStatus ns = NaeStatus.getStatusOfNae(workHistryDetail.naeNo);
+            String[] naeNos = workHistryDetail.naeNo.split("-");
+            dt.put("naeName"  , ns.hinsyuName + "(" + naeNos[1] + ")");
+            dt.put("hinsyuId" , ns.hinsyuId);
+            dt.put("zaikoKosu", ns.kosu);
+          }
+          else {
+            dt.put("naeName"  , "");
+            dt.put("hinsyuId" , 0);
+            dt.put("zaikoKosu", 0);
+          }
+          dt.put("kosu"  , workHistryDetail.kosu);
+          dt.put("retusu", workHistryDetail.retusu);
+          dt.put("joukan", workHistryDetail.joukan);
+          dt.put("jousu" , workHistryDetail.jousu);
+          dt.put("pDistance" , workHistryDetail.plantingDistance);
+          listJson.put(String.valueOf(workHistryDetail.workHistrySequence), dt);
+          listJsonArray.add(dt);
+        }
+      }
       else if (wk.workTemplateId == AgryeelConst.WorkTemplate.SENKA) { //選花の場合
 
         UserComprtnent accountComprtnent = new UserComprtnent();
@@ -1808,6 +1899,35 @@ public abstract class CommonWorkDiaryWork implements AgryellInterface {
 
         }
       }
+      else if (wk.workTemplateId == AgryeelConst.WorkTemplate.TEISHOKU) { //定植の場合
+        int idx = 0;
+        for (WorkDiaryDetail workDiaryDetail : wdd) {
+          ObjectNode dt    = Json.newObject();
+          if (!workDiaryDetail.naeNo.equals("")) {
+            NaeStatus ns = NaeStatus.getStatusOfNae(workDiaryDetail.naeNo);
+            String[] naeNos = workDiaryDetail.naeNo.split("-");
+            dt.put("naeNo" , workDiaryDetail.naeNo);
+            dt.put("naeName"  , ns.hinsyuName + "(" + naeNos[1] + ")");
+            dt.put("hinsyuId" , ns.hinsyuId);
+            dt.put("zaikoKosu", ns.kosu);
+          }
+          else {
+            String[] hinsyus = wd.hinsyuId.split(",");
+            double hinsyuId = Double.parseDouble(hinsyus[(int)workDiaryDetail.workDiarySequence - 1]);
+            dt.put("naeNo" , 0);
+            dt.put("naeName"  , Hinsyu.getHinsyuName(hinsyuId));
+            dt.put("hinsyuId" , hinsyuId);
+            dt.put("zaikoKosu", 0);
+          }
+          dt.put("kosu"  , workDiaryDetail.kosu);
+          dt.put("retusu", workDiaryDetail.retusu);
+          dt.put("joukan", workDiaryDetail.joukan);
+          dt.put("jousu" , workDiaryDetail.jousu);
+          dt.put("pDistance" , workDiaryDetail.plantingDistance);
+          listJson.put(String.valueOf((int)workDiaryDetail.workDiarySequence), dt);
+          listJsonArray.add(dt);
+        }
+      }
       else if (wk.workTemplateId == AgryeelConst.WorkTemplate.SENKA) { //選花の場合
         for (WorkDiaryDetail workDiaryDetail : wdd) {
 
@@ -1964,6 +2084,35 @@ public abstract class CommonWorkDiaryWork implements AgryellInterface {
           listJson.put(String.valueOf(seq), dt);
           listJsonArray.add(dt);
 
+        }
+      }
+      else if (wk.workTemplateId == AgryeelConst.WorkTemplate.TEISHOKU) { //定植の場合
+        int idx = 0;
+        for (WorkPlanDetail workPlanDetail : wpd) {
+          ObjectNode dt    = Json.newObject();
+          if (!workPlanDetail.naeNo.equals("")) {
+            NaeStatus ns = NaeStatus.getStatusOfNae(workPlanDetail.naeNo);
+            String[] naeNos = workPlanDetail.naeNo.split("-");
+            dt.put("naeNo" , workPlanDetail.naeNo);
+            dt.put("naeName"  , ns.hinsyuName + "(" + naeNos[1] + ")");
+            dt.put("hinsyuId" , ns.hinsyuId);
+            dt.put("zaikoKosu", ns.kosu);
+          }
+          else {
+            String[] hinsyus = wp.hinsyuId.split(",");
+            double hinsyuId = Double.parseDouble(hinsyus[(int)workPlanDetail.workDiarySequence - 1]);
+            dt.put("naeNo" , 0);
+            dt.put("naeName"  , Hinsyu.getHinsyuName(hinsyuId));
+            dt.put("hinsyuId" , hinsyuId);
+            dt.put("zaikoKosu", 0);
+          }
+          dt.put("kosu"  , workPlanDetail.kosu);
+          dt.put("retusu", workPlanDetail.retusu);
+          dt.put("joukan", workPlanDetail.joukan);
+          dt.put("jousu" , workPlanDetail.jousu);
+          dt.put("pDistance" , workPlanDetail.plantingDistance);
+          listJson.put(String.valueOf((int)workPlanDetail.workDiarySequence), dt);
+          listJsonArray.add(dt);
         }
       }
       else if (wk.workTemplateId == AgryeelConst.WorkTemplate.SENKA) { //選花の場合

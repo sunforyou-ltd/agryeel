@@ -14,6 +14,7 @@ import models.Nouhi;
 import models.Work;
 import models.WorkChainItem;
 import models.WorkDiary;
+import models.WorkDiaryDetail;
 import models.WorkDiarySanpu;
 
 import org.apache.commons.lang3.time.DateUtils;
@@ -21,12 +22,11 @@ import org.apache.commons.lang3.time.DateUtils;
 import play.Logger;
 import play.libs.Json;
 import util.DateU;
-
 import batch.PredictionPoint;
 
 import com.avaje.ebean.Ebean;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import consts.AgryeelConst;
 
@@ -157,6 +157,7 @@ public class CompartmentStatusCompornent implements AgryellInterface {
       compartmentStatus.finalEndDate                = motochoBase.workEndDay;
       compartmentStatus.totalSolarRadiation         = motochoBase.totalSolarRadiation;
       compartmentStatus.predictionShukakuStartDate  = motochoBase.predictionShukakuStartDate;
+      compartmentStatus.naeNo                   = motochoBase.naeNo;
 
     	//次回作業を更新する
     	if (cwcs != null){
@@ -365,6 +366,36 @@ public class CompartmentStatusCompornent implements AgryellInterface {
 //            compartmentStatus.totalShukakuNumber += workDiaryData.shukakuRyo; //収穫量を加算する
             compartmentStatus.totalShukakuCount += workDiaryData.shukakuRyo; //収穫量を加算する
             compartmentStatus.totalShukakuNumber++; //収穫量を加算する
+            break;
+          case AgryeelConst.WorkTemplate.TEISHOKU:
+            compartmentStatus.hinsyuName = Hinsyu.getMultiHinsyuName(workDiaryData.hinsyuId);
+            compartmentStatus.hinsyuId = workDiaryData.hinsyuId;
+            compartmentStatus.cropId   = Hinsyu.getMultiHinsyuCropId(workDiaryData.hinsyuId);;
+
+            compartmentStatus.hashuDate               = workDiaryData.workDate; //播種日を更新する
+            //システム日付との自動算出を可能にする為、0のままとする
+            compartmentStatus.seiikuDayCount          = 0;                      //生育日数を更新する
+
+            compartmentStatus.finalDisinfectionDate   = nullDate;               //最終消毒日を初期化する
+            compartmentStatus.totalDisinfectionCount  = 0;                      //合計消毒量を初期化する
+            compartmentStatus.finalKansuiDate         = nullDate;               //最終潅水日を初期化する
+            compartmentStatus.totalKansuiCount        = 0;                      //合計潅水量を初期化する
+            compartmentStatus.finalTuihiDate          = nullDate;               //最終追肥日を初期化する
+            compartmentStatus.totalTuihiCount         = 0;                      //合計追肥量を初期化する
+			//苗No取得
+        	List<WorkDiaryDetail> aryWorkDetail = WorkDiaryDetail.getWorkDiaryDetailList(workDiaryData.workDiaryId);
+            int naeCnt = 0;
+			String naeNo = "";
+        	for (WorkDiaryDetail workDiaryDetail : aryWorkDetail) {
+				if (!workDiaryDetail.naeNo.equals("")) {
+					if (naeCnt > 0) {
+						naeNo = naeNo + ",";
+					}
+					naeNo = naeNo + workDiaryDetail.naeNo;
+					naeCnt++;
+				}
+			}
+			compartmentStatus.naeNo = naeNo;
             break;
           case AgryeelConst.WorkTemplate.SENKA:
             if (compartmentStatus.totalShukakuCount == 0) {                   //収穫量がまだ０の場合

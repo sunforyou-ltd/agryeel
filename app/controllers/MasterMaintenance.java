@@ -27,6 +27,8 @@ import models.Sizai;
 import models.SizaiOfFarm;
 import models.Size;
 import models.SizeOfFarm;
+import models.Soil;
+import models.Youki;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -122,6 +124,12 @@ public class MasterMaintenance extends Controller {
                 break;
             case AgryeelConst.MasterMntGmn.FARM: 			//生産者の場合
             	resultJson = farmGet(gmnId, farmId);
+                break;
+            case AgryeelConst.MasterMntGmn.YOUKI: 			//容器の場合
+            	resultJson = youkiGet(gmnId, farmId);
+                break;
+            case AgryeelConst.MasterMntGmn.SOIL: 			//土の場合
+            	resultJson = soilGet(gmnId, farmId);
                 break;
             default:
                 break;
@@ -698,6 +706,72 @@ public class MasterMaintenance extends Controller {
 
         listJson.put(String.valueOf(farm.farmId), farmJson);
 
+        resultJson.put(AgryeelConst.MasterMntGmn.MASTERLIST, listJson);
+
+        return resultJson;
+    }
+
+    /**
+     * 【AGRYEEL】容器初期表示データ取得
+     * @return
+     */
+    public static ObjectNode youkiGet(int gmnId, Double farmId) {
+
+        /* 戻り値用JSONデータの生成 */
+        ObjectNode 	resultJson = Json.newObject();
+        ObjectNode 	listJson   = Json.newObject();
+
+        resultJson.put("gmnId", String.valueOf(gmnId));												//画面ID
+        resultJson.put("gmnName", AgryeelConst.MasterMntGmn.GmnName.YOUKI);							//画面名称
+        resultJson.put("farmId", String.valueOf(farmId));											//生産者ID
+
+        /* 容器情報を取得する */
+        List<Youki> youkiList = Youki.getYoukiOfFarm(farmId);
+        for (Youki youkiData : youkiList) {															//容器情報をJSONデータに格納する
+            if (youkiData.deleteFlag == 1) { // 削除済みの場合
+              continue;
+            }
+
+            ObjectNode youkiJson	= Json.newObject();
+            youkiJson.put("masterId"		, youkiData.youkiId);									//容器ID
+            youkiJson.put("masterName"		, youkiData.youkiName);									//容器名
+
+            listJson.put(String.valueOf(youkiData.youkiId), youkiJson);
+
+        }
+        resultJson.put(AgryeelConst.MasterMntGmn.MASTERLIST, listJson);
+
+        return resultJson;
+    }
+
+    /**
+     * 【AGRYEEL】土初期表示データ取得
+     * @return
+     */
+    public static ObjectNode soilGet(int gmnId, Double farmId) {
+
+        /* 戻り値用JSONデータの生成 */
+        ObjectNode 	resultJson = Json.newObject();
+        ObjectNode 	listJson   = Json.newObject();
+
+        resultJson.put("gmnId", String.valueOf(gmnId));												//画面ID
+        resultJson.put("gmnName", AgryeelConst.MasterMntGmn.GmnName.SOIL);							//画面名称
+        resultJson.put("farmId", String.valueOf(farmId));											//生産者ID
+
+        /* 土情報を取得する */
+        List<Soil> soilList = Soil.getSoilOfFarm(farmId);
+        for (Soil soilData : soilList) {															//土情報をJSONデータに格納する
+            if (soilData.deleteFlag == 1) { // 削除済みの場合
+              continue;
+            }
+
+            ObjectNode soilJson	= Json.newObject();
+            soilJson.put("masterId"			, soilData.soilId);										//土ID
+            soilJson.put("masterName"		, soilData.soilName);									//土名
+
+            listJson.put(String.valueOf(soilData.soilId), soilJson);
+
+        }
         resultJson.put(AgryeelConst.MasterMntGmn.MASTERLIST, listJson);
 
         return resultJson;
