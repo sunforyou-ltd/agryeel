@@ -58,10 +58,9 @@ import util.StringU;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import compornent.CompartmentStatusCompornent;
 import compornent.CropComprtnent;
 import compornent.FieldComprtnent;
@@ -3193,10 +3192,10 @@ Logger.debug("[ GET WORK ] END");
         /* アカウント情報からタイムライン情報を取得する */
         List<TimeLine> timeLine;
         if (year != 0 && rotation != 0) {
-          timeLine = TimeLine.find.where().eq("kukaku_id", compartmentData.kukakuId).between("work_date", compartmentStatusData.katadukeDate, compartmentStatusData.finalEndDate).orderBy("work_date desc, update_time desc").findList();
+          timeLine = TimeLine.find.where().eq("kukaku_id", compartmentData.kukakuId).between("work_start_time", compartmentStatusData.katadukeDate, compartmentStatusData.finalEndDate).orderBy("work_date desc, work_start_time desc").findList();
         }
         else {
-          timeLine = TimeLine.find.where().eq("kukaku_id", compartmentData.kukakuId).between("work_date", compartmentStatusData.katadukeDate, new java.sql.Date(systemDate.getTime())).orderBy("work_date desc, update_time desc").findList();
+          timeLine = TimeLine.find.where().eq("kukaku_id", compartmentData.kukakuId).between("work_start_time", compartmentStatusData.katadukeDate, new java.sql.Timestamp(systemDate.getTime())).orderBy("work_date desc, work_start_time desc").findList();
         }
 
         SimpleDateFormat sdf2  = new SimpleDateFormat("MM.dd HH:mm");

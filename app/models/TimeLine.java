@@ -7,12 +7,13 @@ import java.util.List;
 
 import javax.persistence.Entity;
 
-import com.avaje.ebean.Expr;
-import com.avaje.ebean.annotation.CreatedTimestamp;
-import consts.AgryeelConst;
-
 import play.db.ebean.Model;
 import util.ListrU;
+
+import com.avaje.ebean.Expr;
+import com.avaje.ebean.annotation.CreatedTimestamp;
+
+import consts.AgryeelConst;
 
 @Entity
 /**
@@ -126,9 +127,9 @@ public class TimeLine extends Model {
      * @param endDate
      * @returnaccountidaccountidaccountid
      */
-    public static List<TimeLine> getTimeLineOfFarm(double farmId, Date startDate,Date endDate) {
+    public static List<TimeLine> getTimeLineOfFarm(double farmId, Timestamp startDate,Timestamp endDate) {
 
-      List<TimeLine> aryTimeLine = TimeLine.find.where().eq("farm_id", farmId).between("work_date", startDate, endDate).orderBy("work_date desc, work_id desc, update_time desc").findList();
+      List<TimeLine> aryTimeLine = TimeLine.find.where().eq("farm_id", farmId).between("work_start_time", startDate, endDate).orderBy("work_date desc, work_id desc, update_time desc").findList();
 
       return aryTimeLine;
 
@@ -139,18 +140,18 @@ public class TimeLine extends Model {
      * @param endDate
      * @returnaccountidaccountidaccountid
      */
-    public static List<TimeLine> getTimeLineOfRange(double kukakuId, Date startDate,Date endDate) {
+    public static List<TimeLine> getTimeLineOfRange(double kukakuId, Timestamp startDate,Timestamp endDate) {
 
-    	List<TimeLine> aryTimeLine = TimeLine.find.where().eq("kukaku_id", kukakuId).between("work_date", startDate, endDate).orderBy("work_date desc, work_id desc, update_time desc").findList();
+    	List<TimeLine> aryTimeLine = TimeLine.find.where().eq("kukaku_id", kukakuId).between("work_start_time", startDate, endDate).orderBy("work_date desc, work_start_time desc").findList();
 
     	return aryTimeLine;
 
     }
-    public static List<TimeLine> getTimeLineOfAccount(String accountid, double farmId, Date startDate,Date endDate) {
+    public static List<TimeLine> getTimeLineOfAccount(String accountid, double farmId, Timestamp startDate,Timestamp endDate) {
 
       List<TimeLine> aryTimeLine;
       if (accountid.equals(AgryeelConst.SpecialAccount.ALLACOUNT)) {
-        aryTimeLine = TimeLine.find.where().between("work_date", startDate, endDate).eq("farm_id", farmId).orderBy("work_date desc, update_time desc").findList();
+        aryTimeLine = TimeLine.find.where().between("work_start_time", startDate, endDate).eq("farm_id", farmId).orderBy("work_date desc, update_time desc").findList();
       }
       else {
         String[] accounts = accountid.split(",");
@@ -159,10 +160,10 @@ public class TimeLine extends Model {
           for (String key : accounts) {
             accountKeys.add(key);
           }
-          aryTimeLine = TimeLine.find.where().disjunction().add(Expr.in("account_id", accountKeys)).add(Expr.eq("account_id", "")).endJunction().eq("farm_id", farmId).between("work_date", startDate, endDate).orderBy("work_date desc, update_time desc").findList();
+          aryTimeLine = TimeLine.find.where().disjunction().add(Expr.in("account_id", accountKeys)).add(Expr.eq("account_id", "")).endJunction().eq("farm_id", farmId).between("work_start_time", startDate, endDate).orderBy("work_date desc, update_time desc").findList();
         }
         else {
-          aryTimeLine = TimeLine.find.where().eq("account_id", accountid).between("work_date", startDate, endDate).orderBy("work_date desc, update_time desc").findList();
+          aryTimeLine = TimeLine.find.where().eq("account_id", accountid).between("work_start_time", startDate, endDate).orderBy("work_date desc, update_time desc").findList();
         }
       }
 

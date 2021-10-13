@@ -71,6 +71,7 @@ public class SystemBatch extends Controller {
 
         ObjectNode resultJson 				= Json.newObject();															/* 戻り値用JSONオブジェクト */
         java.sql.Date defaultDate 			= DateU.GetNullDate();
+        java.sql.Timestamp defaultTimestamp       = DateU.GetNullTimeStamp();
 
         //----- 作業進捗データを削除する -----
         Ebean.createSqlUpdate("TRUNCATE TABLE compartment_status").execute();
@@ -103,7 +104,7 @@ public class SystemBatch extends Controller {
         	compartmentStatus.nextWorkId				= AgryeelConst.WorkInfo.KATADUKE;
         	compartmentStatus.workColor					= "FFFFFF";
         	compartmentStatus.endWorkId					= 0;
-        	compartmentStatus.katadukeDate				= defaultDate;
+        	compartmentStatus.katadukeDate				= defaultTimestamp;
         	compartmentStatus.save();
 
         }
@@ -159,7 +160,7 @@ public class SystemBatch extends Controller {
 
         	List<models.WorkDiary> workdiary			= models.WorkDiary.find.where("kukaku_id = " + compartmentStatusData.kukakuId + " AND work_id = " + compartmentStatusData.endWorkId).orderBy("work_date desc").findList();
         	for (models.WorkDiary workdiaryData : workdiary) {
-        		compartmentStatusData.finalEndDate		= workdiaryData.workDate;
+        		compartmentStatusData.finalEndDate		= workdiaryData.workEndTime;
         		compartmentStatusData.save();
         		break;
         	}
@@ -397,6 +398,7 @@ public class SystemBatch extends Controller {
 
       ObjectNode resultJson 				= Json.newObject();															/* 戻り値用JSONオブジェクト */
       java.sql.Date defaultDate 			= DateU.GetNullDate();
+      java.sql.Timestamp defaultTimestamp       = DateU.GetNullTimeStamp();
       double farmId = 0;
 
       //----- 作業リストを取得する -----
@@ -439,7 +441,7 @@ public class SystemBatch extends Controller {
       	compartmentStatus.nextWorkId				= AgryeelConst.WorkInfo.KATADUKE;
       	compartmentStatus.workColor					= "FFFFFF";
       	compartmentStatus.endWorkId					= 0;
-      	compartmentStatus.katadukeDate				= defaultDate;
+      	compartmentStatus.katadukeDate				= defaultTimestamp;
       	//----- 追加項目の初期値を設定 -----
         compartmentStatus.hashuCount            = 0;
         compartmentStatus.nowPredictionPoint    = 0;
@@ -692,7 +694,7 @@ public class SystemBatch extends Controller {
         for (int i = 0; i < dayCount; i++) {
           int uuid = 0;
           //----- 該当日のPlanLineを取得 -----
-          List<PlanLine> pls = PlanLine.getPlanLineOfAccount(ac.accountId, ac.farmId, new java.sql.Date(syscal.getTimeInMillis()), new java.sql.Date(syscal.getTimeInMillis()));
+          List<PlanLine> pls = PlanLine.getPlanLineOfAccount(ac.accountId, ac.farmId, new java.sql.Timestamp(syscal.getTimeInMillis()), new java.sql.Timestamp(syscal.getTimeInMillis()));
           //----- uuidを設定する -----
           for (PlanLine pl : pls) {
             uuid++;
@@ -700,7 +702,7 @@ public class SystemBatch extends Controller {
             pl.update();
           }
           //----- 該当日のTimeLineを取得 -----
-          List<TimeLine> tls = TimeLine.getTimeLineOfAccount(ac.accountId, ac.farmId, new java.sql.Date(syscal.getTimeInMillis()), new java.sql.Date(syscal.getTimeInMillis()));
+          List<TimeLine> tls = TimeLine.getTimeLineOfAccount(ac.accountId, ac.farmId, new java.sql.Timestamp(syscal.getTimeInMillis()), new java.sql.Timestamp(syscal.getTimeInMillis()));
           //----- uuidを設定する -----
           for (TimeLine tl : tls) {
             uuid++;
@@ -758,7 +760,7 @@ public class SystemBatch extends Controller {
       }
 
       //----- 今年 -----
-      List<TimeLine> timelines = TimeLine.getTimeLineOfFarm(farm.farmId, new java.sql.Date(from.getTimeInMillis()), new java.sql.Date(to.getTimeInMillis()));
+      List<TimeLine> timelines = TimeLine.getTimeLineOfFarm(farm.farmId, new java.sql.Timestamp(from.getTimeInMillis()), new java.sql.Timestamp(to.getTimeInMillis()));
 
       Logger.info("START={} END={}.", sdf.format(from.getTime()), sdf.format(to.getTime()));
       Logger.info("NOW CONUT={}.", timelines.size());
@@ -782,7 +784,7 @@ public class SystemBatch extends Controller {
       from.add(Calendar.YEAR, -1);
       to.add(Calendar.YEAR, -1);
 
-      timelines = TimeLine.getTimeLineOfFarm(farm.farmId, new java.sql.Date(from.getTimeInMillis()), new java.sql.Date(to.getTimeInMillis()));
+      timelines = TimeLine.getTimeLineOfFarm(farm.farmId, new java.sql.Timestamp(from.getTimeInMillis()), new java.sql.Timestamp(to.getTimeInMillis()));
 
       Logger.info("START={} END={}.", sdf.format(from.getTime()), sdf.format(to.getTime()));
       Logger.info("PREV CONUT={}.", timelines.size());
@@ -936,6 +938,61 @@ public class SystemBatch extends Controller {
         Logger.error(e.getMessage(), e);
       }
     }
+    return ok(resultJson);
+  }
+  public static Result patchWorkDate2WorkStartEndTime() {
+    ObjectNode resultJson  = Json.newObject();
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+    Logger.info("---------- patchWorkDate2WorkStartEndTime START ----------");
+    Ebean.beginTransaction();
+    List<TimeLine> tls = TimeLine.find.where().eq("kukaku_id", 9).findList();
+
+    for (TimeLine tl : tls) {
+
+      Calendar diffStart = Calendar.getInstance();
+      diffStart.setTimeInMillis(tl.workStartTime.getTime());
+      DateU.setTime(diffStart, DateU.TimeType.FROM);
+      Calendar diffWork = Calendar.getInstance();
+      diffWork.setTimeInMillis(tl.workDate.getTime());
+      DateU.setTime(diffWork, DateU.TimeType.FROM);
+
+      int rtc = diffStart.compareTo(diffWork);
+      Logger.info("WORK:{} START:{} RTC:{}", sdf.format(diffWork.getTime()), sdf.format(diffStart.getTime()), rtc);
+      if ( rtc == 0 ) { //作業日付と作業開始時間日付が一致する場合
+        continue;
+      }
+
+      Calendar calStart = Calendar.getInstance();
+      calStart.setTimeInMillis(tl.workStartTime.getTime());
+      Calendar calEnd = Calendar.getInstance();
+      calEnd.setTimeInMillis(tl.workEndTime.getTime());
+      Calendar calWork = Calendar.getInstance();
+      calWork.setTimeInMillis(tl.workDate.getTime());
+
+      calStart.set(calWork.get(Calendar.YEAR), calWork.get(Calendar.MONTH), calWork.get(Calendar.DAY_OF_MONTH));
+      calEnd.set(calWork.get(Calendar.YEAR), calWork.get(Calendar.MONTH), calWork.get(Calendar.DAY_OF_MONTH));
+
+      TimeLine mtl = TimeLine.find.where().eq("time_line_id", tl.timeLineId).findUnique();
+      if (mtl != null) {
+        mtl.workStartTime = new java.sql.Timestamp(calStart.getTimeInMillis());
+        mtl.workEndTime = new java.sql.Timestamp(calEnd.getTimeInMillis());
+        Logger.info("[CHANGE]START:{} END:{}", sdf.format(mtl.workStartTime), sdf.format(mtl.workEndTime));
+        mtl.update();
+      }
+
+
+      WorkDiary wd = WorkDiary.getWorkDiaryById(tl.workDiaryId);
+      if (wd != null) {
+        wd.workStartTime = new java.sql.Timestamp(calStart.getTimeInMillis());
+        wd.workEndTime = new java.sql.Timestamp(calEnd.getTimeInMillis());
+        wd.update();
+      }
+
+    }
+
+    Ebean.commitTransaction();
+    Logger.info("---------- patchWorkDate2WorkStartEndTime END ----------");
+
     return ok(resultJson);
   }
 }

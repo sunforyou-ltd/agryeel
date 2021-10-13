@@ -58,7 +58,7 @@ public class ManagementController extends Controller {
             coc.costHiryo   = 0;
             table.put(String.valueOf(i), coc);
           }
-          List<WorkDiary> wds = WorkDiary.getWorkDiaryOfWork(cp.kukakuId, new java.sql.Date(cStart.getTimeInMillis()), new java.sql.Date(cEnd.getTimeInMillis()));
+          List<WorkDiary> wds = WorkDiary.getWorkDiaryOfWork(cp.kukakuId, new java.sql.Timestamp(cStart.getTimeInMillis()), new java.sql.Timestamp(cEnd.getTimeInMillis()));
           for (WorkDiary wd :wds) {
             cWork.setTimeInMillis(wd.workDate.getTime());
             int month = cWork.get(Calendar.MONTH) + 1;

@@ -32,7 +32,6 @@ import models.WorkDiary;
 import models.WorkPlan;
 import models.WorkPlanDetail;
 import models.WorkPlanSanpu;
-
 import play.Logger;
 import play.libs.Json;
 import play.mvc.Controller;
@@ -42,12 +41,11 @@ import util.DateU;
 import com.avaje.ebean.Ebean;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-
-import compornent.HashuCompornent;
 import compornent.MonthWeekList;
 import compornent.SaibaiPlanHinsyuList;
 import compornent.SaibaiPlanHinsyuList.SaibaiPlanHinsyu;
 import compornent.UserComprtnent;
+
 import consts.AgryeelConst;
 
 public class SaibaiPlanController extends Controller {
@@ -627,7 +625,7 @@ public class SaibaiPlanController extends Controller {
       end.set(Calendar.MONTH, month);
       end.set(Calendar.DAY_OF_MONTH, end.getActualMaximum(Calendar.DAY_OF_MONTH));
 
-      List<TimeLine> tls = TimeLine.getTimeLineOfFarm(farmId, new java.sql.Date(start.getTimeInMillis()), new java.sql.Date(end.getTimeInMillis()));
+      List<TimeLine> tls = TimeLine.getTimeLineOfFarm(farmId, new java.sql.Timestamp(start.getTimeInMillis()), new java.sql.Timestamp(end.getTimeInMillis()));
 
       for (TimeLine tl : tls) {
         WorkDiary wd = WorkDiary.getWorkDiaryById(tl.workDiaryId);

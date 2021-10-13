@@ -21,12 +21,11 @@ import org.apache.commons.lang3.time.DateUtils;
 import play.Logger;
 import play.libs.Json;
 import util.DateU;
-
 import batch.PredictionPoint;
 
 import com.avaje.ebean.Ebean;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import consts.AgryeelConst;
 
@@ -289,7 +288,7 @@ public class CompartmentStatusCompornent implements AgryellInterface {
             compartmentStatus.shukakuStartDate        = nullDate;     //収穫開始日を初期化する
             compartmentStatus.shukakuEndDate          = nullDate;     //収穫終了日を初期化する
             compartmentStatus.totalShukakuCount       = 0;            //収穫量を初期化する
-            compartmentStatus.katadukeDate            = workDiaryData.workDate;
+            compartmentStatus.katadukeDate            = workDiaryData.workStartTime;
 
             break;
           case AgryeelConst.WorkTemplate.SANPU:
