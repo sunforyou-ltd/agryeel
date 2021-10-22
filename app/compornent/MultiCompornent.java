@@ -55,17 +55,17 @@ public class MultiCompornent extends CommonWorkDiaryWork {
     @Override
     public void init() {
 
-        String  useMultiName    = "未選択";
+        String	useMultiName		= "未選択";
 
         /* マルチ情報の取得 */
         double   farmId                         = Double.parseDouble(this.session.get((AgryeelConst.SessionKey.FARMID)));
         CompartmentStatus compartmentStatusData = FieldComprtnent.getCompartmentStatus(this.kukakuId);
         CompartmentWorkChainStatus cws          = compartmentStatusData.getWorkChainStatus();
         WorkLastTime workModel = WorkChainCompornent.getWorkLastTime(this.workId, farmId, cws.cropId);
-        if (this.workDiary != null) { /* 作業記録編集の場合 */
+        if (this.workDiary != null) {	/* 作業記録編集の場合 */
 
-          useMulti      = this.workDiary.useMulti;        //使用マルチ
-          retusu        = this.workDiary.retusu;          //列数
+          useMulti 			= this.workDiary.useMulti;				//使用マルチ
+          retusu 			  = this.workDiary.retusu;					//列数
 
         }
         else if (this.workPlan != null) { /* 作業計画編集の場合 */
@@ -77,14 +77,14 @@ public class MultiCompornent extends CommonWorkDiaryWork {
         else {
           if (workModel != null) {
 
-            useMulti      = workModel.useMulti;       //使用マルチ
-            retusu        = workModel.retusu;         //列数
+            useMulti 			= workModel.useMulti;				//使用マルチ
+            retusu 			  = workModel.retusu;					//列数
 
           }
           else {
 
-            useMulti      = 0;                  //使用マルチ
-            retusu        = 0;                  //列数
+            useMulti 			= 0;									//使用マルチ
+            retusu 			  = 0;									//列数
 
           }
         }
@@ -93,15 +93,15 @@ public class MultiCompornent extends CommonWorkDiaryWork {
 
 //        if (useMulti != 0) {
 //
-//          hinsyuName    = Hinsyu.getHinsyuName(hinsyuId);
+//        	hinsyuName		= Hinsyu.getHinsyuName(hinsyuId);
 //
 //        }
 //        else {
 //          hinsyuName  = "未選択";
 //        }
-        resultJson.put("retusu"       , retusu);              //列数
-        resultJson.put("useMulti"     , useMulti);            //使用マルチ
-        resultJson.put("useMultiSpan" , useMultiName);        //マルチ名
+        resultJson.put("retusu"			  , retusu);							//列数
+        resultJson.put("useMulti"			, useMulti);						//使用マルチ
+        resultJson.put("useMultiSpan"	, useMultiName);				//マルチ名
 
     }
 
@@ -127,8 +127,8 @@ public class MultiCompornent extends CommonWorkDiaryWork {
         }
       }
 
-      this.wlt.retusu         = wkd.retusu;                     //列数
-      this.wlt.useMulti       = wkd.useMulti;                   //使用マルチ
+      this.wlt.retusu 			  = wkd.retusu;											//列数
+      this.wlt.useMulti       = wkd.useMulti;							      //使用マルチ
       this.wlt.update();
 
     }
