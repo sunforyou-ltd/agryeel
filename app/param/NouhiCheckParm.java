@@ -15,6 +15,10 @@ public class NouhiCheckParm {
    */
   public double kukakuId;
   /**
+   * 苗No
+   */
+  public String naeNo;
+  /**
    * 作業日
    */
   public java.util.Date workDate;
@@ -38,15 +42,17 @@ public class NouhiCheckParm {
   public NouhiCheckParm() {
     clear();
   }
-  public NouhiCheckParm(double pNouhiId, double pKukakuId, java.util.Date pworkDate) {
+  public NouhiCheckParm(double pNouhiId, double pKukakuId, String pNaeNo, java.util.Date pworkDate) {
     clear();
     nouhiId   = pNouhiId;
     kukakuId  = pKukakuId;
+    naeNo     = pNaeNo;
     workDate  = pworkDate;
   }
   public void clear() {
     nouhiId     = 0;
     kukakuId    = 0;
+    naeNo       = "";
     workDate    = null;
     sanpuCount  = 0;
     useWhen     = 0;

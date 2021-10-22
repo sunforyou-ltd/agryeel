@@ -18,11 +18,13 @@ import models.MotochoBase;
 import models.Nisugata;
 import models.PlanLine;
 import models.Sizai;
+import models.Soil;
 import models.SystemManage;
 import models.SystemMessage;
 import models.TimeLine;
 import models.Work;
 import models.WorkDiary;
+import models.Youki;
 import play.Logger;
 import play.libs.Json;
 import play.mvc.Controller;
@@ -32,21 +34,19 @@ import util.ListrU;
 import util.StringU;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import compornent.CommonComprtnent;
 import compornent.CompartmentStatusCompornent;
 import compornent.CropComprtnent;
-import compornent.DachakuCompornent;
 import compornent.FieldComprtnent;
 import compornent.HashuCompornent;
 import compornent.KikiComprtnent;
 import compornent.LandlordComprtnent;
 import compornent.MotochoCompornent;
-import compornent.MultiCompornent;
-import compornent.NaehashuCompornent;
+import compornent.NaehashuIkubyoCompornent;
 import compornent.NouhiComprtnent;
 import compornent.ShukakuCompornent;
 import compornent.SizaiComprtnent;
@@ -662,6 +662,28 @@ public class CommonController extends Controller {
 
       return ok(resultJson);
   }
+  /**
+   * 機器情報を取得する
+   * @return
+   */
+  public static Result getKikiOfWorkChainJson(double workId, double chainId) {
+
+      /* 戻り値用JSONデータの生成 */
+      ObjectNode resultJson = Json.newObject();
+      ObjectNode listJson = Json.newObject();
+
+      //アカウント情報の取得
+      UserComprtnent accountComprtnent = new UserComprtnent();
+      int getAccount = accountComprtnent.GetAccountData(session(AgryeelConst.SessionKey.ACCOUNTID));
+
+      KikiComprtnent.getKikiOfWorkChainJson(accountComprtnent.accountData.farmId, workId, chainId, listJson);
+
+      resultJson.put("datalist" , listJson);
+      resultJson.put("flag"     , 0);
+      resultJson.put("result"   , "SUCCESS");
+
+      return ok(resultJson);
+  }
   public static Result getAttachmentOfKikiJson(double kikiId) {
 
       /* 戻り値用JSONデータの生成 */
@@ -698,6 +720,24 @@ public class CommonController extends Controller {
 
       return ok(resultJson);
   }
+  public static Result getNouhiOfWorkChainJson(double workId, double chainId) {
+
+      /* 戻り値用JSONデータの生成 */
+      ObjectNode resultJson = Json.newObject();
+      ObjectNode listJson = Json.newObject();
+
+      //アカウント情報の取得
+      UserComprtnent accountComprtnent = new UserComprtnent();
+      int getAccount = accountComprtnent.GetAccountData(session(AgryeelConst.SessionKey.ACCOUNTID));
+
+      int result = NouhiComprtnent.getNouhiOfFarmChainJson(workId, accountComprtnent.accountData.farmId, chainId, listJson);
+
+      resultJson.put("datalist" , listJson);
+      resultJson.put("flag"     , 0);
+      resultJson.put("result"   , "SUCCESS");
+
+      return ok(resultJson);
+  }
   public static Result getBeltoOfFarmJson() {
 
       /* 戻り値用JSONデータの生成 */
@@ -715,6 +755,83 @@ public class CommonController extends Controller {
       resultJson.put("result"   , "SUCCESS");
 
       return ok(resultJson);
+  }
+  public static Result getYoukiOfFarmJson() {
+
+      /* 戻り値用JSONデータの生成 */
+      ObjectNode resultJson = Json.newObject();
+      ObjectNode listJson = Json.newObject();
+
+      //アカウント情報の取得
+      UserComprtnent accountComprtnent = new UserComprtnent();
+      int getAccount = accountComprtnent.GetAccountData(session(AgryeelConst.SessionKey.ACCOUNTID));
+
+      NaehashuIkubyoCompornent.getYoukiOfFarmJson(accountComprtnent.accountData.farmId, listJson);
+
+      resultJson.put("datalist" , listJson);
+      resultJson.put("flag"     , 0);
+      resultJson.put("result"   , "SUCCESS");
+
+      return ok(resultJson);
+  }
+  public static Result getYoukiInfo(double youkiId) {
+
+    /* 戻り値用JSONデータの生成 */
+    ObjectNode resultJson = Json.newObject();
+
+    Youki y = Youki.getYoukiInfo(youkiId);
+    if (y != null) {
+      resultJson.put("youkiId"   , y.youkiId);
+      resultJson.put("youkiName" , y.youkiName);
+      resultJson.put("youkiKind" , y.youkiKind);
+      resultJson.put("unitKind"  , y.unitKind);
+      resultJson.put("kosu"      , y.kosu);
+      resultJson.put("kingaku"   , y.kingaku);
+      resultJson.put("result"    , AgryeelConst.Result.SUCCESS);
+    }
+    else {
+      resultJson.put("result"       , AgryeelConst.Result.NOTFOUND);
+    }
+
+    return ok(resultJson);
+  }
+  public static Result getSoilOfFarmJson(int soilKind) {
+
+      /* 戻り値用JSONデータの生成 */
+      ObjectNode resultJson = Json.newObject();
+      ObjectNode listJson = Json.newObject();
+
+      //アカウント情報の取得
+      UserComprtnent accountComprtnent = new UserComprtnent();
+      int getAccount = accountComprtnent.GetAccountData(session(AgryeelConst.SessionKey.ACCOUNTID));
+
+      NaehashuIkubyoCompornent.getSoilOfFarmJson(accountComprtnent.accountData.farmId, soilKind, listJson);
+
+      resultJson.put("datalist" , listJson);
+      resultJson.put("flag"     , 0);
+      resultJson.put("result"   , "SUCCESS");
+
+      return ok(resultJson);
+  }
+  public static Result getSoilInfo(double soilId) {
+
+    /* 戻り値用JSONデータの生成 */
+    ObjectNode resultJson = Json.newObject();
+
+    Soil s = Soil.getSoilInfo(soilId);
+    if (s != null) {
+      resultJson.put("soilId"   , s.soilId);
+      resultJson.put("soilName" , s.soilName);
+      resultJson.put("soilKind" , s.soilKind);
+      resultJson.put("unitKind" , s.unitKind);
+      resultJson.put("kingaku"  , s.kingaku);
+      resultJson.put("result"   , AgryeelConst.Result.SUCCESS);
+    }
+    else {
+      resultJson.put("result"       , AgryeelConst.Result.NOTFOUND);
+    }
+
+    return ok(resultJson);
   }
   /**
    * 指定した生産物より品種を取得します
@@ -1282,6 +1399,30 @@ public class CommonController extends Controller {
 
       return ok(resultJson);
   }
+
+  /**
+   * 育苗管理ワークチェーン作業一覧を取得する
+   * @return
+   */
+  public static Result getWorkOfIkubyo() {
+
+      /* 戻り値用JSONデータの生成 */
+      ObjectNode resultJson = Json.newObject();
+      ObjectNode listJson = Json.newObject();
+
+      //アカウント情報の取得
+      UserComprtnent accountComprtnent = new UserComprtnent();
+      int getAccount = accountComprtnent.GetAccountData(session(AgryeelConst.SessionKey.ACCOUNTID));
+
+      WorkChainCompornent.getWorkOfKukakuJson(accountComprtnent.accountData.farmId, AgryeelConst.IkubyoInfo.WORKCHAINID, listJson);
+
+      resultJson.put("datalist" , listJson);
+      resultJson.put("flag"     , 0);
+      resultJson.put("result"   , "SUCCESS");
+
+      return ok(resultJson);
+  }
+
   /**
    * 区画検索条件をアカウント状況に反映する
    * @return
@@ -1409,6 +1550,8 @@ public class CommonController extends Controller {
         Work wk = working.getWork();
 
         if (wk == null) { continue; }
+
+        if (working.fieldId == 0) { continue; }
 
         Compartment cpt = Compartment.getCompartmentInfo(working.fieldId);
 

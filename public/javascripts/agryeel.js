@@ -10,7 +10,7 @@ var procFlag	= false;
 var templateIdEnd = 7;
 
 /* ユーザ情報 */
-var userinfo  = {id:"", name:"", farm:0, field: 0, work: 0, start: "", status: 0, plan: 0, manager: 0, prompt: 0, change: 0, initId: 0, ids:"", contractPlan: 0, workDiaryDiscription: 0};
+var userinfo  = {id:"", name:"", farm:0, field: 0, work: 0, start: "", status: 0, plan: 0, manager: 0, prompt: 0, change: 0, initId: 0, ids:"", contractPlan: 0, workDiaryDiscription: 0, ikubyo: 0};
 
 var TRANS_HOJOG = 1.0;
 var TRANS_HOJO  = 0.0;
@@ -393,6 +393,363 @@ function timelineClose() {
   }
 }
 //------------------------------------------------------------------------------------------------------------------
+//- 育苗ライン初期検索
+//------------------------------------------------------------------------------------------------------------------
+function ikubyolineInit() {
+  var tl = $("#timelinelist");
+  if (tl.length) {
+    $.ajax({
+      url:"/getIkubyoLineInitData",
+      type:'GET',
+      complete:function(data, status, jqXHR){           //処理成功時
+
+        var jsonResult = JSON.parse( data.responseText );
+
+        $("#timelinelist").empty();
+
+        var htmlString  = ikubyolineDisplay(jsonResult);                   //可変HTML文字列
+
+        $("#timelinelist").html(htmlString);         //可変HTML部分に反映する
+
+        $(".timelinelist").unbind("click");
+        $(".timelinelist").bind("click", ikubyoDiaryEdit);
+
+      },
+      dataType:'json',
+      contentType:'text/json',
+      async: false
+    });
+  }
+}
+//育苗ライン検索のインスタンス変数
+var oIkubyoLine = {start: "", end: "", work:"", account: ""};
+//------------------------------------------------------------------------------------------------------------------
+//- 育苗ライン検索条件取得時
+//------------------------------------------------------------------------------------------------------------------
+function getIkubyoLineWhere() {
+  var url = "/getAccountInfo";
+  $.ajax({
+    url:url,
+    type:'GET',
+    complete:function(data, status, jqXHR){
+      var jsonResult = JSON.parse( data.responseText );
+
+      if (jsonResult.result == 'SUCCESS') {
+        //----- 検索開始日付 -----
+        var start = jsonResult.selectStartDateIb.substr(0, 4) + "/" + jsonResult.selectStartDateIb.substr(4, 2) + "/" + jsonResult.selectStartDateIb.substr(6, 2);
+        $('#G1002TimeLineF').val(start);
+        $('#G1002TimeLineF').datepicker('setDate', new Date(start));
+        //----- 検索終了日付 -----
+        var end = jsonResult.selectEndDateIb.substr(0, 4) + "/" + jsonResult.selectEndDateIb.substr(4, 2) + "/" + jsonResult.selectEndDateIb.substr(6, 2);
+        $('#G1002TimeLineT').val(end);
+        $('#G1002TimeLineT').datepicker('setDate', new Date(end));
+
+        //----- 作業一覧 -----
+        mSelectDataGet("#G1002TimeLineWork", "getWorkOfFarm");
+        var works = new String(jsonResult.selectWorkIdIb).split(",");
+
+        for (var key in works) {
+          var data = works[key];
+          var oJson = mSelectData(data);
+          if (oJson != undefined) {
+            oJson.select = true;
+          }
+        }
+        mSelectClose();
+        //----- 担当者一覧 -----
+        mSelectDataGet("#G1002TimeLineAccount", "getAccountOfFarm");
+        var accounts = new String(jsonResult.selectAccountIdIb).split(",");
+
+        for (var key in accounts) {
+          var data = accounts[key];
+          var oJson = mSelectData(data);
+          if (oJson != undefined) {
+            oJson.select = true;
+          }
+        }
+        mSelectClose();
+        //----- 生産物一覧 -----
+        mSelectDataGet("#G1002TimeLineCrop", userinfo.farm + "/getCrop");
+        var crops = new String(jsonResult.selectCropIdIb).split(",");
+
+        for (var key in crops) {
+          var data = crops[key];
+          var oJson = mSelectData(data);
+          if (oJson != undefined) {
+            oJson.select = true;
+          }
+        }
+        mSelectClose();
+        //----- 品種一覧 -----
+        mSelectDataGet("#G1002TimeLineHinsyu", "getHinsyuOfFarmJson");
+        var hinsyus = new String(jsonResult.selectHinsyuIdIb).split(",");
+
+        for (var key in hinsyus) {
+          var data = hinsyus[key];
+          var oJson = mSelectData(data);
+          if (oJson != undefined) {
+            oJson.select = true;
+          }
+        }
+        mSelectClose();
+        //----- 表示条件一覧 -----
+        selectDataGet("#G1002TimeLineWorking", "getTimeLineWorking");
+        var oJson = selectData(jsonResult.selectWorkingIb);
+        if (oJson != undefined) {
+          oJson.select = true;
+        }
+        selectClose();
+      }
+    },
+      dataType:'json',
+      contentType:'text/json',
+      async: false
+    });
+}
+//------------------------------------------------------------------------------------------------------------------
+//- 育苗ライン検索条件生成時
+//------------------------------------------------------------------------------------------------------------------
+function ikubyolinemenu() {
+  var tm = $('#ikubyolinemenu');
+  if (tm != undefined) {
+    tm.empty();
+
+    tm.append('<h6 class="">タイムライン検索条件</h6>');     //コンテンツヘッダーを生成する
+    tm.append('<div class="row">');
+    tm.append('<div class="col s12 input-field">');
+    tm.append('<input type="text" placeholder="検索期間開始" id="G1002TimeLineF" class="datepicker input-text-color" style="">');
+    tm.append('</div>');
+    tm.append('<div class="col s12 input-field">');
+    tm.append('<input type="text" placeholder="検索期間終了" id="G1002TimeLineT" class="datepicker input-text-color" style="">');
+    tm.append('</div>');
+    tm.append('<div class="row">');
+    tm.append('<div class="col s12">');
+    tm.append('<span class="mselectmodal-trigger-title">作業</span><a href="#mselectmodal"  class="mselectmodal-trigger" title="作業一覧" data="getWorkOfFarm" displayspan="#G1002TimeLineWork"><span id="G1002TimeLineWork" class="blockquote-input">未選択</span></a>');
+    tm.append('</div>');
+    tm.append('</div>');
+    tm.append('<div class="row">');
+    tm.append('<div class="col s12">');
+    tm.append('<span class="mselectmodal-trigger-title">担当者</span><a href="#mselectmodal"  class="mselectmodal-trigger" title="担当者一覧" data="getAccountOfFarm" displayspan="#G1002TimeLineAccount"><span id="G1002TimeLineAccount" class="blockquote-input">未選択</span></a>');
+    tm.append('</div>');
+    tm.append('</div>');
+    tm.append('<div class="row">');
+    tm.append('<div class="col s12">');
+    tm.append('<span class="mselectmodal-trigger-title">品目</span><a href="#mselectmodal"  class="mselectmodal-trigger" title="品目一覧" data="'+ userinfo.farm + '/getCrop" displayspan="#G1002TimeLineCrop"><span id="G1002TimeLineCrop" class="blockquote-input">未選択</span></a>');
+    tm.append('</div>');
+    tm.append('</div>');
+    tm.append('<div class="row">');
+    tm.append('<div class="col s12">');
+    tm.append('<span class="mselectmodal-trigger-title">品種</span><a href="#mselectmodal"  class="mselectmodal-trigger" title="品種一覧" data="getHinsyuOfFarmJson" displayspan="#G1002TimeLineHinsyu"><span id="G1002TimeLineHinsyu" class="blockquote-input">未選択</span></a>');
+    tm.append('</div>');
+    tm.append('</div>');
+    tm.append('<div class="row">');
+    tm.append('<div class="col s12">');
+    tm.append('<span class="mselectmodal-trigger-title">表示条件</span><a href="#selectmodal"  class="selectmodal-trigger" title="表示条件" data="getTimeLineWorking" displayspan="#G1002TimeLineWorking"><span id="G1002TimeLineWorking" class="blockquote-input">未選択</span></a>');
+    tm.append('</div>');
+    tm.append('</div>');
+    tm.append('<div class="row">');
+    tm.append('<div class="col s12">');
+    tm.append('<a href="#!" id="ikubyolineback" class="waves-effect waves-green btn-flat right string-color" style="">閉じる</a>');
+    tm.append('<a href="#!" id="ikubyolinecommit" class="waves-effect waves-green btn-flat right string-color" style="">確　定</a>');
+    tm.append('</div>');
+    tm.append('</div>');
+
+    $('#ikubyolinecommit').unbind("click");
+    $('#ikubyolinecommit').bind("click", ikubyolineCommit);
+    $('#ikubyolineback').unbind("click");
+    $('#ikubyolineback').bind("click", ikubyolineClose);
+
+    //------------------------------------------------------------------------------------------------------------------
+    //- 育苗ライン検索条件の初期化
+    //------------------------------------------------------------------------------------------------------------------
+    $('#timelinetrigger').unbind('click');
+    $('#timelinetrigger').bind('click', ikubyolineModalOpen);
+
+    tm.hide();
+
+  }
+}
+//------------------------------------------------------------------------------------------------------------------
+//- 育苗ライン検索条件オープン時
+//------------------------------------------------------------------------------------------------------------------
+function ikubyolineModalOpen() {
+  var tm = $('#ikubyolinemenu');
+  var ms = $("#mainsection");
+  getIkubyoLineWhere();     //タイムライン検索条件取得
+
+  //------------------------------------------------------------------------------------------------------------------
+  //- モーダルの初期化
+  //------------------------------------------------------------------------------------------------------------------
+  $('.modal').modal();
+  //------------------------------------------------------------------------------------------------------------------
+  //- セレクトモーダルの初期化
+  //------------------------------------------------------------------------------------------------------------------
+  $('.selectmodal-trigger').unbind('click');
+  $('.selectmodal-trigger').bind('click', selectOpen);
+  //------------------------------------------------------------------------------------------------------------------
+  //- マルチセレクトモーダルの初期化
+  //------------------------------------------------------------------------------------------------------------------
+  $('.mselectmodal-trigger').unbind('click');
+  $('.mselectmodal-trigger').bind('click', mSelectOpen);
+
+  if (ms != undefined) {
+    ms.fadeOut(0);
+  }
+  if (tm != undefined) {
+    tm.fadeIn(500);
+  }
+}
+//------------------------------------------------------------------------------------------------------------------
+//- 育苗ライン検索条件確定時
+//------------------------------------------------------------------------------------------------------------------
+function ikubyolineCommit() {
+
+  //入力チェック
+  var from = $("#G1002TimeLineF").val();
+  var to = $("#G1002TimeLineT").val();
+
+  if (from == "") {
+    displayToast('検索期間開始が未入力です', 4000, 'rounded');
+    return;
+  }
+  if (to == "") {
+    displayToast('検索期間終了が未入力です', 4000, 'rounded');
+    return;
+  }
+
+  var work = mSelectConvertJson("#G1002TimeLineWork");
+  var account = mSelectConvertJson("#G1002TimeLineAccount");
+  var working = mSelectConvertJson("#G1002TimeLineWorking");
+  var crop   = mSelectConvertJson("#G1002TimeLineCrop");
+  var hinsyu = mSelectConvertJson("#G1002TimeLineHinsyu");
+
+  var jsondata = {};
+
+  jsondata["from"]    = from;
+  jsondata["to"]      = to;
+  jsondata["work"]    = work;
+  jsondata["account"] = account;
+  jsondata["working"] = working;
+  jsondata["crop"]    = crop;
+  jsondata["hinsyu"]  = hinsyu;
+
+  console.log("jsondata", jsondata);
+
+  $.ajax({
+    url:"/ikubyolineStatusCommit",
+    type:'POST',
+    data:JSON.stringify(jsondata),                //入力用JSONデータ
+    complete:function(data, status, jqXHR){           //処理成功時
+
+      $.ajax({
+        url:"/getIkubyoLineData",
+        type:'GET',
+        complete:function(data, status, jqXHR){           //処理成功時
+
+          var jsonResult = JSON.parse( data.responseText );
+
+          $("#timelinelist").empty();
+
+          var htmlString  = ikubyolineDisplay(jsonResult);                   //可変HTML文字列
+
+          $("#timelinelist").html(htmlString);         //可変HTML部分に反映する
+
+          $(".timelinelist").unbind("click");
+          $(".timelinelist").bind("click", ikubyoDiaryEdit);
+
+          var tm = $('#ikubyolinemenu');
+          var ms = $("#mainsection");
+          if (tm != undefined) {
+            tm.fadeOut(0);
+          }
+          if (ms != undefined) {
+            ms.fadeIn(500);
+          }
+        },
+        dataType:'json',
+        contentType:'text/json',
+        async: false
+      });
+    },
+    dataType:'json',
+    contentType:'text/json',
+    async: false
+  });
+
+}
+//------------------------------------------------------------------------------------------------------------------
+//- 育苗ライン表示
+//------------------------------------------------------------------------------------------------------------------
+function ikubyolineDisplay(jsonResult) {
+
+  var htmlString  = "";                   //可変HTML文字列
+  timeLineList  = jsonResult.targetTimeLine;
+
+  //----- ここから育苗ラインの編集 ----
+  htmlString += '<div class="">';
+  htmlString += '<ul class="timeline">';
+  for ( var timeLineKey in timeLineList ) {             //育苗ライン件数分処理を行う
+
+    var timeLine    = timeLineList[timeLineKey];        //育苗ライン情報の取得
+    var timeLineColor = "";
+
+    var code  = timeLine["timeLineColor"];
+    var red   = parseInt(code.substring(0,2), 16);
+    var green = parseInt(code.substring(2,4), 16);
+    var blue  = parseInt(code.substring(4,6), 16);
+
+    htmlString += '<li class="timelinelist timelinelist2 kani" id="timelinekey-' + timeLine["ikubyoDiaryId"] + '" key="' + timeLine["ikubyoDiaryId"] + '" naeNo="' + timeLine["naeNo"] + '" style="border-left: 8px solid #' + timeLine["timeLineColor"] + '; background-color: rgba(' + red + ',' + green + ',' + blue + ', ' + TRANS_TIMELINE + '); border-bottom: 0px;">';
+    htmlString += '<div class="work-title">';
+    htmlString += icontag(timeLine["workId"], timeLine["timeLineColor"], timeLine["workName"], "timeline");
+    htmlString += '<span class="account-text">' + timeLine["accountName"] + '</span>';
+    htmlString += '<span class="work-workdate-text">'  + timeLine["workdate"] + '</span>';
+    htmlString += '<span class="work-text">' + timeLine["hinsyuName"] + '(' + timeLine["naeNo"] + ')&nbsp;&nbsp;&nbsp;&nbsp;' + timeLine["workName"] + '&nbsp;&nbsp;(' + timeLine["worktime"] + '分)&nbsp;&nbsp;&nbsp;&nbsp;</span>';
+    htmlString += '<span class="work-update-text">'  + timeLine["updateTime"] + '</span>';
+    htmlString += '</div>';
+    htmlString += '<div class="message">';
+    htmlString += '<span>' + timeLine["message"] + '</span>';
+    htmlString += '</div>';
+    htmlString += '</li>';
+
+  } // timeLineList
+  htmlString += '</ul>';
+  htmlString += '</div>';
+
+  return htmlString;
+
+}
+function ikubyoDiaryEdit() {
+  var timeline = $(this);
+  if (timeline.attr("key") < 0) { //作業中の場合
+    displayToast('現在作業中です。', 4000, '');
+    return;
+  }
+  if (timeline.hasClass("motocho")) {
+    localStorage.setItem("backMode"           , "3");
+    localStorage.setItem("backNaeNo"          , timeline.attr("naeNo"));
+    localStorage.setItem("backIkubyoDiaryId"  , timeline.attr("key"));
+    window.location.href = "/" + timeline.attr("key") + "/ikubyoDiaryEdit";
+  }
+  else {
+    localStorage.setItem("backMode"           , "2");
+    localStorage.setItem("backIkubyoDiaryId"  , timeline.attr("key"));
+    window.location.href = "/" + timeline.attr("key") + "/ikubyoDiaryEdit";
+  }
+}
+//------------------------------------------------------------------------------------------------------------------
+//- 育苗ライン検索条件閉じる時
+//------------------------------------------------------------------------------------------------------------------
+function ikubyolineClose() {
+  var tm = $('#ikubyolinemenu');
+  var ms = $("#mainsection");
+  if (tm != undefined) {
+    tm.fadeOut(0);
+  }
+  if (ms != undefined) {
+    ms.fadeIn(500);
+  }
+}
+//------------------------------------------------------------------------------------------------------------------
 //- アカウント情報取得
 //------------------------------------------------------------------------------------------------------------------
 function getAccountInfo() {
@@ -419,6 +776,8 @@ function getAccountInfo() {
         userinfo.ids      = jsonResult.ids;
         userinfo.contractPlan = jsonResult.contractplan;
         userinfo.workDiaryDiscription = jsonResult.workDiaryDiscription;
+        userinfo.ikubyo   = jsonResult.ikubyoFunction;
+
         meinmenu();
       }
     },
@@ -452,6 +811,9 @@ function meinmenu() {
         ml.append('<li class="collection-item menuitem workplan-trriger" style="border-left-color:#1a237e; background-color: #1a237e !important;"><i class="material-icons" style="color:#ffcdd2;">gavel</i><span style="color:#fafafa;">作業指示</span></li>');
       }
       if (userinfo.contractPlan != 1) {
+        if (userinfo.ikubyo == 1) {
+          ml.append('<li class="collection-item menuitem ikubyo-trriger" style="border-left-color:#1a237e; background-color: #1a237e !important;"><i class="material-icons" style="color:#ffcdd2;">gavel</i><span style="color:#fafafa;">育苗管理</span></li>');
+        }
         ml.append('<li class="collection-item menuitem wkaccount-trriger" style="border-left-color:#1a237e; background-color: #1a237e !important;"><i class="material-icons" style="color:#ffcdd2;">gavel</i><span style="color:#fafafa;">担当者別作業一覧</span></li>');
       }
       if (userinfo.manager != 0 &&
@@ -503,6 +865,8 @@ function meinmenu() {
     $(".saibaiplan-trriger").bind("click", saibaiPlanmove);
     $(".workplan-trriger").unbind("click");
     $(".workplan-trriger").bind("click", workPlanmove);
+    $(".ikubyo-trriger").unbind("click");
+    $(".ikubyo-trriger").bind("click", ikubyoMove);
     $(".compartmentmapping-trriger").unbind("click");
     $(".compartmentmapping-trriger").bind("click", compartmentmappingMove);
 
@@ -576,8 +940,14 @@ function mainmove() {
 //- 作業中画面遷移
 //------------------------------------------------------------------------------------------------------------------
 function workingmove() {
-  var url = "/workingmove";
+  var url = "";
 
+  if (userinfo.field != 0) {
+    url = "/workingmove";
+  }
+  else {
+    url = "/workingikubyomove";
+  }
   window.location.href = url;
 
 }
@@ -595,6 +965,15 @@ function workingaccountmove() {
 //------------------------------------------------------------------------------------------------------------------
 function workPlanmove() {
   var url = "/workPlanMove";
+
+  window.location.href = url;
+
+}
+//------------------------------------------------------------------------------------------------------------------
+//- 育苗管理画面遷移
+//------------------------------------------------------------------------------------------------------------------
+function ikubyoMove() {
+  var url = "/ikubyoMove";
 
   window.location.href = url;
 
@@ -1517,4 +1896,3 @@ function unlockScreen(id) {
 function escapeSelectorString(val){
   return val.replace(/[ !"#$%&'()*+,.\/:;<=>?@\[\\\]^`{|}~]/g, "\\$&");
 }
-

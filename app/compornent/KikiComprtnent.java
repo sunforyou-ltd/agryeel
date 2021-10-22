@@ -238,6 +238,52 @@ public class KikiComprtnent implements AgryellInterface{
       return GET_SUCCESS;
 
     }
+    /**
+     * 作業IDから使用可能な機器を取得する
+     * @param pFarmId
+     * @param pWorkId
+     * @param pChainId
+     * @param pListJson
+     * @return
+     */
+    public static int getKikiOfWorkChainJson(double pFarmId, double pWorkId, double pChainId, ObjectNode pListJson) {
+
+      WorkChainItem wci = WorkChainItem.getWorkChainItemOfWorkId(pChainId, pWorkId);
+      if (wci != null) {
+        //----- 生産者別機器情報を取得 -----
+        List<KikiOfFarm> kofs = KikiOfFarm.getKikiOfFarm(pFarmId);
+        List<Double>kikis = new ArrayList<Double>();
+        for (KikiOfFarm kof : kofs) {
+          if (kof.deleteFlag == 1) { // 削除済みの場合
+            continue;
+          }
+          kikis.add(kof.kikiId);
+        }
+        //----- 作業単位の使用可能機器種別を取得 -----
+        if (wci.onUseKikiKind != null && !"".equals(wci.onUseKikiKind)) {
+          String[] ukks = wci.onUseKikiKind.split(",");
+          List<Double>kks = new ArrayList<Double>();
+          for (String ukk : ukks) {
+            kks.add(Double.parseDouble(ukk));
+          }
+          //----- 対象機器の取得 -----
+          List<Kiki> kikiList = Kiki.find.where().in("kiki_id", kikis).in("kiki_kind", kks).order("kiki_id").findList();
+          for (Kiki kiki : kikiList) {
+
+            ObjectNode jd = Json.newObject();
+
+            jd.put("id"   , kiki.kikiId);
+            jd.put("name" , kiki.kikiName);
+
+            pListJson.put(String.valueOf(kiki.kikiId), jd);
+
+          }
+        }
+      }
+
+      return GET_SUCCESS;
+
+    }
     public static int getAttachmentOfKikiJson(double pKikiId, ObjectNode pListJson) {
 
 

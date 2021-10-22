@@ -35,7 +35,11 @@ public class IkubyoDiaryDetail extends Model {
     public static Finder<Long, IkubyoDiaryDetail> find = new Finder<Long, IkubyoDiaryDetail>(Long.class, IkubyoDiaryDetail.class);
 
     public static List<IkubyoDiaryDetail> getIkubyoDiaryDetailList(double pIkubyoDiaryId) {
+<<<<<<< HEAD
       return IkubyoDiaryDetail.find.where().eq("ikubyo_diary_id", pIkubyoDiaryId).order("ikubyo_diary_sequence asc").findList();
+=======
+      return IkubyoDiaryDetail.find.where().eq("ikubyo_plan_id", pIkubyoDiaryId).order("ikubyo_diary_sequence asc").findList();
+>>>>>>> e747d9c9b47c3d59e92c6b368bbb246cc6564120
     }
 
 }

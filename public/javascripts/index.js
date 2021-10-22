@@ -16,22 +16,42 @@
         //ここに戻るという事は認証エラー
         if (jsonResult.result == 'SUCCESS') {
           if (jsonResult.work != 0) {  //該当ユーザが作業中の場合
-
-            var inputJson = {"workid":"", "kukakuid":"", "action":""};
-            inputJson.action = "display";
-            inputJson.workid = jsonResult.work;
-            inputJson.kukakuid = jsonResult.field;
-            $.ajax({
-              url:"/initparam",
-              type:'POST',
-              data:JSON.stringify(inputJson),               //入力用JSONデータ
-              complete:function(data, status, jqXHR){           //処理成功時
-                var jsonResult  = JSON.parse( data.responseText );    //戻り値用JSONデータの生成
-                window.location.href = "/workingmove";
-            },
-              dataType:'json',
-              contentType:'text/json'
-            });
+            if (jsonResult.field != 0) {
+              //通常作業
+              var inputJson = {"workid":"", "kukakuid":"", "action":""};
+              inputJson.action = "display";
+              inputJson.workid = jsonResult.work;
+              inputJson.kukakuid = jsonResult.field;
+              $.ajax({
+                url:"/initparam",
+                type:'POST',
+                data:JSON.stringify(inputJson),               //入力用JSONデータ
+                complete:function(data, status, jqXHR){           //処理成功時
+                  var jsonResult  = JSON.parse( data.responseText );    //戻り値用JSONデータの生成
+                  window.location.href = "/workingmove";
+              },
+                dataType:'json',
+                contentType:'text/json'
+              });
+            }
+            else {
+              //育苗作業
+              var inputJson = {"workid":"", "planid":"", "action":""};
+              inputJson.action = "display";
+              inputJson.workid = jsonResult.work;
+              inputJson.planid = jsonResult.planId;
+              $.ajax({
+                url:"/initikubyoparam",
+                type:'POST',
+                data:JSON.stringify(inputJson),               //入力用JSONデータ
+                complete:function(data, status, jqXHR){           //処理成功時
+                  var jsonResult  = JSON.parse( data.responseText );    //戻り値用JSONデータの生成
+                  window.location.href = "/workingikubyomove";
+              },
+                dataType:'json',
+                contentType:'text/json'
+              });
+            }
           }
           else {
             if (jsonResult.firstPage == 3) {
@@ -117,22 +137,42 @@
           localStorage.setItem("backWorkDate"     , null);
 
           if (jsonResult.work != 0) {  //該当ユーザが作業中の場合
-
-            var inputJson = {"workid":"", "kukakuid":"", "action":""};
-            inputJson.action = "display";
-            inputJson.workid = jsonResult.work;
-            inputJson.kukakuid = jsonResult.field;
-            $.ajax({
-              url:"/initparam",
-              type:'POST',
-              data:JSON.stringify(inputJson),               //入力用JSONデータ
-              complete:function(data, status, jqXHR){           //処理成功時
-                var jsonResult  = JSON.parse( data.responseText );    //戻り値用JSONデータの生成
-                window.location.href = "/workingmove";
-            },
-              dataType:'json',
-              contentType:'text/json'
-            });
+            if (jsonResult.field != 0) {
+              //通常作業
+              var inputJson = {"workid":"", "kukakuid":"", "action":""};
+              inputJson.action = "display";
+              inputJson.workid = jsonResult.work;
+              inputJson.kukakuid = jsonResult.field;
+              $.ajax({
+                url:"/initparam",
+                type:'POST',
+                data:JSON.stringify(inputJson),               //入力用JSONデータ
+                complete:function(data, status, jqXHR){           //処理成功時
+                  var jsonResult  = JSON.parse( data.responseText );    //戻り値用JSONデータの生成
+                  window.location.href = "/workingmove";
+              },
+                dataType:'json',
+                contentType:'text/json'
+              });
+            }
+            else {
+              //育苗作業
+              var inputJson = {"workid":"", "planid":"", "action":""};
+              inputJson.action = "display";
+              inputJson.workid = jsonResult.work;
+              inputJson.planid = jsonResult.planId;
+              $.ajax({
+                url:"/initikubyoparam",
+                type:'POST',
+                data:JSON.stringify(inputJson),               //入力用JSONデータ
+                complete:function(data, status, jqXHR){           //処理成功時
+                  var jsonResult  = JSON.parse( data.responseText );    //戻り値用JSONデータの生成
+                  window.location.href = "/workingikubyomove";
+              },
+                dataType:'json',
+                contentType:'text/json'
+              });
+            }
           }
           else {
             if (jsonResult.firstPage == 3) {

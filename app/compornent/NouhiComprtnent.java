@@ -7,21 +7,22 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang3.time.DateUtils;
-
-import param.NouhiCheckParm;
-import play.libs.Json;
-import util.DateU;
-
 import models.CompartmentStatus;
 import models.CompartmentWorkChainStatus;
+import models.IkubyoDiarySanpu;
+import models.NaeStatus;
 import models.Nouhi;
 import models.NouhiOfCrop;
 import models.Sequence;
 import models.WorkChainItem;
 import models.WorkDiarySanpu;
 
-import com.avaje.ebean.Ebean;
+import org.apache.commons.lang3.time.DateUtils;
+
+import param.NouhiCheckParm;
+import play.libs.Json;
+import util.DateU;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -204,6 +205,30 @@ public class NouhiComprtnent implements AgryellInterface{
 
  }
 
+ public static int getNouhiOfFarmChainJson(double pWorkId, double farmId, double pChainId, ObjectNode pListJson) {
+
+   WorkChainItem wci = WorkChainItem.getWorkChainItemOfWorkId(pChainId, pWorkId);
+   if (wci != null) {
+     List<Nouhi> nouhiList = Nouhi.find.where().in("farm_id", farmId).eq("nouhi_kind", wci.nouhiKind).order("use_count desc, nouhi_id asc").findList();
+     for (Nouhi nouhi : nouhiList) {
+       if (nouhi.deleteFlag == 1) { // 削除済みの場合
+         continue;
+       }
+
+       ObjectNode jd = Json.newObject();
+
+       jd.put("id"   , nouhi.nouhiId);
+       jd.put("name" , nouhi.nouhiName);
+
+       pListJson.put(String.valueOf(nouhi.nouhiId), jd);
+
+     }
+   }
+
+   return GET_SUCCESS;
+
+ }
+
    public static int updateUseCount(double pFarmId) {
      int result = 0;
 
@@ -211,6 +236,8 @@ public class NouhiComprtnent implements AgryellInterface{
      for (Nouhi nouhi : nouhis) {
        List<WorkDiarySanpu> wdss = WorkDiarySanpu.find.where().eq("nouhi_id", nouhi.nouhiId).findList();
        nouhi.useCount = wdss.size();
+       List<IkubyoDiarySanpu> idss = IkubyoDiarySanpu.find.where().eq("nouhi_id", nouhi.nouhiId).findList();
+       nouhi.useCount += idss.size();
        nouhi.update();
        result++;
      }
@@ -252,6 +279,24 @@ public class NouhiComprtnent implements AgryellInterface{
              if (wds != null) {
                sanpuCount++;
              }
+             //育苗管理分の散布回数取得
+             List<models.WorkDiaryDetail> wddl = models.WorkDiaryDetail.find.where().eq("work_diary_id", wd.workDiaryId).findList();
+             for (models.WorkDiaryDetail wdd : wddl) {
+               if (!wdd.naeNo.equals("")) {
+                 //----- 苗状況情報の取得 -----
+                 NaeStatus ns = NaeStatus.getStatusOfNae(wdd.naeNo);
+                 if (ns != null) {
+                   //----- 散布回数のチェック -----
+                   List<models.IkubyoDiary> idl = models.IkubyoDiary.find.where().eq("nae_no", wdd.naeNo).between("work_date", ns.katadukeDate, ns.finalEndDate).findList();
+                   for (models.IkubyoDiary id : idl) {
+                     models.IkubyoDiarySanpu ids = models.IkubyoDiarySanpu.find.where().eq("ikubyo_diary_id", id.ikubyoDiaryId).eq("nouhi_id", p.nouhiId).findUnique();
+                     if (ids != null) {
+                       sanpuCount++;
+                     }
+                   }
+                 }
+               }
+             }
            }
            sanpuCount++;//今回散布分を加算
            if (n.sanpuCount < sanpuCount) {// 散布回数上限値オーバー
@@ -285,5 +330,56 @@ public class NouhiComprtnent implements AgryellInterface{
    return result;
  }
 
+ public static int nouhiNaeCheck(NouhiCheckParm p) {
+   int result = CheckCode.NOMAL;
+   Date nullDate = DateUtils.truncate(DateU.GetNullDate(), Calendar.DAY_OF_MONTH);
+   DecimalFormat df = new DecimalFormat("##0");
+
+   //----- 各種パラメータチェック -----
+   if ((p.nouhiId == 0) || (p.naeNo == "")) {
+     result       = CheckCode.ERROR;
+     p.checkcode  = result;
+   }
+   else {
+     //----- 農肥情報の取得 -----
+     Nouhi n = Nouhi.getNouhiInfo(p.nouhiId);
+     if (n == null) {
+       result       = CheckCode.ERROR;
+       p.checkcode  = result;
+     }
+     else {
+       //----- 苗状況情報の取得 -----
+       NaeStatus ns = NaeStatus.getStatusOfNae(p.naeNo);
+
+       if (ns == null) {
+         result       = CheckCode.ERROR;
+         p.checkcode  = result;
+       }
+       else {
+         //----- 散布回数のチェック -----
+         int sanpuCount = 0;
+         if (n.sanpuCount > 0) {
+           List<models.IkubyoDiary> idl = models.IkubyoDiary.find.where().eq("nae_no", p.naeNo).between("work_date", ns.katadukeDate, ns.finalEndDate).findList();
+           for (models.IkubyoDiary id : idl) {
+             models.IkubyoDiarySanpu ids = models.IkubyoDiarySanpu.find.where().eq("ikubyo_diary_id", id.ikubyoDiaryId).eq("nouhi_id", p.nouhiId).findUnique();
+             if (ids != null) {
+               sanpuCount++;
+             }
+           }
+           sanpuCount++;//今回散布分を加算
+           if (n.sanpuCount < sanpuCount) {// 散布回数上限値オーバー
+             result       |= CheckCode.COUNT;
+             p.checkcode  = result;
+             p.message = "【" + n.nouhiName + "】散布回数を超えています。(" + df.format(sanpuCount) + " / " + df.format(n.sanpuCount) + ")";
+           }
+         }
+       }
+     }
+   }
+
+
+
+   return result;
+ }
 
 }

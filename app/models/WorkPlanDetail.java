@@ -76,6 +76,10 @@ public class WorkPlanDetail extends Model {
      */
     public String naeNo;
     /**
+     * 個数
+     */
+    public double kosu;
+    /**
      * 列数
      */
     public double retusu;

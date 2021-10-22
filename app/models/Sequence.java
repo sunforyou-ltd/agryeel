@@ -163,6 +163,10 @@ public class Sequence extends Model {
          * 土ID
          */
         public static final int SOILID          =  33;
+        /**
+         * 育苗計画ID
+         */
+        public static final int IKUBYOPLANID   =  34;
     }
 
     /**

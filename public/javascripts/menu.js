@@ -2252,7 +2252,12 @@
       var result = window.confirm('あなたは現在作業中です。\n作業中画面を表示しますか？');
       if (result) {
 //      inputJson.action = "display";
-        window.location.href = "/workingmove";
+        if (userinfo.field != 0) {
+          window.location.href = "/workingmove";
+        }
+        else {
+          window.location.href = "/workingikubyomove";
+        }
         return;
       }
       else {
@@ -2800,6 +2805,9 @@
         return false;
       }
     }
+
+    from *= 1;
+    to *= 1;
 
     if (to < from) {
       alert("生育日数（自）に生育日数（至）より大きい数値が設定されています。");

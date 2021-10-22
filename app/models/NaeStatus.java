@@ -21,6 +21,13 @@ public class NaeStatus extends Model {
      */
     public String naeNo;
     /**
+<<<<<<< HEAD
+=======
+     * 生産者ID
+     */
+    public double farmId;
+    /**
+>>>>>>> e747d9c9b47c3d59e92c6b368bbb246cc6564120
      * 品種ID
      */
     public String hinsyuId;
@@ -144,15 +151,39 @@ public class NaeStatus extends Model {
     public static Finder<Long, NaeStatus> find = new Finder<Long, NaeStatus>(Long.class, NaeStatus.class);
 
     /**
+<<<<<<< HEAD
+=======
+     * 対象生産者の苗状況情報を取得する
+     * @param naeNo
+     * @return
+     */
+    public static List<NaeStatus> getStatusOfFarm(double farmId) {
+
+    	List<NaeStatus> aryNaeStatus = NaeStatus.find.where().eq("farm_id", farmId).orderBy("nae_no, crop_id, hinsyu_id").findList();
+
+    	return aryNaeStatus;
+
+    }
+
+    /**
+>>>>>>> e747d9c9b47c3d59e92c6b368bbb246cc6564120
      * 対象苗Noの苗状況情報を取得する
      * @param naeNo
      * @return
      */
+<<<<<<< HEAD
     public static List<NaeStatus> getStatusOfNae(String naeNo) {
 
     	List<NaeStatus> aryStatus = NaeStatus.find.where().eq("nae_no", naeNo).orderBy("hinsyu_id desc, crop_id desc").findList();
 
     	return aryStatus;
+=======
+    public static NaeStatus getStatusOfNae(String naeNo) {
+
+    	NaeStatus naeStatus = NaeStatus.find.where().eq("nae_no", naeNo).orderBy("hinsyu_id desc, crop_id desc").findUnique();
+
+    	return naeStatus;
+>>>>>>> e747d9c9b47c3d59e92c6b368bbb246cc6564120
 
     }
 }

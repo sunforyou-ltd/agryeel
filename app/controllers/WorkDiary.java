@@ -6,10 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-
-import org.apache.commons.lang3.time.DateUtils;
 
 import models.Account;
 import models.AccountStatus;
@@ -22,6 +19,7 @@ import models.CompartmentStatus;
 import models.CompartmentWorkChainStatus;
 import models.Hinsyu;
 import models.Kiki;
+import models.NaeStatus;
 import models.Nisugata;
 import models.Nouhi;
 import models.PlanLine;
@@ -46,15 +44,13 @@ import com.avaje.ebean.Ebean;
 import com.avaje.ebean.Expr;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-
 import compornent.CommonGetWorkDiaryData;
 import compornent.CommonWorkDiary;
 import compornent.CommonWorkDiaryWork;
-import compornent.CompartmentStatusCompornent;
 import compornent.FarmComprtnent;
 import compornent.FieldComprtnent;
-import compornent.HashuCompornent;
-import compornent.MotochoCompornent;
+import compornent.NaeMotochoCompornent;
+import compornent.NaeStatusCompornent;
 import compornent.NouhiComprtnent;
 import compornent.SessionCheckComponent;
 import compornent.UserComprtnent;
@@ -445,9 +441,28 @@ public class WorkDiary extends Controller {
             timeLine.message       +=  "--------------------------------------------------<br>";
             break;
           case AgryeelConst.WorkTemplate.TEISHOKU:
-            timeLine.message       += "<使用苗枚数> " + workDiary.naemaisu + "枚" + "<br>";
-            timeLine.message       += "<列数> " + workDiary.retusu + "列" + "<br>";
-            timeLine.message       +=  "--------------------------------------------------<br>";
+            wdds = WorkDiaryDetail.getWorkDiaryDetailList(workDiary.workDiaryId);
+            idx = 0;
+            for (WorkDiaryDetail wdd : wdds) {
+              idx++;
+              if (!wdd.naeNo.equals("")) {
+                NaeStatus ns = NaeStatus.getStatusOfNae(wdd.naeNo);
+                String[] naeNos = wdd.naeNo.split("-");
+                timeLine.message     += "<苗" + idx + "> "     + ns.hinsyuName + "(" + naeNos[1] + ")" + "<br>";
+              }
+              else {
+                String[] hinsyus = workDiary.hinsyuId.split(",");
+                double hinsyuId = Double.parseDouble(hinsyus[idx - 1]);
+                timeLine.message     += "<苗" + idx + "> "     + Hinsyu.getHinsyuName(hinsyuId) + "<br>";
+              }
+              timeLine.message       += "<個数" + idx + "> "     + wdd.kosu + "個" + "<br>";
+              timeLine.message       += "<列数" + idx + "> "     + wdd.retusu + "列" + "<br>";
+              timeLine.message       += "<条間" + idx + "> "     + wdd.joukan + "cm" + "<br>";
+              timeLine.message       += "<条数" + idx + "> "     + wdd.jousu  + "列" + "<br>";
+              timeLine.message       += "<作付距離" + idx + "> " + wdd.plantingDistance + "m" + "<br>";
+              timeLine.message       +=  "--------------------------------------------------<br>";
+
+            }
             break;
           case AgryeelConst.WorkTemplate.NAEHASHU:
             timeLine.message       += "<使用穴数> " + workDiary.useHole + "穴" + "<br>";
@@ -792,9 +807,28 @@ public class WorkDiary extends Controller {
             planLine.message       +=  "--------------------------------------------------<br>";
             break;
           case AgryeelConst.WorkTemplate.TEISHOKU:
-            planLine.message       += "<使用苗枚数> " + workplan.naemaisu + "枚" + "<br>";
-            planLine.message       += "<列数> " + workplan.retusu + "列" + "<br>";
-            planLine.message       +=  "--------------------------------------------------<br>";
+            wdds = WorkDiaryDetail.getWorkPlanDetailList(workplan.workPlanId);
+            idx = 0;
+            for (WorkPlanDetail wdd : wdds) {
+              idx++;
+              if (!wdd.naeNo.equals("")) {
+                NaeStatus ns = NaeStatus.getStatusOfNae(wdd.naeNo);
+                String[] naeNos = wdd.naeNo.split("-");
+                planLine.message     += "<苗" + idx + "> "     + ns.hinsyuName + "(" + naeNos[1] + ")" + "<br>";
+              }
+              else {
+                String[] hinsyus = workplan.hinsyuId.split(",");
+                double hinsyuId = Double.parseDouble(hinsyus[idx - 1]);
+                planLine.message     += "<苗" + idx + "> "     + Hinsyu.getHinsyuName(hinsyuId) + "<br>";
+              }
+              planLine.message       += "<個数" + idx + "> "     + wdd.kosu + "個" + "<br>";
+              planLine.message       += "<列数" + idx + "> "     + wdd.retusu + "列" + "<br>";
+              planLine.message       += "<条間" + idx + "> "     + wdd.joukan + "cm" + "<br>";
+              planLine.message       += "<条数" + idx + "> "     + wdd.jousu  + "列" + "<br>";
+              planLine.message       += "<作付距離" + idx + "> " + wdd.plantingDistance + "m" + "<br>";
+              planLine.message       +=  "--------------------------------------------------<br>";
+
+            }
             break;
           case AgryeelConst.WorkTemplate.NAEHASHU:
             planLine.message       += "<使用穴数> " + workplan.useHole + "穴" + "<br>";
@@ -1211,6 +1245,12 @@ public class WorkDiary extends Controller {
               wdd.shukakuRyo          = wpd.shukakuRyo;
               wdd.syukakuHakosu       = wpd.syukakuHakosu;
               wdd.syukakuNinzu        = wpd.syukakuNinzu;
+              wdd.naeNo               = wpd.naeNo;
+              wdd.kosu                = wpd.kosu;
+              wdd.retusu              = wpd.retusu;
+              wdd.joukan              = wpd.joukan;
+              wdd.jousu               = wpd.jousu;
+              wdd.plantingDistance    = wpd.plantingDistance;
               shukakuryo             += wpd.shukakuRyo;
               wdd.save();
               whd.stack(wdd);         //詳細情報を履歴情報として格納する
@@ -1347,9 +1387,28 @@ public class WorkDiary extends Controller {
               timeLine.message       +=  "--------------------------------------------------<br>";
               break;
             case AgryeelConst.WorkTemplate.TEISHOKU:
-              timeLine.message       += "<使用苗枚数> " + workDiary.naemaisu + "枚" + "<br>";
-              timeLine.message       += "<列数> " + workDiary.retusu + "列" + "<br>";
-              timeLine.message       +=  "--------------------------------------------------<br>";
+              wdds = WorkDiaryDetail.getWorkDiaryDetailList(workDiary.workDiaryId);
+              idx = 0;
+              for (WorkDiaryDetail wdd : wdds) {
+                idx++;
+                if (!wdd.naeNo.equals("")) {
+                  NaeStatus ns = NaeStatus.getStatusOfNae(wdd.naeNo);
+                  String[] naeNos = wdd.naeNo.split("-");
+                  timeLine.message     += "<苗" + idx + "> "     + ns.hinsyuName + "(" + naeNos[1] + ")" + "<br>";
+                }
+                else {
+                  String[] hinsyus = workDiary.hinsyuId.split(",");
+                  double hinsyuId = Double.parseDouble(hinsyus[idx - 1]);
+                  timeLine.message     += "<苗" + idx + "> "     + Hinsyu.getHinsyuName(hinsyuId) + "<br>";
+                }
+                timeLine.message       += "<個数" + idx + "> "     + wdd.kosu + "個" + "<br>";
+                timeLine.message       += "<列数" + idx + "> "     + wdd.retusu + "列" + "<br>";
+                timeLine.message       += "<条間" + idx + "> "     + wdd.joukan + "cm" + "<br>";
+                timeLine.message       += "<条数" + idx + "> "     + wdd.jousu  + "列" + "<br>";
+                timeLine.message       += "<作付距離" + idx + "> " + wdd.plantingDistance + "m" + "<br>";
+                timeLine.message       +=  "--------------------------------------------------<br>";
+
+              }
               break;
             case AgryeelConst.WorkTemplate.NAEHASHU:
               timeLine.message       += "<使用穴数> " + workDiary.useHole + "穴" + "<br>";
@@ -1616,6 +1675,8 @@ public class WorkDiary extends Controller {
 
         /* 戻り値用JSONデータの生成 */
         ObjectNode 	resultJson = Json.newObject();
+        int naeCnt = 0;
+		String naeNo = "";
 
         models.WorkDiary workDiary = models.WorkDiary.find.where().eq("work_diary_id", workDiaryId).findUnique();
 
@@ -1628,10 +1689,40 @@ public class WorkDiary extends Controller {
             Compartment ct = Compartment.getCompartmentInfo(workDiary.kukakuId);
             Work wk = Work.getWork(workDiary.workId);
 
+            /* 苗状況照会更新 */
+        	List<WorkDiaryDetail> aryWorkDetail = WorkDiaryDetail.getWorkDiaryDetailList(workDiary.workDiaryId);
+        	for (WorkDiaryDetail workDiaryDetail : aryWorkDetail) {
+				if (!workDiaryDetail.naeNo.equals("")) {
+					if (naeNo.indexOf(workDiaryDetail.naeNo) >= 0) {
+						continue;
+					}
+					if (naeCnt > 0) {
+						naeNo = naeNo + ",";
+					}
+
+					naeNo = naeNo + workDiaryDetail.naeNo;
+					naeCnt++;
+				}
+			}
 
             workDiaryDeleteCommit(workDiaryId);
 
             Logger.info("[ WORKDIARY DELETED ] ID:{} NAME:{} KUKAKUID:{} KUKAKUNAME:{} WORKID:{} WORKNAME:{} WORKDIARYID:{}", uc.accountData.accountId, uc.accountData.acountName, ct.kukakuId, ct.kukakuName, wk.workId, wk.workName, workDiaryId);
+
+			if (!naeNo.equals("")) {
+				String[] sNaeNos = naeNo.split(",");
+				for (String nae : sNaeNos) {
+					/* 元帳照会を更新する */
+					NaeMotochoCompornent motochoCompornent = new NaeMotochoCompornent(nae);
+					motochoCompornent.make();
+
+					/* 苗状況照会を更新する */
+					NaeStatusCompornent naeStatusCompornent = new NaeStatusCompornent(nae);
+					naeStatusCompornent.idsps   = null;
+					naeStatusCompornent.wdDate  = workDiary.workDate;
+					naeStatusCompornent.update(motochoCompornent.lastMotochoBase);
+				}
+			}
 
 //            /* 元帳照会を更新する */
 //            MotochoCompornent motochoCompornent = new MotochoCompornent(workDiary.kukakuId);
@@ -1711,7 +1802,7 @@ public class WorkDiary extends Controller {
           for (int nouhiIndex = 0; nouhiIndex < nouhiInfoList.size(); nouhiIndex++) {
             double  nouhiId   = Double.parseDouble(nouhiInfoList.get(nouhiIndex).get("nouhiId").asText());        //農肥IDを取得する
             double  kukakuId  = Double.valueOf(skukakuId);
-            param.NouhiCheckParm ncp = new param.NouhiCheckParm(nouhiId, kukakuId, workDate);
+            param.NouhiCheckParm ncp = new param.NouhiCheckParm(nouhiId, kukakuId, "", workDate);
             result |= NouhiComprtnent.nouhiCheck(ncp);
             if (!"".equals(message)) {
               message += "\n";

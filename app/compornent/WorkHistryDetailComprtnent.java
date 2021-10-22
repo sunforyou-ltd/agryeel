@@ -82,6 +82,12 @@ public class WorkHistryDetailComprtnent {
     workHistryDetail.shukakuRyo          =  detail.shukakuRyo;
     workHistryDetail.syukakuHakosu       =  detail.syukakuHakosu;
     workHistryDetail.syukakuNinzu        =  detail.syukakuNinzu;
+    workHistryDetail.naeNo               =  detail.naeNo;
+    workHistryDetail.kosu                =  detail.kosu;
+    workHistryDetail.retusu              =  detail.retusu;
+    workHistryDetail.joukan              =  detail.joukan;
+    workHistryDetail.jousu               =  detail.jousu;
+    workHistryDetail.plantingDistance    =  detail.plantingDistance;
 
 
     listWorkHistryDetail.add(workHistryDetail);

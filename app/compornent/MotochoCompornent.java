@@ -6,11 +6,6 @@ import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
 
-import org.apache.commons.lang3.time.DateUtils;
-
-import play.Logger;
-import play.libs.Json;
-
 import models.Compartment;
 import models.Crop;
 import models.FarmStatus;
@@ -25,12 +20,18 @@ import models.PosttoPoint;
 import models.Weather;
 import models.Work;
 import models.WorkDiary;
+import models.WorkDiaryDetail;
 import models.WorkDiarySanpu;
+
+import org.apache.commons.lang3.time.DateUtils;
+
+import play.Logger;
+import play.libs.Json;
 import util.DateU;
 
 import com.avaje.ebean.Ebean;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import consts.AgryeelConst;
 
@@ -320,6 +321,67 @@ public class MotochoCompornent implements AgryellInterface{
           }
 
       }
+      /*------------------------------------------------------------------------------------------------------------*/
+      /* 定植情報の反映                                                                                             */
+      /*------------------------------------------------------------------------------------------------------------*/
+        int naeCnt = 0;
+		String naeNo = "";
+    	if (aryWork.size() > 0) {
+
+        	for (WorkDiary workDiary : aryWork) {
+
+        		/* 作業開始以前の作業は無効とする */
+        		if (motochoBase.workStartDay.compareTo(workDiary.workDate) > 0) {
+        			continue;
+        		}
+
+        		Work work = Work.getWork(workDiary.workId);
+        		if (work.workTemplateId != AgryeelConst.WorkTemplate.TEISHOKU) {
+        		  continue;
+        		}
+
+        		this.hashuCount++;
+
+				//苗No取得
+        		List<WorkDiaryDetail> aryWorkDetail = WorkDiaryDetail.getWorkDiaryDetailList(workDiary.workDiaryId);
+        		for (WorkDiaryDetail workDiaryDetail : aryWorkDetail) {
+					if (!workDiaryDetail.naeNo.equals("")) {
+						if (naeNo.indexOf(workDiaryDetail.naeNo) >= 0) {
+							continue;
+						}
+						if (naeCnt > 0) {
+							naeNo = naeNo + ",";
+						}
+
+						naeNo = naeNo + workDiaryDetail.naeNo;
+
+						/* 元帳照会を更新する */
+						NaeMotochoCompornent motochoCompornent = new NaeMotochoCompornent(workDiaryDetail.naeNo);
+						motochoCompornent.make();
+
+						/* 苗状況照会を更新する */
+						NaeStatusCompornent naeStatusCompornent = new NaeStatusCompornent(workDiaryDetail.naeNo);
+						naeStatusCompornent.idsps   = null;
+						naeStatusCompornent.wdDate  = workDiary.workDate;
+						naeStatusCompornent.update(motochoCompornent.lastMotochoBase);
+
+						naeCnt++;
+					}
+				}
+        		if (this.hashuCount == 1) {
+        			motochoBase.hashuDate 	= workDiary.workDate;
+        			motochoBase.hinsyuId 	= workDiary.hinsyuId;
+        			motochoBase.hinsyuName	= "";
+        			motochoBase.hinsyuName = Hinsyu.getMultiHinsyuName(workDiary.hinsyuId); //品種名
+        			motochoBase.cropId     = Hinsyu.getMultiHinsyuCropId(workDiary.hinsyuId);
+        			motochoBase.cropName  = "";
+        			Crop crop = Crop.find.where().eq("crop_id", motochoBase.cropId).findUnique();        //生産物情報を取得する
+        			if (crop != null) { motochoBase.cropId        = crop.cropId; motochoBase.cropName = crop.cropName; }             //生産物名
+        		}
+        	}
+        	motochoBase.hashuCount  = this.hashuCount;
+    		motochoBase.naeNo = naeNo;
+    	}
       /*------------------------------------------------------------------------------------------------------------*/
       /* 積算温度の反映                                                                                                                                                                                                                                                */
       /*------------------------------------------------------------------------------------------------------------*/
