@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 package compornent;
 
 import java.text.DecimalFormat;
@@ -200,4 +199,3 @@ public class SoilComprtnent implements AgryellInterface{
  }
 
 }
->>>>>>> e747d9c9b47c3d59e92c6b368bbb246cc6564120

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 package models;
 
 import java.util.List;
@@ -122,4 +121,3 @@ public class IkubyoDiarySanpu extends Model {
     }
 
 }
->>>>>>> e747d9c9b47c3d59e92c6b368bbb246cc6564120

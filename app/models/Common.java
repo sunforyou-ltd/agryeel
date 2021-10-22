@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 package models;
 
 import java.util.List;
@@ -590,4 +589,3 @@ public class Common extends Model {
         public static final int     IKUBYOFUNCTION = 63;
     }
 }
->>>>>>> e747d9c9b47c3d59e92c6b368bbb246cc6564120

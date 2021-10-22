@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 package compornent;
 
 import models.CompartmentStatus;
@@ -276,4 +275,3 @@ public class TeishokuCompornent extends CommonWorkDiaryWork {
 
     }
 }
->>>>>>> e747d9c9b47c3d59e92c6b368bbb246cc6564120
