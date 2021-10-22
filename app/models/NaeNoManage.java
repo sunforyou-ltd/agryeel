@@ -69,11 +69,6 @@ public class NaeNoManage extends Model {
           }
           count--;
         }
-
-<<<<<<< HEAD
-
-=======
->>>>>>> e747d9c9b47c3d59e92c6b368bbb246cc6564120
         return naeNoManage;
 
     }

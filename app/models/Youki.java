@@ -80,8 +80,6 @@ public class Youki extends Model {
     	return result;
 
     }
-<<<<<<< HEAD
-=======
     public static double getKosu(double youkiId) {
 
     	double result = 0;
@@ -97,7 +95,6 @@ public class Youki extends Model {
     	return result;
 
     }
->>>>>>> e747d9c9b47c3d59e92c6b368bbb246cc6564120
     public String getUnitString() {
 
       String result = "";
