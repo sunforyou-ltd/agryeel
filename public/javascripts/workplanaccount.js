@@ -286,7 +286,7 @@
     });
   }
   function viewDataCard(key, data, dlk) {
-    var workList = $("#accountwork" + data.keyaccount);
+    var workList = $("#accountwork" + escapeSelectorString(data.keyaccount));
     var code  = data["timeLineColor"];
     var red   = parseInt(code.substring(0,2), 16);
     var green = parseInt(code.substring(2,4), 16);
