@@ -170,6 +170,5 @@ public class NaeStatus extends Model {
     	NaeStatus naeStatus = NaeStatus.find.where().eq("nae_no", naeNo).orderBy("hinsyu_id desc, crop_id desc").findUnique();
 
     	return naeStatus;
-
     }
 }

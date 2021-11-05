@@ -39,7 +39,6 @@ public class IkubyoLine extends Model {
      * メッセージ
      */
     public String message;
-    /**
      * タイムラインカラー
      */
     public String timeLineColor;
