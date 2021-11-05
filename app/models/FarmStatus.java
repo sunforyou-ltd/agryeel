@@ -80,6 +80,10 @@ public class FarmStatus extends Model {
      * 次回回収日
      */
     public Date nextCollectionDate;
+    /**
+     * 育苗機能
+     */
+    public int ikubyoFunction;
 
     public static Finder<Long, FarmStatus> find = new Finder<Long, FarmStatus>(Long.class, FarmStatus.class);
 

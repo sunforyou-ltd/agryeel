@@ -22,6 +22,16 @@ $(document).ready(function(){
   //------------------------------------------------------------------------------------------------------------------
   $('.mselectmodal-trigger').unbind('click');
   $('.mselectmodal-trigger').bind('click', mSelectOpen);
+  //------------------------------------------------------------------------------------------------------------------
+  //- セレクトモーダル（Sub）の初期化
+  //------------------------------------------------------------------------------------------------------------------
+  $('.selectsubmodal-trigger').unbind('click');
+  $('.selectsubmodal-trigger').bind('click', selectSubOpen);
+  //------------------------------------------------------------------------------------------------------------------
+  //- マルチセレクトモーダル（Sub）の初期化
+  //------------------------------------------------------------------------------------------------------------------
+  $('.mselectsubmodal-trigger').unbind('click');
+  $('.mselectsubmodal-trigger').bind('click', mSelectSubOpen);
 
   //------------------------------------------------------------------------------------------------------------------
   //- カラーピッカーの初期化
@@ -96,6 +106,94 @@ function mSelectDataGet(displayspan, data) {
           var msd   = {id:"", name: "", select: false};
           msd.id    = data.id;
           msd.name  = data.name;
+          if (jsonResult.flag == 0) {
+            msd.select  = false;
+          }
+          else {
+            if (data.flag == 0) {
+              msd.select  = false;
+            }
+            else {
+              msd.select  = true;
+            }
+          }
+          oMselect.data.push(msd);
+        }
+      }
+      mSelectJsonSet(oMselect.target, oMselect.data);
+    },
+      dataType:'json',
+      contentType:'text/json',
+      async: false
+    });
+}
+//------------------------------------------------------------------------------------------------------------------
+//- セレクト用(Sub)データの取得
+//------------------------------------------------------------------------------------------------------------------
+function selectSubDataGet(displayspan, data) {
+
+  oSelect.data   = [];
+  oSelect.target = displayspan;
+
+  var url = "/" + data;
+  $.ajax({
+    url:url,
+    type:'GET',
+    complete:function(data, status, jqXHR){
+      var jsonResult = JSON.parse( data.responseText );
+
+      if (jsonResult.result == 'SUCCESS') {
+        var dl = jsonResult.datalist;
+        for (var key in dl) {
+          var data  = dl[key];
+          var msd   = {id:"", name: "", sub: "", select: false};
+          msd.id    = data.id;
+          msd.name  = data.name;
+          msd.sub   = data.sub;
+          if (jsonResult.flag == 0) {
+            msd.select  = false;
+          }
+          else {
+            if (data.flag == 0) {
+              msd.select  = false;
+            }
+            else {
+              msd.select  = true;
+            }
+          }
+          oSelect.data.push(msd);
+        }
+      }
+      selectJsonSet(oSelect.target, oSelect.data);
+    },
+    dataType:'json',
+    contentType:'text/json',
+    async: false
+  });
+}
+//------------------------------------------------------------------------------------------------------------------
+//- マルチセレクト用(Sub)データの取得
+//------------------------------------------------------------------------------------------------------------------
+function mSelectSubDataGet(displayspan, data) {
+
+  oMselect.data   = [];
+  oMselect.target = displayspan;
+
+  var url = "/" + data;
+  $.ajax({
+    url:url,
+    type:'GET',
+    complete:function(data, status, jqXHR){
+      var jsonResult = JSON.parse( data.responseText );
+
+      if (jsonResult.result == 'SUCCESS') {
+        var dl = jsonResult.datalist;
+        for (var key in dl) {
+          var data  = dl[key];
+          var msd   = {id:"", name: "", sub: "", select: false};
+          msd.id    = data.id;
+          msd.name  = data.name;
+          msd.sub   = data.sub;
           if (jsonResult.flag == 0) {
             msd.select  = false;
           }
@@ -324,6 +422,132 @@ function mSelectOpen() {
   return false;
 }
 //------------------------------------------------------------------------------------------------------------------
+//- セレクトモーダル(Sub)オープン時
+//------------------------------------------------------------------------------------------------------------------
+function selectSubOpen() {
+
+  var ms = $('#selectsubmodal');
+  if (ms != undefined) {
+    ms.empty();
+    ms.append('<div id="selectarea" class="modal-content">'); //モーダルコンテンツ領域を生成
+    var ma = $('#selectarea');
+
+    if (ma != undefined) {
+
+      ma.append('<h6>' + $(this).attr("title") +'</h6>');     //コンテンツヘッダーを生成する
+
+      var data = $(this).attr("data");
+      oSelect.target = $(this).attr("displayspan");
+      var hidden = $(this).attr("htext");
+      if (hidden != undefined) {
+        oSelect.hidden = hidden;
+      }
+      else {
+        oSelect.hidden = "";
+      }
+
+      oSelect.data = selectJsonGet(oSelect.target);
+
+      if (oSelect.data == undefined) {
+        selectSubDataGet(oSelect.target, data);
+      }
+
+      ma.append('<ul id="selectlist" class="collection">');  //メニューリストを生成する
+      var ml = $("#selectlist");                             //メニューリストを取得する
+      if (ml != undefined ) {                                 //メニューリストが存在する場合
+        for (var key in oSelect.data) {
+
+          var data  = oSelect.data[key];
+          ml.append('<li class="collection-item select-item" dataid="' + data.id +'"><span>' + data.name + '</span><span class="right">' + data.sub + '</span></li>');
+
+        }
+      }
+      $('.select-item').unbind("click");
+      $('.select-item').bind("click", selectSubChange);
+    }
+    else {
+
+    }
+    ms.append('<div id="selectfooter" class="modal-footer">');
+    var mf = $('#selectfooter');
+    if (mf != undefined) {
+      mf.append('<a href="#!" id="selectback" class="waves-effect waves-green btn-flat">閉じる</a>');
+      $('#selectback').unbind("click");
+      $('#selectback').bind("click", selectSubClose);
+    }
+    ms.modal('open');
+  }
+  return false;
+}
+//------------------------------------------------------------------------------------------------------------------
+//- マルチセレクトモーダルオープン時
+//------------------------------------------------------------------------------------------------------------------
+function mSelectSubOpen() {
+
+  var ms = $('#mselectsubmodal');
+  if (ms != undefined) {
+    ms.empty();
+    ms.append('<div id="mselectarea" class="modal-content">'); //モーダルコンテンツ領域を生成
+    var ma = $('#mselectarea');
+
+    if (ma != undefined) {
+
+      ma.append('<h6>' + $(this).attr("title") +'</h6>');     //コンテンツヘッダーを生成する
+
+      var data = $(this).attr("data");
+      oMselect.target = $(this).attr("displayspan");
+      var hidden = $(this).attr("htext");
+      if (hidden != undefined) {
+        oMselect.hidden = hidden;
+      }
+      else {
+        oMselect.hidden = "";
+      }
+
+      oMselect.data = mSelectJsonGet(oMselect.target);
+
+      if (oMselect.data == undefined) {
+        mSelectSubDataGet(oMselect.target, data);
+      }
+
+      ma.append('<ul id="mselectlist" class="collection">');  //メニューリストを生成する
+      var ml = $("#mselectlist");                             //メニューリストを取得する
+      if (ml != undefined ) {                                 //メニューリストが存在する場合
+        for (var key in oMselect.data) {
+
+          var data  = oMselect.data[key];
+          if (data.select == true) {
+            ml.append('<li class="collection-item mselect-item" dataid="' + data.id +'"><span>' + data.name + '</span><i class="material-icons status done">done</i><span class="subitem">' + data.sub + '</span></li>');
+          }
+          else {
+            ml.append('<li class="collection-item mselect-item" dataid="' + data.id +'"><span>' + data.name + '</span><i class="material-icons status add">add</i><span class="subitem">' + data.sub + '</span></li>');
+          }
+        }
+      }
+      $('.mselect-item').unbind("click");
+      $('.mselect-item').bind("click", mSelectChange);
+    }
+    else {
+
+    }
+    ms.append('<div id="mselectfooter" class="modal-footer">');
+    var mf = $('#mselectfooter');
+    if (mf != undefined) {
+      mf.append('<a href="#!" id="mselectadd" class="waves-effect waves-green btn-flat left">一括選択</a>');
+      mf.append('<a href="#!" id="mselectdel" class="waves-effect waves-green btn-flat left">一括解除</a>');
+      mf.append('<a href="#!" id="mselectback" class="waves-effect waves-green btn-flat">閉じる</a>');
+      $('#mselectadd').unbind("click");
+      $('#mselectadd').bind("click", mSelectAdd);
+      $('#mselectdel').unbind("click");
+      $('#mselectdel').bind("click", mSelectDel);
+      $('#mselectback').unbind("click");
+      $('#mselectback').bind("click", mSelectSubClose);
+    }
+    ms.modal('open');
+  }
+  return false;
+}
+//------------------------------------------------------------------------------------------------------------------
 //- セレクトモーダルクローズ時
 //------------------------------------------------------------------------------------------------------------------
 function selectClose() {
@@ -413,6 +637,101 @@ function mSelectClose() {
     hidden.val(hiddenMsg).change();
   }
   var ms = $('#mselectmodal');
+  if (ms != undefined) {
+    ms.modal('close');
+  }
+  return true;
+}
+//------------------------------------------------------------------------------------------------------------------
+//- セレクトモーダル(Sub)クローズ時
+//------------------------------------------------------------------------------------------------------------------
+function selectSubClose() {
+  var spanMsg = "";
+  var hiddenMsg = "";
+  var msgCnt  = 0;
+  for (var idx = 0; idx < oSelect.data.length; idx++) {
+    if (oSelect.data[idx].select == true) {
+      if (msgCnt > 1) {
+        spanMsg += "，．．．";
+        break;
+      }
+      else if (msgCnt == 1) {
+        spanMsg += "，";
+      }
+      spanMsg += oSelect.data[idx].name;
+      msgCnt++;
+    }
+  }
+  if (msgCnt == 0) {
+    spanMsg = "未選択"
+  }
+  msgCnt  = 0;
+  for (var idx = 0; idx < oSelect.data.length; idx++) {
+    if (oSelect.data[idx].select == true) {
+      if (msgCnt >= 1) {
+        hiddenMsg += ",";
+      }
+      hiddenMsg += oSelect.data[idx].id;
+      msgCnt++;
+    }
+  }
+  mSelectJsonSet(oSelect.target, oSelect.data);
+  var span = $(oSelect.target);
+  if (span != undefined) {
+    span.text(spanMsg);
+  }
+  var hidden = $(oSelect.hidden);
+  if (hidden != undefined) {
+    hidden.val(hiddenMsg).change();
+  }
+  var ms = $('#selectsubmodal');
+  if (ms != undefined) {
+    ms.modal('close');
+  }
+}
+//------------------------------------------------------------------------------------------------------------------
+//- マルチセレクトモーダル(Sub)クローズ時
+//------------------------------------------------------------------------------------------------------------------
+function mSelectSubClose() {
+  var spanMsg = "";
+  var hiddenMsg = "";
+  var msgCnt  = 0;
+  for (var idx = 0; idx < oMselect.data.length; idx++) {
+    if (oMselect.data[idx].select == true) {
+      if (msgCnt > 1) {
+        spanMsg += "，．．．";
+        break;
+      }
+      else if (msgCnt == 1) {
+        spanMsg += "，";
+      }
+      spanMsg += oMselect.data[idx].name;
+      msgCnt++;
+    }
+  }
+  if (msgCnt == 0) {
+    spanMsg = "未選択"
+  }
+  msgCnt  = 0;
+  for (var idx = 0; idx < oMselect.data.length; idx++) {
+    if (oMselect.data[idx].select == true) {
+      if (msgCnt >= 1) {
+        hiddenMsg += ",";
+      }
+      hiddenMsg += oMselect.data[idx].id;
+      msgCnt++;
+    }
+  }
+  mSelectJsonSet(oMselect.target, oMselect.data);
+  var span = $(oMselect.target);
+  if (span != undefined) {
+    span.text(spanMsg);
+  }
+  var hidden = $(oMselect.hidden);
+  if (hidden != undefined) {
+    hidden.val(hiddenMsg).change();
+  }
+  var ms = $('#mselectsubmodal');
   if (ms != undefined) {
     ms.modal('close');
   }
@@ -592,6 +911,18 @@ function mSelectChange() {
       data.select = true;
     }
   }
+}
+//------------------------------------------------------------------------------------------------------------------
+//- セレクトモーダル(Sub)明細選択時
+//------------------------------------------------------------------------------------------------------------------
+function selectSubChange() {
+  var item = $(this);
+  var data = selectData(item.attr("dataid"));
+  if (data != undefined) {
+    data.select = true;
+  }
+  unselectData(item.attr("dataid"));
+  selectSubClose();
 }
 //------------------------------------------------------------------------------------------------------------------
 //- マルチセレクトモーダル一括選択

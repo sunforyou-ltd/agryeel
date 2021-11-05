@@ -99,6 +99,14 @@ public class AgryeelConst {
          */
         public static String  SIZAIID			= "sizaiId";
         /**
+         * 容器ID
+         */
+        public static String  YOUKIID			= "youkiId";
+        /**
+         * 土ID
+         */
+        public static String  SOILID			= "soilId";
+        /**
          * 作業ID（作業記録日誌）
          */
         public static String  WORKID			= "workId";
@@ -110,6 +118,18 @@ public class AgryeelConst {
          * 作業計画ＩＤ（作業記録日誌）
          */
         public static String  WORKPLANID   = "workPlanId";
+        /**
+         * 育苗記録ＩＤ（育苗記録日誌）
+         */
+        public static String  IKUBYODIARYID		= "ikubyoDiaryId";
+        /**
+         * 育苗計画ＩＤ（育苗記録日誌）
+         */
+        public static String  IKUBYOPLANID		= "ikubyoPlanId";
+        /**
+         * 苗No
+         */
+        public static String  NAENO				= "naeNo";
         /**
          * マスタメンテナンス画面ID
          */
@@ -126,6 +146,10 @@ public class AgryeelConst {
          * 作業中(アクション)
          */
         public static String  WORKING_ACTION = "workingaction";
+        /**
+         * 作業中(計画ID)
+         */
+        public static String  WORKING_PLANID = "workingaplanid";
         /**
          * 作業記録BACK(遷移先)
          */
@@ -715,6 +739,14 @@ public class AgryeelConst {
              * サイズ
              */
             public static String  SIZE			= "sizeDataList";
+            /**
+             * 容器
+             */
+            public static String  YOUKI			= "youkiDataList";
+            /**
+             * 土
+             */
+            public static String  SOIL			= "soilDataList";
         }
         /**
          * 前回履歴値
@@ -1000,6 +1032,14 @@ public class AgryeelConst {
 	         */
 	        public static String  SIZE			= "階級・サイズ";
 	        /**
+	         * 画面名（容器）
+	         */
+	        public static String  YOUKI			= "容器";
+	        /**
+	         * 画面名（土）
+	         */
+	        public static String  SOIL			= "土";
+	        /**
 	         * 画面名（資材）
 	         */
 	        public static String  SIZAI			= "資材";
@@ -1072,6 +1112,34 @@ public class AgryeelConst {
          * 生産者
          */
         public static final int  	  FARM				= 16;
+        /**
+         * 容器
+         */
+        public static final int  	  YOUKI				= 17;
+        /**
+         * 土
+         */
+        public static final int  	  SOIL				= 18;
+
+    }
+
+	/**
+	 * 育苗情報
+	 *
+	 * @author SUN FOR YOU.Ltd
+	 *
+	 */
+    public class IkubyoInfo {
+        /**
+         * 該当作業
+         */
+        public static final String  TARGETIKUBYOWORK = "targetIkubyoWork";
+        /**
+         * 該当苗状況
+         */
+        public static final String  TARGETNAESTATUS	= "targetNaeStatus";
+
+        public static final double WORKCHAINID = 36;
     }
 
 	/**
@@ -1137,6 +1205,9 @@ public class AgryeelConst {
     public static final int NICHOCHOSEI    = 18;
     public static final int SENKA          = 19;
     public static final int HAIKI          = 20;
+    public static final int NAEHASHUIK     = 21;
+    public static final int KARITORIIK     = 22;
+    public static final int HAIKIIK        = 23;
 	}
   public class WorkDetailKind {
     public static final int DACHAKU         = 1;

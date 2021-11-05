@@ -152,6 +152,10 @@ public class MotochoBase extends Model {
      * 予測収穫量
      */
     public double predictionShukakuRyo;
+    /**
+     * 苗No
+     */
+    public String naeNo;
 
     public static Finder<Long, MotochoBase> find = new Finder<Long, MotochoBase>(Long.class, MotochoBase.class);
 

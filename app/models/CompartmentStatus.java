@@ -205,6 +205,10 @@ public class CompartmentStatus extends Model {
      * 削除フラグ
      */
     public short deleteFlag;
+    /**
+     * 苗No
+     */
+    public String naeNo;
 
     public static Finder<Long, CompartmentStatus> find = new Finder<Long, CompartmentStatus>(Long.class, CompartmentStatus.class);
 

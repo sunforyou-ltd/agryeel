@@ -67,4 +67,21 @@ public class Crop extends Model {
     	return aryCrop;
 
     }
+    /**
+     * 名称からIDへ変換を行います
+     * @param pName
+     * @return
+     */
+    public static double convertId(String pName) {
+      double result = 0;
+
+      List<Crop> crops = Crop.find.where()
+                             .eq("crop_name", pName)
+                             .findList();
+      if (crops.size() == 1) { //該当レコードが１件のみ
+        result = crops.get(0).cropId;
+      }
+
+      return result;
+    }
 }

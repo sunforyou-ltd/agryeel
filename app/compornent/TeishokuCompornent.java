@@ -2,6 +2,7 @@ package compornent;
 
 import models.CompartmentStatus;
 import models.CompartmentWorkChainStatus;
+import models.Hinsyu;
 import models.Work;
 import models.WorkDiary;
 import models.WorkLastTime;
@@ -22,13 +23,9 @@ import consts.AgryeelConst;
 public class TeishokuCompornent extends CommonWorkDiaryWork {
 
     /**
-     * 使用苗枚数
+     * 品種ID
      */
-    public int naemaisu;
-    /**
-     * 列数
-     */
-    public int retusu = 0;
+    public String hinsyuId;
 
     /**
      * コンストラクタ
@@ -55,40 +52,40 @@ public class TeishokuCompornent extends CommonWorkDiaryWork {
     @Override
     public void init() {
 
+        String	hinsyuName		= "未選択";
+
         /* 定植情報の取得 */
         double   farmId                         = Double.parseDouble(this.session.get((AgryeelConst.SessionKey.FARMID)));
         CompartmentStatus compartmentStatusData = FieldComprtnent.getCompartmentStatus(this.kukakuId);
         CompartmentWorkChainStatus cws          = compartmentStatusData.getWorkChainStatus();
         WorkLastTime workModel = WorkChainCompornent.getWorkLastTime(this.workId, farmId, cws.cropId);
         if (this.workDiary != null) {	/* 作業記録編集の場合 */
-
-          naemaisu 			= this.workDiary.naemaisu;				//使用苗枚数
-          retusu 			  = this.workDiary.retusu;					//列数
+          hinsyuId  	= this.workDiary.hinsyuId;				//品種
+          getWorkDiaryDetail(this.workDiary.workDiaryId);
 
         }
         else if (this.workPlan != null) { /* 作業計画編集の場合 */
 
-          naemaisu      = this.workPlan.naemaisu;        //使用苗枚数
-          retusu        = this.workPlan.retusu;          //列数
+          hinsyuId    = this.workPlan.hinsyuId;					//品種
+          getWorkPlanDetail(this.workPlan.workPlanId);
 
         }
         else {
-          if (workModel != null) {
+            hinsyuId  		= "";								//品種
+          //前回作業情報より取得する
+          getWorkHistryDetail(this.workId);
 
-            naemaisu 			= workModel.naemaisu;				//使用苗枚数
-            retusu 			  = workModel.retusu;					//列数
-
-          }
-          else {
-
-            naemaisu 			= 0;									//使用苗枚数
-            retusu 			  = 0;									//列数
-
-          }
         }
 
-        resultJson.put("retusu"			  , retusu);							//列数
-        resultJson.put("naemaisu"			, naemaisu);						//使用苗枚数
+        if (!"".equals(hinsyuId)) {
+        	hinsyuName		= Hinsyu.getMultiHinsyuName(hinsyuId);
+        }
+        else {
+          hinsyuName  = "未選択";
+        }
+
+        resultJson.put("hinsyuId"		, hinsyuId);			//品種
+        resultJson.put("hinsyuSpan"		, hinsyuName);			//品種
 
     }
 
@@ -101,17 +98,15 @@ public class TeishokuCompornent extends CommonWorkDiaryWork {
       super.commit(input, wkd, wk);
 
       if (this.mode == AgryeelConst.WorkDiaryMode.WORKING) {
-        wkd.retusu        = this.wlt.retusu;
-        wkd.naemaisu      = this.wlt.naemaisu;
+        wkd.hinsyuId      = this.wlt.hinsyuId;
       }
       else {
-        wkd.retusu        = Integer.parseInt(input.get("retusu").asText());       //列数
-        wkd.naemaisu      = Integer.parseInt(input.get("naemaisu").asText());     //使用苗枚数
+        wkd.hinsyuId      = input.get("hinsyu").asText();
       }
 
-      this.wlt.retusu 			  = wkd.retusu;											//列数
-      this.wlt.naemaisu       = wkd.naemaisu;							      //使用苗枚数
+      this.wlt.hinsyuId 		  = wkd.hinsyuId;				//品種
       this.wlt.update();
+      commitDetailInfo(input, wkd, wk);
 
     }
     /**
@@ -122,8 +117,8 @@ public class TeishokuCompornent extends CommonWorkDiaryWork {
 
       super.plan(input, wkp, wk);
 
-      wkp.retusu        = Integer.parseInt(input.get("retusu").asText());       //列数
-      wkp.naemaisu      = Integer.parseInt(input.get("naemaisu").asText());     //使用苗枚数
+      wkp.hinsyuId      = input.get("hinsyu").asText();			//品種
+      planDetailInfo(input, wkp, wk);
 
     }
     /**
@@ -133,8 +128,7 @@ public class TeishokuCompornent extends CommonWorkDiaryWork {
     public void saveHistry(WorkDiary wkd) {
 
       super.saveHistry(wkd);
-      this.wlt.retusu         = wkd.retusu;                     //列数
-      this.wlt.naemaisu       = wkd.naemaisu;                   //使用苗枚数
+      this.wlt.hinsyuId       = wkd.hinsyuId;                   //品種
       this.wlt.update();
 
     }

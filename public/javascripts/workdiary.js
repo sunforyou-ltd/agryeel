@@ -3,6 +3,7 @@
 
   var maxSanpuIndex 		= 0;														//最大散布インデックス
   var maxNouhiIndex    		= 0;														//最大農肥インデックス
+  var maxNaeIndex    		= 0;														//最大苗インデックス
   var targetSanpuIndex 		= 0;														//処理対象散布インデックス
   var targetNouhiIndex 		= 0;														//処理対象農肥インデックス
   var targetKikiIndex 		= 0;														//処理対象機器インデックス
@@ -47,6 +48,10 @@
       $('.all-shukaku-clear').bind('click', onShukakuAllClear);          //全ての収穫情報クリアボタン押下時
       $('.senka-clear').bind('click', onSenkaClear);                    //選花情報クリアボタン押下時
       $('.all-senka-clear').bind('click', onSenkaAllClear);             //全ての選花情報クリアボタン押下時
+      if (userinfo.ikubyo == 1) {
+        $('#G0005WorkNaeSpan').bind("click", onClickTeishokuMenuEvent);
+      }
+      $('.nae-value').bind('change', ChangeNae);	//苗選択時
 
       /*------ コンビネーションの初期表示を手動にする -----*/
       $("#G0005CombiInfo").hide();
@@ -325,6 +330,10 @@
           $('.mselectmodal-trigger').bind('click', mSelectOpen);
           $('.selectmodal-trigger').unbind('click');
           $('.selectmodal-trigger').bind('click', selectOpen);
+          $('.mselectsubmodal-trigger').unbind('click');
+          $('.mselectsubmodal-trigger').bind('click', mSelectSubOpen);
+          $('.selectsubmodal-trigger').unbind('click');
+          $('.selectsubmodal-trigger').bind('click', selectSubOpen);
           //------------------------------------------------------------------------------------------------------------------
           //- 作業時間を再度設定する
           //------------------------------------------------------------------------------------------------------------------
@@ -1313,20 +1322,74 @@
       htmlString+= '</div>';
       htmlString+= '</div>';
 
-      htmlString+= '<div class="row">';
-      htmlString+= '<div class="col s12 m8 offset-m2 l4 offset-l4 card-panel wd-panel">';
-      htmlString+= '<div class="col s12 input-field wd">';
-      htmlString+= '<span class="item-title">使用苗枚数</span><span id="G0005NaemaisuSpan" class="item">' + jsonResult["naemaisu"] + '</span><span class="item">枚</span><i class="material-icons orange-text text-lighten-1 small right calcTarget" targetId="G0005Naemaisu">keyboard</i>';
-      htmlString+= '<input type="hidden" id="G0005Naemaisu" value="' + jsonResult["naemaisu"] + '"/>';
-      htmlString+= '</div>';
-      htmlString+= '<div class="col s12 input-field wd">';
-      htmlString+= '<span class="item-title">列数</span><span id="G0005RetusuSpan" class="item">' + jsonResult["retusu"] + '</span><span class="item">列</span><i class="material-icons orange-text text-lighten-1 small right calcTarget" targetId="G0005Retusu">keyboard</i>';
-      htmlString+= '<input type="hidden" id="G0005Retusu" value="' + jsonResult["retusu"] + '"/>';
-      htmlString+= '</div>';
-      htmlString+= '</div>';
-      htmlString+= '</div>';
-      htmlString+= '</div>';
-      htmlString+= '</div>';
+      if (jsonResult["workDiaryId"] == "" && workPlanId == 0) {
+        //新規
+        htmlString+= '<div class="row" id="G0005NaeArea">';
+        htmlString+= '<div class="col s12 m8 offset-m2 l4 offset-l4 card-panel wd-panel">';
+        htmlString+= '<div class="col s12 input-field wd">';
+        if (userinfo.ikubyo == 0) {
+            htmlString+= '<span class="selectmodal-trigger-title item-title">品種</span><a href="#mselectmodal"  class="mselectmodal-trigger item" title="品種選択" data="' + workinfo.kukakuid + '/getHinsyuOfCropJson" displayspan="#G0005WorkNaeSpan" htext="#G0005WorkNaeValue"><span id="G0005WorkNaeSpan">未選択</span></a>';
+        }
+        else {
+            htmlString+= '<span class="item-title">苗</span><span class="item" id="G0005WorkNaeSpan">未選択</span></a>';
+        }
+        htmlString+= '<input type="hidden" class="nae-value" id="G0005WorkNaeValue" />';
+        htmlString+= '</div>';
+        htmlString+= '</div>';
+        htmlString+= '</div>';
+      }
+      else {
+        // 修正
+        var workHistryBase = jsonResult["workHistryBase"]; 				//jSONデータより前回作業履歴共通を取得
+
+        if (workHistryBase != undefined) {
+          var index=0;
+          var naeNos = "";
+
+          for ( var workHistryBaseKey in workHistryBase ) {
+            var workHistryBaseData = workHistryBase[workHistryBaseKey];
+            index++;
+
+            if (index > 10) {
+                break;
+            }
+
+            htmlString+= '<div class="row nae-info" id="G0005NaeInfo-' + index + '" naeIndex=' + index + '>';
+            htmlString+= '<div class="col s12 m8 offset-m2 l4 offset-l4 card-panel wd-panel">';
+            htmlString+= '<div class="col s12 input-field wd">';
+            htmlString+= '<span class="item-title">苗</span><span id="G0005NaeName' + index + 'Span" class="item">' + workHistryBaseData["naeName"] + '</span>';
+            htmlString+= '<input type="hidden" id="G0005Nae' + index + '" value="' + workHistryBaseData["naeNo"] + '"/>';
+            htmlString+= '<input type="hidden" id="G0005NaeName' + index + '" value="' + workHistryBaseData["naeName"] + '"/>';
+            htmlString+= '<input type="hidden" id="G0005Hinsyu' + index + '" value="' + workHistryBaseData["hinsyuId"] + '"/>';
+            htmlString+= '<input type="hidden" id="G0005ZaikoKosu' + index + '" value="' + workHistryBaseData["zaikoKosu"] + '"/>';
+            htmlString+= '</div>';
+            htmlString+= '<div class="col s12 input-field wd">';
+            htmlString+= '<span class="item-title">使用個数</span><span id="G0005Kosu' + index + 'Span" class="item">' + workHistryBaseData["kosu"] + '</span><span class="item">個</span><i class="material-icons orange-text text-lighten-1 small right calcTarget" targetId="G0005Kosu' + index + '">keyboard</i>';
+            htmlString+= '<input type="hidden" class="naekosu-value-change" id="G0005Kosu' + index + '" idindex="' + index + '" value="' + workHistryBaseData["kosu"] + '"/>';
+            htmlString+= '</div>';
+            htmlString+= '<div class="col s12 input-field wd">';
+            htmlString+= '<span class="item-title">列数</span><span id="G0005Retusu' + index + 'Span" class="item">' + workHistryBaseData["retusu"] + '</span><span class="item">列</span><i class="material-icons orange-text text-lighten-1 small right calcTarget" targetId="G0005Retusu' + index + '">keyboard</i>';
+            htmlString+= '<input type="hidden" id="G0005Retusu' + index + '" value="' + workHistryBaseData["retusu"] + '"/>';
+            htmlString+= '</div>';
+            htmlString+= '<div class="col s12 input-field wd">';
+            htmlString+= '<span class="item-title">条間</span><span id="G0005Joukan' + index + 'Span" class="item">' + workHistryBaseData["joukan"] + '</span><span class="item">cm</span><i class="material-icons orange-text text-lighten-1 small right calcTarget" targetId="G0005Joukan' + index + '">keyboard</i>';
+            htmlString+= '<input type="hidden" id="G0005Joukan' + index + '" value="' + workHistryBaseData["joukan"] + '"/>';
+            htmlString+= '</div>';
+            htmlString+= '<div class="col s12 input-field wd">';
+            htmlString+= '<span class="item-title">条数</span><span id="G0005Jousu' + index + 'Span" class="item">' + workHistryBaseData["jousu"] + '</span><span class="item">列</span><i class="material-icons orange-text text-lighten-1 small right calcTarget" targetId="G0005Jousu' + index + '">keyboard</i>';
+            htmlString+= '<input type="hidden" id="G0005Jousu' + index + '" value="' + workHistryBaseData["jousu"] + '"/>';
+            htmlString+= '</div>';
+            htmlString+= '<div class="col s12 input-field wd">';
+            htmlString+= '<span class="item-title">作付距離</span><span id="G0005Distance' + maxNaeIndex + 'Span" class="item">' + workHistryBaseData["pDistance"] + '</span><span class="item">m</span><i class="material-icons orange-text text-lighten-1 small right calcTarget" targetId="G0005Distance' + index + '">keyboard</i>';
+            htmlString+= '<input type="hidden" id="G0005Distance' + index + '" value="' + workHistryBaseData["pDistance"] + '"/>';
+            htmlString+= '</div>';
+            htmlString+= '</div>';
+            htmlString+= '</div>';
+          }
+          CalcInit();														//数値入力電卓初期化
+          $('.naekosu-value-change').bind('change', ChangeNaeKosu);		//農肥選択時
+        }
+      }
 
       return htmlString;
 
@@ -1736,12 +1799,13 @@
       checktarget.push({ "id" : "G0005Retusu"     , "name" : "列数"     , "json" : "retusu"     , "check" : { "required"  : "1"}});
       break;
 
+/* 育苗機能追加により削除
     case 12://定植作業
 
       checktarget.push({ "id" : "G0005Naemaisu"   , "name" : "苗枚数"   , "json" : "naemaisu"    , "check" : { "required"  : "1"}});
       checktarget.push({ "id" : "G0005Retusu"     , "name" : "列数"     , "json" : "retusu"      , "check" : { "required"  : "1"}});
       break;
-
+*/
     case 13://苗播種作業
 
       checktarget.push({ "id" : "G0005UseHole"        , "name" : "使用穴数"   , "json" : "useHole"    , "check" : { "required"  : "1"}});
@@ -1846,6 +1910,7 @@
         dj["suryo"]   = 0;
         dj["sizaiId"] = 0;
         dj["comment"] = "";
+        dj["naeNo"] = "";
 
         dj["nisugata"]   = $("#G0005Nisugata" + index + "Value").val();
         if (dj["nisugata"] == null || dj["nisugata"] == "" || isNaN(dj["nisugata"])) {
@@ -1880,6 +1945,36 @@
         detailDataList.push(dj);
       }
     }
+    else if (workinfo.worktemplateid == 12) { //定植の場合
+      var naeDataList = new Array();                //苗情報リスト
+      var cnt = 0;
+      var hinsyu = "";
+      var naeList = $(".nae-info");                 //苗情報を全て取得する
+
+      $.each(naeList, function (index, naeData) {
+        var dj = new Object();
+        dj["suryo"]   = 0;
+        dj["sizaiId"] = 0;
+        dj["comment"] = "";
+
+        dj["naeNo"]     = $("#G0005Nae" + $(naeData).attr('naeIndex')).val();
+        dj["kosu"]      = $("#G0005Kosu" + $(naeData).attr('naeIndex')).val();
+        dj["retusu"]    = $("#G0005Retusu" + $(naeData).attr('naeIndex')).val();
+        dj["joukan"]    = $("#G0005Joukan" + $(naeData).attr('naeIndex')).val();
+        dj["jousu"]     = $("#G0005Jousu" + $(naeData).attr('naeIndex')).val();
+        dj["pDistance"] = $("#G0005Distance" + $(naeData).attr('naeIndex')).val();
+
+        if (cnt != 0) {
+          hinsyu = hinsyu + ",";
+        }
+        hinsyu = hinsyu + $("#G0005Hinsyu" + $(naeData).attr('naeIndex')).val();
+        cnt++;
+
+        detailDataList.push(dj);
+      });
+      oInputJson["hinsyu"] = hinsyu;
+
+    }
     else if (workinfo.worktemplateid == 19) { //選花の場合
       var init = true;
       for (var index = 1; index <= 10; index++) {
@@ -1887,6 +1982,7 @@
         dj["suryo"]   = 0;
         dj["sizaiId"] = 0;
         dj["comment"] = "";
+        dj["naeNo"] = "";
 
         dj["sitsu"]      = $("#G0005Shitu" + index + "Value").val();
         if (dj["sitsu"] == null || dj["sitsu"] == "" || isNaN(dj["sitsu"])) {
@@ -1932,6 +2028,7 @@
         dj["suryo"]   = 0;
         dj["sizaiId"] = 0;
         dj["comment"] = "";
+        dj["naeNo"] = "";
 
         switch(workinfo.worktemplateid) {
         case 8://回収作業
@@ -2477,4 +2574,187 @@
     $("#G0005Ninzu" + key + "Span").text("0");
     $("#G0005ShukakuRyo" + key + "Span").text("0");
   }
+
+  /* 苗変更イベント発生時 */
+  function ChangeNae() {
+    var htmlString  = "";   /* 共通項目マークアップ */
+    var nae = $(this).val();
+    var area = $("#G0005NaeArea");
+	var jdg = nae.indexOf('-');
+
+    if (nae == null || nae == "") {
+      return;
+    }
+
+    for (var index = 1; index <= 10; index++) {
+      var naearea = $("#G0005NaeInfo-" + index);
+      if (naearea != undefined) {
+        naearea.remove();
+      }
+    }
+
+    var url  = "/" + nae + "/getNaeInfoList"
+    $.ajax({
+      url:url,
+      type:'GET',
+      complete:function(data, status, jqXHR){           //処理成功時
+        var jsonResult  = JSON.parse( data.responseText );    //戻り値用JSONデータの生成
+        if (jsonResult.result == "SUCCESS") {
+          var naeList = jsonResult["datalist"];
+          if (naeList != undefined) {
+            maxNaeIndex = 0;
+            for ( var naeKey in naeList ) {				//苗情報分作成
+              var naeData = naeList[naeKey];
+
+              maxNaeIndex++;
+              htmlString+= '<div class="row nae-info" id="G0005NaeInfo-' + maxNaeIndex + '" naeIndex=' + maxNaeIndex + '>';
+              htmlString+= '<div class="col s12 m8 offset-m2 l4 offset-l4 card-panel wd-panel">';
+              htmlString+= '<div class="col s12 input-field wd">';
+              htmlString+= '<span class="item-title">苗</span><span id="G0005NaeName' + maxNaeIndex + 'Span" class="item">' + naeData.name + '</span>';
+              htmlString+= '<input type="hidden" id="G0005Nae' + maxNaeIndex + '" value="' + naeData.id + '"/>';
+              htmlString+= '<input type="hidden" id="G0005NaeName' + maxNaeIndex + '" value="' + naeData.name + '"/>';
+              htmlString+= '<input type="hidden" id="G0005Hinsyu' + maxNaeIndex + '" value="' + naeData.hinsyuId + '"/>';
+              htmlString+= '<input type="hidden" id="G0005ZaikoKosu' + maxNaeIndex + '" value="' + naeData.kosu + '"/>';
+              htmlString+= '</div>';
+              htmlString+= '<div class="col s12 input-field wd">';
+              htmlString+= '<span class="item-title">使用個数</span><span id="G0005Kosu' + maxNaeIndex + 'Span" class="item">' + naeData.kosu + '</span><span class="item">個</span><i class="material-icons orange-text text-lighten-1 small right calcTarget" targetId="G0005Kosu' + maxNaeIndex + '">keyboard</i>';
+              htmlString+= '<input type="hidden" class="naekosu-value-change" id="G0005Kosu' + maxNaeIndex + '" idindex="' + maxNaeIndex + '" value="' + naeData.kosu + '"/>';
+              htmlString+= '</div>';
+              htmlString+= '<div class="col s12 input-field wd">';
+              htmlString+= '<span class="item-title">列数</span><span id="G0005Retusu' + maxNaeIndex + 'Span" class="item">0</span><span class="item">列</span><i class="material-icons orange-text text-lighten-1 small right calcTarget" targetId="G0005Retusu' + maxNaeIndex + '">keyboard</i>';
+              htmlString+= '<input type="hidden" id="G0005Retusu' + maxNaeIndex + '" value="0"/>';
+              htmlString+= '</div>';
+              htmlString+= '<div class="col s12 input-field wd">';
+              htmlString+= '<span class="item-title">条間</span><span id="G0005Joukan' + maxNaeIndex + 'Span" class="item">0</span><span class="item">cm</span><i class="material-icons orange-text text-lighten-1 small right calcTarget" targetId="G0005Joukan' + maxNaeIndex + '">keyboard</i>';
+              htmlString+= '<input type="hidden" id="G0005Joukan' + maxNaeIndex + '" value="0"/>';
+              htmlString+= '</div>';
+              htmlString+= '<div class="col s12 input-field wd">';
+              htmlString+= '<span class="item-title">条数</span><span id="G0005Jousu' + maxNaeIndex + 'Span" class="item">0</span><span class="item">列</span><i class="material-icons orange-text text-lighten-1 small right calcTarget" targetId="G0005Jousu' + maxNaeIndex + '">keyboard</i>';
+              htmlString+= '<input type="hidden" id="G0005Jousu' + maxNaeIndex + '" value="0"/>';
+              htmlString+= '</div>';
+              htmlString+= '<div class="col s12 input-field wd">';
+              htmlString+= '<span class="item-title">作付距離</span><span id="G0005Distance' + maxNaeIndex + 'Span" class="item">0</span><span class="item">m</span><i class="material-icons orange-text text-lighten-1 small right calcTarget" targetId="G0005Distance' + maxNaeIndex + '">keyboard</i>';
+              htmlString+= '<input type="hidden" id="G0005Distance' + maxNaeIndex + '" value="0"/>';
+              htmlString+= '</div>';
+              htmlString+= '</div>';
+              htmlString+= '</div>';
+            }
+            area.after(htmlString);
+
+            CalcInit();														//数値入力電卓初期化
+            if (jdg !== -1) {
+              $('.naekosu-value-change').bind('change', ChangeNaeKosu);		//農肥選択時
+            }
+
+          }
+        }
+    },
+      dataType:'json',
+      contentType:'text/json'
+    });
+
+  }
+
+  function onClickTeishokuMenuEvent() {
+
+    lockScreen(LOCK_ID);
+
+    //----- 一時エリアの作成 -----
+    var divTag = $('<div />').attr("id", "TeishokuMenuArea");
+    divTag.addClass("TeishokuMenuArea");
+
+    $('body').append(divTag);
+    var area = $("#TeishokuMenuArea");
+
+    //----- 育苗情報から -----
+    area.append('<div class="selectitem top waves-effect waves-teal " id="IkubyoSelect"><span class="">育苗情報から選択する</span></div>');
+    //----- 品種から -----
+    area.append('<div class="selectitem waves-effect waves-teal " id="HinsyuSelect"><span class="">品種から選択する</span></div>');
+
+    area.append('<a id="TeishokuMenuCancel" class="waves-effect waves-teal cancel">戻&nbsp;&nbsp;&nbsp;&nbsp;る</a>')
+
+    $("#IkubyoSelect").unbind("click");
+    $("#IkubyoSelect").bind("click", onClickIkubyoSelect);
+    $("#HinsyuSelect").unbind("click");
+    $("#HinsyuSelect").bind("click", onClickHinsyuSelect);
+    $("#TeishokuMenuCancel").unbind("click");
+    $("#TeishokuMenuCancel").bind("click", onClickTeishokuMenuCancel);
+  }
+  function onClickIkubyoSelect() {
+    var htmlString  = "";   /* 共通項目マークアップ */
+
+    var area = $("#TeishokuMenuArea");
+    area.remove();
+    unlockScreen(LOCK_ID);
+    var naeArea = $("#G0005NaeArea");
+    naeArea.empty();
+
+    htmlString+= '<div class="col s12 m8 offset-m2 l4 offset-l4 card-panel wd-panel">';
+    htmlString+= '<div class="col s12 input-field wd">';
+    htmlString+= '<span class="selectmodal-trigger-title item-title">苗</span><a href="#mselecsubtmodal"  class="mselectsubmodal-trigger item" title="苗選択" data="getNaeOfFarm" displayspan="#G0005WorkNaeSpan" htext="#G0005WorkNaeValue"><span id="G0005WorkNaeSpan">未選択</span></a>';
+    htmlString+= '<input type="hidden" class="nae-value" id="G0005WorkNaeValue" />';
+    htmlString+= '</div>';
+    htmlString+= '</div>';
+    htmlString+= '</div>';
+
+    naeArea.append(htmlString);
+
+    $('.nae-value').bind('change', ChangeNae);	//苗選択時
+
+    //------------------------------------------------------------------------------------------------------------------
+    //- モーダルの初期化
+    //------------------------------------------------------------------------------------------------------------------
+    $('.modal').modal();
+    $('.mselectsubmodal-trigger').unbind('click');
+    $('.mselectsubmodal-trigger').bind('click', mSelectSubOpen);
+
+    $("#G0005WorkNaeSpan").click();
+  }
+  function onClickHinsyuSelect() {
+    var htmlString  = "";   /* 共通項目マークアップ */
+
+    var area = $("#TeishokuMenuArea");
+    area.remove();
+    unlockScreen(LOCK_ID);
+    var naeArea = $("#G0005NaeArea");
+    naeArea.empty();
+
+    htmlString+= '<div class="col s12 m8 offset-m2 l4 offset-l4 card-panel wd-panel">';
+    htmlString+= '<div class="col s12 input-field wd">';
+    htmlString+= '<span class="selectmodal-trigger-title item-title">品種</span><a href="#mselectmodal"  class="mselectmodal-trigger item" title="品種選択" data="' + workinfo.kukakuid + '/getHinsyuOfCropJson" displayspan="#G0005WorkNaeSpan" htext="#G0005WorkNaeValue"><span id="G0005WorkNaeSpan">未選択</span></a>';
+    htmlString+= '<input type="hidden" class="nae-value" id="G0005WorkNaeValue" />';
+    htmlString+= '</div>';
+    htmlString+= '</div>';
+    htmlString+= '</div>';
+
+    naeArea.append(htmlString);
+
+    $('.nae-value').bind('change', ChangeNae);	//苗選択時
+
+    //------------------------------------------------------------------------------------------------------------------
+    //- モーダルの初期化
+    //------------------------------------------------------------------------------------------------------------------
+    $('.modal').modal();
+    $('.mselectmodal-trigger').unbind('click');
+    $('.mselectmodal-trigger').bind('click', mSelectOpen);
+
+    $("#G0005WorkNaeSpan").click();
+  }
+  function onClickTeishokuMenuCancel() {
+    var area = $("#TeishokuMenuArea");
+    area.remove();
+    unlockScreen(LOCK_ID);
+  }
+  function ChangeNaeKosu() {
+    var naeIndex  = $(this).attr("idindex");
+    var zaiko = $("#G0005ZaikoKosu" + naeIndex).val();
+    var kosu = $(this).val();
+
+    zaiko *= 1;
+    kosu *= 1;
+    if (kosu > zaiko) {
+      displayToast('在庫数以上の値が入力されました。(在庫数：' + zaiko + '個)', 4000, 'rounded');
+    }
+  }
+
 })(jQuery); // end of jQuery name space

@@ -66,6 +66,17 @@ POST    /selectAccount        		              controllers.AccounSetting.selectAc
 POST    /returnAccount	        	              controllers.AccounSetting.returnAccount()
 GET     /syuryoSummaryMove                      controllers.SyuryoSummary.syuryoSummaryMove()
 POST    /syuryoSummaryGet                       controllers.SyuryoSummary.syuryoSummaryGet()
+GET     /:workid/:naeNo/ikubyoDiaryMove         controllers.IkubyoDiary.ikubyoDiaryMove(workid: String, naeNo: String)
+GET     /:ikubyoDiaryId/ikubyoDiaryEdit         controllers.IkubyoDiary.ikubyoDiaryEditMove(ikubyoDiaryId: Double)
+GET     /ikubyoDiaryInit            	        controllers.IkubyoDiary.ikubyoDiaryInit()
+POST    /submitIkubyoDiary                      controllers.IkubyoDiary.submitIkubyoDiary()
+POST    /:ikubyoDiaryId/submitIkubyoDiaryEdit   controllers.IkubyoDiary.submitIkubyoDiaryEdit(ikubyoDiaryId: Double)
+GET     /:ikubyoDiaryId/ikubyoDiaryDelete       controllers.IkubyoDiary.ikubyoDiaryDelete(ikubyoDiaryId: Double)
+POST    /submitIkubyoPlan                       controllers.IkubyoDiary.submitIkubyoPlan()
+POST    /planToDiaryIkubyo                      controllers.IkubyoDiary.planToDiaryIkubyo()
+POST    /planToDiaryTimeCommitIkubyo            controllers.IkubyoDiary.planToDiaryTimeCommitIkubyo()
+POST    /checkNouhiIkubyo                       controllers.IkubyoDiary.checkNouhiIkubyo()
+POST    /getNouhiValueIkubyo            	    controllers.IkubyoDiary.getNouhiValueIkubyo()
 
 GET     /:hashValue/hashLogin                   controllers.Login.hashLogin(hashValue: String)
 POST    /googleLogin                controllers.Login.googleLogin()
@@ -136,6 +147,29 @@ GET     /:workPlanId/:kukakuId/workPlanCopy           controllers.WorkPlanContro
 GET     /:workChainId/:kukakuId/:accountId/:planDate/:copyCount/makeWorkPlanChain           controllers.WorkPlanController.makeWorkPlanChain(workChainId: Double, kukakuId:Double, accountId:String, planDate:String, copyCount:String)
 POST    /workPlanUuidOnDayChange                      controllers.WorkPlanController.workPlanUuidOnDayChange()
 #-------------------------------------------------------------------------------
+# IkubyoController
+#-------------------------------------------------------------------------------
+GET     /ikubyoMove                                   controllers.IkubyoController.move()
+GET     /getIkubyoWork                                controllers.IkubyoController.getIkubyoWork()
+GET     /getIkubyoLineInitData                        controllers.IkubyoController.getIkubyoLineInitData()
+GET     /getNaeSP                                     controllers.IkubyoController.getNaeSP()
+POST    /getNaeDetail                                 controllers.IkubyoController.getNaeDetail()
+GET     /getNaeOfFarm                                 controllers.IkubyoController.getNaeOfFarm()
+GET     /:naeNo/getNaeZaikoInfo                       controllers.IkubyoController.getNaeZaikoInfo(naeNo: String)
+POST    /naesearchCommit                              controllers.IkubyoController.naesearchCommit()
+POST    /ikubyolineStatusCommit                       controllers.IkubyoController.ikubyolineStatusCommit()
+GET     /getIkubyoLineData                            controllers.IkubyoController.getIkubyoLineData()
+GET     /:naeNo/getNaeInfoList                        controllers.IkubyoController.getNaeInfoList(naeNo: String)
+
+#-------------------------------------------------------------------------------
+# WorkingIkubyoController
+#-------------------------------------------------------------------------------
+GET     /workingikubyomove                            controllers.WorkingIkubyo.move()
+POST    /initikubyoparam                              controllers.WorkingIkubyo.initparam()
+GET     /workingikubyoinit                            controllers.WorkingIkubyo.init()
+GET     /workingikubyostop                            controllers.WorkingIkubyo.workingstop()
+
+#----------------------------------------------------------------------------
 # CompartmentMapping
 #-------------------------------------------------------------------------------
 GET     /compartmentmappingMove                       controllers.CompartmentMapping.move()
@@ -161,6 +195,7 @@ GET     /getAccountInfo                         controllers.CommonController.get
 GET     /:farmId/:accountId/getMenuRoleSel      controllers.CommonController.getMenuRoleSel(farmId:Double, accountId:String)
 GET     /getWorkOfFarm                          controllers.CommonController.getWorkOfFarm()
 GET     /:kukakuId/getWorkOfKukaku              controllers.CommonController.getWorkOfKukaku(kukakuId:String)
+GET     /getWorkOfIkubyo                        controllers.CommonController.getWorkOfIkubyo()
 GET     /getAccountOfFarm                       controllers.CommonController.getAccountOfFarm()
 GET     /getAccountOfFarmAll                    controllers.CommonController.getAccountOfFarmAll()
 POST    /timelineStatusCommit                   controllers.CommonController.timelineStatusCommit()
@@ -202,20 +237,31 @@ GET     /getHistoryReference                    controllers.CommonController.get
 GET     /getWorkPlanAutoCreate                  controllers.CommonController.getWorkPlanAutoCreate()
 GET     /getWorkDiaryDiscription                controllers.CommonController.getWorkDiaryDiscription()
 GET     /getSyukauInputCount                    controllers.CommonController.getSyukauInputCount()
+GET     /getIkubyoFunction                      controllers.CommonController.getIkubyoFunction()
 GET     /getTimeLineWorking                     controllers.CommonController.getTimeLineWorking()
 GET     /:workId/:kukakuId/getKikiOfWorkJson    controllers.CommonController.getKikiOfWorkJson(workId: Double, kukakuId: Double)
+GET     /:workId/:chainId/getKikiOfWorkChainJson controllers.CommonController.getKikiOfWorkChainJson(workId: Double, chainId: Double)
 GET     /:kikiId/getAttachmentOfKikiJson        controllers.CommonController.getAttachmentOfKikiJson(kikiId: Double)
 GET     /:workId/:kukakuId/getNouhiOfWorkJson   controllers.CommonController.getNouhiOfWorkJson(workId: Double, kukakuId: Double)
+GET     /:workId/:chainId/getNouhiOfWorkChainJson controllers.CommonController.getNouhiOfWorkChainJson(workId: Double, chainId: Double)
 GET     /:cropId/getHinsyuOfCropToCropJson      controllers.CommonController.getHinsyuOfCropToCropJson(cropId: Double)
 GET     /:kukakuId/getHinsyuOfCropJson          controllers.CommonController.getHinsyuOfCropJson(kukakuId: Double)
 GET     /getHinsyuOfFarmJson                    controllers.CommonController.getHinsyuOfFarmJson()
 GET     /getBeltoOfFarmJson                     controllers.CommonController.getBeltoOfFarmJson()
+GET     /getYoukiOfFarmJson                     controllers.CommonController.getYoukiOfFarmJson()
+GET     /:youkiId/getYoukiInfo                  controllers.CommonController.getYoukiInfo(youkiId: Double)
+GET     /:soilKind/getSoilOfFarmJson            controllers.CommonController.getSoilOfFarmJson(soilKind: Integer)
+GET     /:soilId/getSoilInfo                    controllers.CommonController.getSoilInfo(soilId: Double)
 GET     /:accountid/:year/getWorkTimeOfYear     controllers.CommonController.getWorkTimeOfYear(accountid: String, year: Integer)
 GET     /:accountid/:year/:month/getWorkTimeOfMonth     controllers.CommonController.getWorkTimeOfMonth(accountid: String, year: Integer, month: Integer)
 GET     /getOneMessage                          controllers.CommonController.getOneMessage()
 GET     /:systemKind/getSystemManage            controllers.CommonController.getSystemManage(systemKind: Integer)
 GET     /:systemKind/:majorVersion/:minorVersion/:patchVersion/:compUpdate/commitSystemManage            controllers.CommonController.commitSystemManage(systemKind: Integer, majorVersion: Integer, minorVersion: Integer, patchVersion: Integer, compUpdate: Integer)
 
+#-------------------------------------------------------------------------------
+# SyukkaController
+#-------------------------------------------------------------------------------
+GET     /:farmid/shipmentData                   controllers.SyukkaController.shipmentData(farmid:Double)
 #-------------------------------------------------------------------------------
 # ServiceController
 #-------------------------------------------------------------------------------
@@ -374,6 +420,7 @@ GET     /:farmId/getbeltooffarm                						controllers.APIController.g
 GET     /:farmId/:kukakuId/gethinsyuofcrop                   		controllers.APIController.gethinsyuofcrop(farmId: Double, kukakuId: Double)
 #- 生産者別品種一覧取得
 GET     /:farmId/gethinsyuoffarm                					controllers.APIController.gethinsyuoffarm(farmId: Double)
+GET     /:farmId/:cropId/gethinsyuofcroptocrop                      controllers.APIController.gethinsyuofcroptocrop(farmId: Double, cropId: Double)
 #- 生産者別荷姿一覧取得
 GET     /:farmId/getnisugataoffarm                					controllers.APIController.getnisugataoffarm(farmId: Double)
 #- 生産者別質一覧取得
@@ -469,6 +516,44 @@ POST    /:farmId/submitpaymentinfo	                                controllers.A
 GET    /:accountId/:targetDate/getWorkingAccountData                controllers.APIController.getWorkingAccountData(accountId: String, targetDate: String)
 #- 作業指示選択対象担当者取得
 GET    /:accountId/getWorkPlanAccount                               controllers.APIController.getWorkPlanAccount(accountId: String)
+#- 育苗作業情報取得
+GET     /getikubyowork                                              controllers.APIController.getikubyowork()
+#- 苗状況照会取得
+GET     /:accountId/getnaesp                                        controllers.APIController.getnaesp(accountId: String)
+#- 苗詳細情報取得
+POST    /:accountId/getnaedetail                                    controllers.APIController.getnaedetail(accountId: String)
+#- 育苗ライン初期表示データ取得
+GET     /:accountId/getikubyolineinitdata                           controllers.APIController.getikubyolineinitdata(accountId: String)
+#- 育苗ライン情報データ取得
+GET     /:accountId/getikubyolinedata                               controllers.APIController.getikubyolinedata(accountId: String)
+#- 苗状況照会検索条件をアカウント状況に反映
+POST    /:accountId/naesearchcommit                                 controllers.APIController.naesearchcommit(accountId: String)
+#- 育苗ライン検索条件確定要求
+POST    /:accountId/ikubyolinestatuscommit                          controllers.APIController.ikubyolinestatuscommit(accountId: String)
+#- 生産者別苗一覧取得
+GET     /:farmId/getnaeoffarm                						controllers.APIController.getnaeoffarm(farmId: Double)
+#- 苗情報一覧取得
+GET     /:naeNo/getnaeinfolist                                      controllers.APIController.getnaeinfolist(naeNo: String)
+#- 育苗計画初期表示データ取得
+GET     /:accountId/:accountName/:farmId/:ikubyoPlanId/ikubyoplaninit	controllers.APIController.ikubyoplaninit(accountId: String, accountName: String, farmId: Double, ikubyoPlanId: Double)
+#- 育苗日誌初期表示データ取得
+GET     /:accountId/:accountName/:farmId/:workId/:naeNo/:ikubyoDiaryId/ikubyodiaryinit	controllers.APIController.ikubyodiaryinit(accountId: String, accountName: String, farmId: Double, workId: Double, naeNo: String, ikubyoDiaryId: Double)
+#- 育苗日誌保存
+POST    /:accountId/:farmId/:ikubyoDiaryId/submitikubyodiary        controllers.APIController.submitikubyodiary(accountId: String, farmId: Double, ikubyoDiaryId: Double)
+#- 育苗日誌削除
+GET    /:accountId/:farmId/:ikubyoDiaryId/ikubyodiarydelete         controllers.APIController.ikubyodiarydelete(accountId: String, farmId: Double, ikubyoDiaryId: Double)
+#- 育苗作業中断
+GET     /:accountId/workingikubyostop                               controllers.APIController.workingikubyostop(accountId: String)
+#- 育苗計画保存
+POST    /:accountId/:farmId/submitikubyoplan       					controllers.APIController.submitikubyoplan(accountId: String, farmId: Double)
+#- 育苗計画記録完了
+POST    /:accountId/plantodiaryikubyo       						controllers.APIController.plantodiaryikubyo(accountId: String)
+#- 生産者別容器一覧取得
+GET     /:farmId/getyoukioffarm                                     controllers.APIController.getyoukioffarm(farmId: Double)
+#- 生産者別土一覧取得
+GET     /:farmId/:soilKind/getsoiloffarm                            controllers.APIController.getsoiloffarm(farmId: Double, soilKind: Integer)
+#- 育苗作業中情報取得
+GET     /:accountId/getikubyoworking                           		controllers.APIController.getikubyoworking(accountId: String)
 
 #-------------------------------------------------------------------------------
 # AicAAPI
@@ -593,6 +678,16 @@ GET     /:farmId/:sizaiId/sizaiSettingMove  controllers.SizaiSetting.sizaiSettin
 GET     /sizaiSettingInit        	        controllers.SizaiSetting.sizaiSettingInit()
 POST    /submitSizai		        	    controllers.SizaiSetting.submitSizai()
 POST    /deleteSizai		        	    controllers.SizaiSetting.deleteSizai()
+#- 容器マスタ画面
+GET     /:farmId/:youkiId/youkiSettingMove  	controllers.YoukiSetting.youkiSettingMove(farmId: Double, youkiId: Double)
+GET     /youkiSettingInit        	        	controllers.YoukiSetting.youkiSettingInit()
+POST    /submitYouki		        	      	controllers.YoukiSetting.submitYouki()
+POST    /deleteYouki		        	       	controllers.YoukiSetting.deleteYouki()
+#- 土マスタ画面
+GET     /:farmId/:soilId/soilSettingMove    	controllers.SoilSetting.soilSettingMove(farmId: Double, soilId: Double)
+GET     /soilSettingInit        	        	controllers.SoilSetting.soilSettingInit()
+POST    /submitSoil		        	        	controllers.SoilSetting.submitSoil()
+POST    /deleteSoil		        	         	controllers.SoilSetting.deleteSoil()
 
 #-------------------------------------------------------------------------------
 # システムバッチ
