@@ -78,7 +78,7 @@ public class NaeMotochoCompornent implements AgryellInterface{
         /*------------------------------------------------------------------------------------------------------------*/
         motochoBase = new MotochoBase();
         motochoBase.kukakuName   = this.naeNo;						//苗Noとして使用
-        motochoBase.workStartDay = ikubyoDiary.workDate;
+        motochoBase.workStartDay = ikubyoDiary.workStartTime;
         motochoBase.hinsyuId     = ikubyoDiary.hinsyuId;
         motochoBase.hinsyuName   = "";
         motochoBase.hinsyuName   = Hinsyu.getMultiHinsyuName(motochoBase.hinsyuId);
@@ -95,7 +95,7 @@ public class NaeMotochoCompornent implements AgryellInterface{
       /*------------------------------------------------------------------------------------------------------------*/
       /* 元帳照会基本の反映（現在）                                                                                 */
       /*------------------------------------------------------------------------------------------------------------*/
-      motochoBase.workEndDay = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+      motochoBase.workEndDay = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
       if (motochoBase.workStartDay != null) {
         setBaseInfo(motochoBase);
         makeMotochoNouyaku(motochoBase);

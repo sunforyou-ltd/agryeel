@@ -1,6 +1,7 @@
 package models;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -106,7 +107,7 @@ public class NaeStatus extends Model {
     /**
      * 最終作業日
      */
-    public Date finalEndDate;
+    public Timestamp finalEndDate;
     /**
      * 次回作業ID
      */
@@ -118,7 +119,7 @@ public class NaeStatus extends Model {
     /**
      * 片付け日
      */
-    public Date katadukeDate;
+    public Timestamp katadukeDate;
     /**
      * 害虫ID
      */
