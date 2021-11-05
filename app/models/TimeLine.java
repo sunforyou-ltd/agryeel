@@ -11,7 +11,6 @@ import play.db.ebean.Model;
 import util.ListrU;
 
 import com.avaje.ebean.Expr;
-import com.avaje.ebean.annotation.CreatedTimestamp;
 
 import consts.AgryeelConst;
 
@@ -83,12 +82,10 @@ public class TimeLine extends Model {
     /**
      * 作業開始時間
      */
-    @CreatedTimestamp
     public Timestamp workStartTime;
     /**
      * 作業終了時間
      */
-    @CreatedTimestamp
     public Timestamp workEndTime;
     /**
      * 歩数
@@ -120,6 +117,13 @@ public class TimeLine extends Model {
     public long uuidOfDay;
 
     public static Finder<Long, TimeLine> find = new Finder<Long, TimeLine>(Long.class, TimeLine.class);
+
+    public void setWorkStartTime(Timestamp pWorkStartTime) {
+      this.workStartTime = pWorkStartTime;
+    }
+    public void setWorkEndTime(Timestamp pWorkEndTime) {
+      this.workEndTime = pWorkEndTime;
+    }
 
     /**
      * 対象期間のタイムラインを取得する

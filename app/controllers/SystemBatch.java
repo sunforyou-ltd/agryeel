@@ -969,14 +969,16 @@ public class SystemBatch extends Controller {
       Calendar calWork = Calendar.getInstance();
       calWork.setTimeInMillis(tl.workDate.getTime());
 
+      Logger.info("[BeforeChange] START:{} END:{}", sdf.format(calStart.getTime()), sdf.format(calEnd.getTime()));
       calStart.set(calWork.get(Calendar.YEAR), calWork.get(Calendar.MONTH), calWork.get(Calendar.DAY_OF_MONTH));
       calEnd.set(calWork.get(Calendar.YEAR), calWork.get(Calendar.MONTH), calWork.get(Calendar.DAY_OF_MONTH));
+      Logger.info("[AfterChange] START:{} END:{}", sdf.format(calStart.getTime()), sdf.format(calEnd.getTime()));
 
       TimeLine mtl = TimeLine.find.where().eq("time_line_id", tl.timeLineId).findUnique();
       if (mtl != null) {
-        mtl.workStartTime = new java.sql.Timestamp(calStart.getTimeInMillis());
-        mtl.workEndTime = new java.sql.Timestamp(calEnd.getTimeInMillis());
-        Logger.info("[CHANGE]START:{} END:{}", sdf.format(mtl.workStartTime), sdf.format(mtl.workEndTime));
+        mtl.setWorkStartTime(new java.sql.Timestamp(calStart.getTimeInMillis()));
+        mtl.setWorkEndTime(new java.sql.Timestamp(calEnd.getTimeInMillis()));
+        Logger.info("[CHANGE] ID:{} START:{} END:{}", mtl.timeLineId, sdf.format(mtl.workStartTime), sdf.format(mtl.workEndTime));
         mtl.update();
       }
 
