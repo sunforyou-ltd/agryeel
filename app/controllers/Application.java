@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -2504,6 +2505,7 @@ Logger.debug("[ GET WORK ] END");
       FarmStatus farmStatus = farm.getFarmStatus();
 
       Compartment compartmentData = FieldComprtnent.getCompartment(kukakuId);
+      Timestamp systemTime = new java.sql.Timestamp(Calendar.getInstance().getTimeInMillis());
 
       if (compartmentData != null) {
         CompartmentStatus compartmentStatusData = FieldComprtnent.getCompartmentStatusFromMotocho(compartmentData.kukakuId, year, rotation);
@@ -2766,10 +2768,10 @@ Logger.debug("[ GET WORK ] END");
         }
         List<WorkDiary> wds;
         if (year != 0 && rotation != 0) {
-          wds   = WorkDiary.find.where().eq("kukaku_id", compartmentData.kukakuId).in("work_id", disinfectionKey).between("work_date", compartmentStatusData.katadukeDate, compartmentStatusData.finalEndDate).orderBy("work_date").findList();
+          wds   = WorkDiary.find.where().eq("kukaku_id", compartmentData.kukakuId).in("work_id", disinfectionKey).between("work_start_time", compartmentStatusData.katadukeDate, compartmentStatusData.finalEndDate).orderBy("work_date").findList();
         }
         else {
-          wds   = WorkDiary.find.where().eq("kukaku_id", compartmentData.kukakuId).in("work_id", disinfectionKey).between("work_date", compartmentStatusData.katadukeDate, new java.sql.Date(systemDate.getTime())).orderBy("work_date").findList();
+          wds   = WorkDiary.find.where().eq("kukaku_id", compartmentData.kukakuId).in("work_id", disinfectionKey).between("work_start_time", compartmentStatusData.katadukeDate, systemTime).orderBy("work_date").findList();
         }
         labels    = Json.newObject();
         datas     = Json.newObject();
@@ -2845,10 +2847,10 @@ Logger.debug("[ GET WORK ] END");
           }
         }
         if (year != 0 && rotation != 0) {
-          wds   = WorkDiary.find.where().eq("kukaku_id", compartmentData.kukakuId).in("work_id", kansuiKey).between("work_date", compartmentStatusData.katadukeDate, compartmentStatusData.finalEndDate).orderBy("work_date").findList();
+          wds   = WorkDiary.find.where().eq("kukaku_id", compartmentData.kukakuId).in("work_id", kansuiKey).between("work_start_time", compartmentStatusData.katadukeDate, compartmentStatusData.finalEndDate).orderBy("work_date").findList();
         }
         else {
-          wds   = WorkDiary.find.where().eq("kukaku_id", compartmentData.kukakuId).in("work_id", kansuiKey).between("work_date", compartmentStatusData.katadukeDate, new java.sql.Date(systemDate.getTime())).orderBy("work_date").findList();
+          wds   = WorkDiary.find.where().eq("kukaku_id", compartmentData.kukakuId).in("work_id", kansuiKey).between("work_start_time", compartmentStatusData.katadukeDate, systemTime).orderBy("work_date").findList();
         }
         labels    = Json.newObject();
         datas     = Json.newObject();
@@ -2919,10 +2921,10 @@ Logger.debug("[ GET WORK ] END");
           }
         }
         if (year != 0 && rotation != 0) {
-          wds   = WorkDiary.find.where().eq("kukaku_id", compartmentData.kukakuId).in("work_id", tuihiKey).between("work_date", compartmentStatusData.katadukeDate, compartmentStatusData.finalEndDate).orderBy("work_date").findList();
+          wds   = WorkDiary.find.where().eq("kukaku_id", compartmentData.kukakuId).in("work_id", tuihiKey).between("work_start_time", compartmentStatusData.katadukeDate, compartmentStatusData.finalEndDate).orderBy("work_date").findList();
         }
         else {
-          wds   = WorkDiary.find.where().eq("kukaku_id", compartmentData.kukakuId).in("work_id", tuihiKey).between("work_date", compartmentStatusData.katadukeDate, new java.sql.Date(systemDate.getTime())).orderBy("work_date").findList();
+          wds   = WorkDiary.find.where().eq("kukaku_id", compartmentData.kukakuId).in("work_id", tuihiKey).between("work_start_time", compartmentStatusData.katadukeDate, systemTime).orderBy("work_date").findList();
         }
         labels    = Json.newObject();
         datas     = Json.newObject();
@@ -3010,10 +3012,10 @@ Logger.debug("[ GET WORK ] END");
           }
         }
         if (year != 0 && rotation != 0) {
-          wds   = WorkDiary.find.where().eq("kukaku_id", compartmentData.kukakuId).in("work_id", shukakuKey).between("work_date", compartmentStatusData.katadukeDate, compartmentStatusData.finalEndDate).orderBy("work_date").findList();
+          wds   = WorkDiary.find.where().eq("kukaku_id", compartmentData.kukakuId).in("work_id", shukakuKey).between("work_start_time", compartmentStatusData.katadukeDate, compartmentStatusData.finalEndDate).orderBy("work_date").findList();
         }
         else {
-          wds   = WorkDiary.find.where().eq("kukaku_id", compartmentData.kukakuId).in("work_id", shukakuKey).between("work_date", compartmentStatusData.katadukeDate, new java.sql.Date(systemDate.getTime())).orderBy("work_date").findList();
+          wds   = WorkDiary.find.where().eq("kukaku_id", compartmentData.kukakuId).in("work_id", shukakuKey).between("work_start_time", compartmentStatusData.katadukeDate, systemTime).orderBy("work_date").findList();
         }
         labels    = Json.newObject();
         datas     = Json.newObject();
@@ -3195,7 +3197,7 @@ Logger.debug("[ GET WORK ] END");
           timeLine = TimeLine.find.where().eq("kukaku_id", compartmentData.kukakuId).between("work_start_time", compartmentStatusData.katadukeDate, compartmentStatusData.finalEndDate).orderBy("work_date desc, work_start_time desc").findList();
         }
         else {
-          timeLine = TimeLine.find.where().eq("kukaku_id", compartmentData.kukakuId).between("work_start_time", compartmentStatusData.katadukeDate, new java.sql.Timestamp(systemDate.getTime())).orderBy("work_date desc, work_start_time desc").findList();
+          timeLine = TimeLine.find.where().eq("kukaku_id", compartmentData.kukakuId).between("work_start_time", compartmentStatusData.katadukeDate, systemTime).orderBy("work_date desc, work_start_time desc").findList();
         }
 
         SimpleDateFormat sdf2  = new SimpleDateFormat("MM.dd HH:mm");

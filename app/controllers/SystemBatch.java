@@ -306,6 +306,9 @@ public class SystemBatch extends Controller {
         /*----- 元帳照会を再生成する ----*/
 
         for (Compartment compartment : aryCompartment) {
+          if(compartment.deleteFlag == 1) { //削除済みの場合
+            continue;
+          }
           Logger.info("-----> KUKAKU={} Processing", compartment.kukakuId);
           MotochoCompornent motochoCompornent = new MotochoCompornent(compartment.kukakuId);
           motochoCompornent.make();
@@ -945,7 +948,7 @@ public class SystemBatch extends Controller {
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
     Logger.info("---------- patchWorkDate2WorkStartEndTime START ----------");
     Ebean.beginTransaction();
-    List<TimeLine> tls = TimeLine.find.where().eq("kukaku_id", 9).findList();
+    List<TimeLine> tls = TimeLine.find.where().findList();
 
     for (TimeLine tl : tls) {
 
@@ -985,8 +988,8 @@ public class SystemBatch extends Controller {
 
       WorkDiary wd = WorkDiary.getWorkDiaryById(tl.workDiaryId);
       if (wd != null) {
-        wd.workStartTime = new java.sql.Timestamp(calStart.getTimeInMillis());
-        wd.workEndTime = new java.sql.Timestamp(calEnd.getTimeInMillis());
+        wd.setWorkStartTime(new java.sql.Timestamp(calStart.getTimeInMillis()));
+        wd.setWorkEndTime(new java.sql.Timestamp(calEnd.getTimeInMillis()));
         wd.update();
       }
 

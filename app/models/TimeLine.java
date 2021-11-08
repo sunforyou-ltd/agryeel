@@ -82,10 +82,12 @@ public class TimeLine extends Model {
     /**
      * 作業開始時間
      */
+    //Ebeanで時間の更新が不可能な為、@CreateTimeStampを削除
     public Timestamp workStartTime;
     /**
      * 作業終了時間
      */
+    //Ebeanで時間の更新が不可能な為、@CreateTimeStampを削除
     public Timestamp workEndTime;
     /**
      * 歩数
@@ -118,9 +120,17 @@ public class TimeLine extends Model {
 
     public static Finder<Long, TimeLine> find = new Finder<Long, TimeLine>(Long.class, TimeLine.class);
 
+    /**
+     * 開始時刻を設定する（Ebean更新対策）
+     * @param pWorkStartTime
+     */
     public void setWorkStartTime(Timestamp pWorkStartTime) {
       this.workStartTime = pWorkStartTime;
     }
+    /**
+     * 終了時刻を設定する（Ebean更新対策）
+     * @param pWorkEndTime
+     */
     public void setWorkEndTime(Timestamp pWorkEndTime) {
       this.workEndTime = pWorkEndTime;
     }
