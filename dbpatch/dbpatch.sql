@@ -52,3 +52,7 @@
  );
  ALTER TABLE syukka_saki
    OWNER TO agryell;
+
+-- Table: account_status
+update account_status
+set work_date_auto_set = 2;
