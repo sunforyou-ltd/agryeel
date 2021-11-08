@@ -275,6 +275,26 @@ public class APIController extends Controller {
         return ok(resultJson);
     }
     /**
+     * 生産者IDから育苗作業一覧を取得する
+     * @return
+     */
+    public static Result getworkofikubyo(String accountId) {
+      /* 戻り値用JSONデータの生成 */
+      ObjectMapper mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
+      ObjectNode resultJson = Json.newObject();
+      ArrayNode listJson = mapper.createArrayNode();
+
+      //アカウント情報の取得
+      UserComprtnent accountComprtnent = new UserComprtnent();
+      int getAccount = accountComprtnent.GetAccountData(accountId);
+
+      int result = WorkChainCompornent.getWorkOfKukakuJsonArray(accountComprtnent.accountData.farmId, AgryeelConst.IkubyoInfo.WORKCHAINID, listJson);
+
+      resultJson.put("datalist" , listJson);
+
+      return ok(resultJson);
+    }
+    /**
      * 生産者IDから全担当者一覧を取得する
      * @return
      */
@@ -915,6 +935,57 @@ public class APIController extends Controller {
         return ok(resultJson);
     }
 
+
+    /**
+     * 作業別機器情報取得
+     * @return
+     */
+    public static Result getkikiofworkchain(double farmId, double workId, double chainId) {
+
+        /* 戻り値用JSONデータの生成 */
+        ObjectNode resultJson = Json.newObject();
+        ObjectMapper mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
+        ArrayNode listJson = mapper.createArrayNode();
+
+        WorkChainItem wci = WorkChainItem.getWorkChainItemOfWorkId(chainId, workId);
+        if (wci != null) {
+          //----- 生産者別機器情報を取得 -----
+          List<KikiOfFarm> kofs = KikiOfFarm.getKikiOfFarm(farmId);
+          List<Double>kikis = new ArrayList<Double>();
+          for (KikiOfFarm kof : kofs) {
+            if (kof.deleteFlag == 1) { // 削除済みの場合
+              continue;
+            }
+            kikis.add(kof.kikiId);
+          }
+          //----- 作業単位の使用可能機器種別を取得 -----
+          if (wci.onUseKikiKind != null && !"".equals(wci.onUseKikiKind)) {
+            String[] ukks = wci.onUseKikiKind.split(",");
+            List<Double>kks = new ArrayList<Double>();
+            for (String ukk : ukks) {
+              kks.add(Double.parseDouble(ukk));
+            }
+            //----- 対象機器の取得 -----
+            List<Kiki> kikiList = Kiki.find.where().in("kiki_id", kikis).in("kiki_kind", kks).order("kiki_id").findList();
+            for (Kiki kiki : kikiList) {
+
+              ObjectNode jd = Json.newObject();
+
+              jd.put("id"   , kiki.kikiId);
+              jd.put("name" , kiki.kikiName);
+              jd.put("flag" , 0);
+
+              listJson.add(jd);
+
+            }
+          }
+        }
+
+        resultJson.put("datalist" , listJson);
+
+        return ok(resultJson);
+    }
+
     /**
      * 機器別アタッチメント情報取得
      * @return
@@ -990,6 +1061,41 @@ public class APIController extends Controller {
               listJson.add(jd);
 
             }
+          }
+        }
+
+        resultJson.put("datalist" , listJson);
+
+        return ok(resultJson);
+    }
+
+    /**
+     * ワークチェイン別農肥情報取得
+     * @return
+     */
+    public static Result getnouhiofworkchain(double farmId, double workId, double chainId) {
+
+        /* 戻り値用JSONデータの生成 */
+        ObjectNode resultJson = Json.newObject();
+        ObjectMapper mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
+        ArrayNode listJson = mapper.createArrayNode();
+
+        WorkChainItem wci = WorkChainItem.getWorkChainItemOfWorkId(chainId, workId);
+        if (wci != null) {
+          List<Nouhi> nouhiList = Nouhi.find.where().in("farm_id", farmId).eq("nouhi_kind", wci.nouhiKind).order("use_count desc, nouhi_id asc").findList();
+          for (Nouhi nouhi : nouhiList) {
+            if (nouhi.deleteFlag == 1) { // 削除済みの場合
+              continue;
+            }
+
+            ObjectNode jd = Json.newObject();
+
+            jd.put("id"   , nouhi.nouhiId);
+            jd.put("name" , nouhi.nouhiName);
+            jd.put("flag" , 0);
+
+            listJson.add(jd);
+
           }
         }
 
@@ -3281,5 +3387,4 @@ public class APIController extends Controller {
 
         return ok(resultJson);
 	}
-
 }

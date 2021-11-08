@@ -1086,6 +1086,40 @@ public class WorkChainCompornent implements AgryellInterface{
     }
     return result;
   }
+  public static int getWorkOfKukakuJsonArray(double pFarmId, double pWockChainId, ArrayNode pListJson) {
+
+    int result  = GET_SUCCESS;
+
+    List<WorkChainItem> wcis = WorkChainItem.getWorkChainItemList(pWockChainId);
+
+    if (wcis.size() > 0) { //該当データが存在する場合
+      for (WorkChainItem wc : wcis) {
+        if (wc.deleteFlag == 1) { // 削除済みの場合
+          continue;
+        }
+
+        Work work = Work.find.where().eq("work_id", wc.workId).findUnique();
+
+        if (work != null) {
+          if (work.deleteFlag == 1) { // 削除済みの場合
+            continue;
+          }
+
+          ObjectNode jd = Json.newObject();
+
+          jd.put("id"   , work.workId);
+          jd.put("name" , work.workName);
+          jd.put("flag" , 0);
+
+          pListJson.add(jd);
+        }
+      }
+    }
+    else {
+      result  = GET_ERROR;
+    }
+    return result;
+  }
   /**
    * 作業テンプレート情報を取得する
    * @param pWorkId

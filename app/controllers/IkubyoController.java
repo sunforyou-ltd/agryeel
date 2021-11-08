@@ -1290,6 +1290,7 @@ public class IkubyoController extends Controller {
       }
 
       if(api){
+        nJApi.add(nJ);
         resultJson.put("naeJson", nJApi);
         resultJson.put("targetTimeLine", timelineListJsonApi);
         resultJson.put("nouyakuList", nouyakuListJsonApi);

@@ -60,7 +60,7 @@
         htmlString+= '<label for="G2702InPost">郵便番号を入力してください（ハイフン入力なし）</label>';
         htmlString+= '</div>';
         htmlString+= '</div>';
-      
+
         /* 都道府県 */
 	    htmlString+= '<div class="row">';
         htmlString+= '<div class="input-field col s10 offset-s1">';
@@ -68,7 +68,7 @@
         htmlString+= '<label for="G2702InPrefectures">都道府県を入力してください</label>';
         htmlString+= '</div>';
         htmlString+= '</div>';
-      
+
         /* 市町村など */
 	    htmlString+= '<div class="row">';
         htmlString+= '<div class="input-field col s10 offset-s1">';
