@@ -541,6 +541,8 @@ public class WorkDiary extends Controller {
           timeLine.accountId        = account.accountId;                              //アカウントID
           timeLine.accountName      = account.acountName;                             //アカウント名
           timeLine.farmId         = account.farmId;                               //農場ID
+          timeLine.workStartTime  = workDiary.workStartTime;                      //作業開始時間
+          timeLine.workEndTime    = workDiary.workEndTime;                        //作業終了時間
           timeLine.workPlanFlag   = workDiary.workPlanFlag;                       //作業計画フラグ
 
           timeLine.save();                                                //タイムラインを追加

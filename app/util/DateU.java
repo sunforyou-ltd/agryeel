@@ -48,6 +48,15 @@ public class DateU {
 		return date;
 
 	}
+  public static java.sql.Timestamp GetNullTimeStamp() {
+
+    Calendar nullCalender = Calendar.getInstance();
+    nullCalender.set(1900, 0, 1, 0, 0, 0);
+    java.sql.Timestamp date = new java.sql.Timestamp(nullCalender.getTime().getTime());
+
+    return date;
+
+  }
   public static java.sql.Timestamp getSystemTimeStamp() {
 
     Calendar nullCalender = Calendar.getInstance();

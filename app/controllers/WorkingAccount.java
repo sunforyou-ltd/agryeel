@@ -1,6 +1,6 @@
 package controllers;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -137,7 +137,7 @@ public class WorkingAccount extends Controller {
 
         Work wk = working.getWork();
 
-        List<TimeLine> tls = TimeLine.getTimeLineOfAccount(working.accountId, working.farmId, new java.sql.Date(dt.getTime()), new java.sql.Date(dt.getTime()));
+        List<TimeLine> tls = TimeLine.getTimeLineOfAccount(working.accountId, working.farmId, new java.sql.Timestamp(dt.getTime()), new java.sql.Timestamp(dt.getTime()));
         long wt = 0;
         for (TimeLine tl:tls) {
           WorkDiary wd = WorkDiary.getWorkDiaryById(tl.workDiaryId);
@@ -277,11 +277,11 @@ public class WorkingAccount extends Controller {
       Calendar cals = Calendar.getInstance();  //開始日の生成
       cals.setTime(dt);
       cals.set(cals.get(Calendar.YEAR), 0, 1, 0, 0, 0);
-      java.sql.Date dates = new Date(cals.getTime().getTime());
+      java.sql.Timestamp dates = new Timestamp(cals.getTime().getTime());
       Calendar cale = Calendar.getInstance();  //終了日の生成
       cale.setTime(dt);
       cale.set(cale.get(Calendar.YEAR), 11, 31, 23, 59, 59);
-      java.sql.Date datee = new Date(cale.getTime().getTime());
+      java.sql.Timestamp datee = new Timestamp(cale.getTime().getTime());
 
       List<TimeLine> tls = TimeLine.getTimeLineOfAccount(accountid, accountComprtnent.accountData.farmId, dates, datee);
 
@@ -357,10 +357,10 @@ public class WorkingAccount extends Controller {
 
       Calendar cals = Calendar.getInstance();  //開始日の生成
       cals.set(Integer.parseInt(date[0]), (Integer.parseInt(date[1]) - 1), Integer.parseInt(date[2]), 0, 0, 0);
-      java.sql.Date dates = new Date(cals.getTime().getTime());
+      java.sql.Timestamp dates = new Timestamp(cals.getTime().getTime());
       Calendar cale = Calendar.getInstance();  //終了日の生成
       cale.set(Integer.parseInt(date[0]), (Integer.parseInt(date[1]) - 1), Integer.parseInt(date[2]), 23, 59, 59);
-      java.sql.Date datee = new Date(cale.getTime().getTime());
+      java.sql.Timestamp datee = new Timestamp(cale.getTime().getTime());
 
       List<TimeLine> tls = TimeLine.getTimeLineOfAccount(accountid, accountComprtnent.accountData.farmId, dates, datee);
 

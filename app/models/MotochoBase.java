@@ -1,6 +1,7 @@
 package models;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 import javax.persistence.Entity;
 
@@ -122,11 +123,11 @@ public class MotochoBase extends Model {
     /**
      * 作業開始日
      */
-    public Date workStartDay;
+    public Timestamp workStartDay;
     /**
      * 作業終了日
      */
-    public Date workEndDay;
+    public Timestamp workEndDay;
     /**
      * 面積
      */

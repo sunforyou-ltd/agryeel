@@ -63,7 +63,7 @@ public class MotochoCompornent implements AgryellInterface{
     	boolean initDataFlag	   = true;
     	boolean dataMake		     = false;
       java.sql.Date nullDate	 = DateU.GetNullDate();
-      java.sql.Date oldDate    = null;
+      java.sql.Timestamp oldDate    = null;
 
       MotochoBase motochoBase  = new MotochoBase();
       MotochoBase oldMotochoBase  = null;
@@ -102,7 +102,7 @@ public class MotochoCompornent implements AgryellInterface{
     	for (WorkDiary workDiary : aryWorkDiary) {
 
     	  Work work = Work.getWork(workDiary.workId);
-    	  oldDate   = workDiary.workDate;
+    	  oldDate   = workDiary.workEndTime;
     	  this.lastWorkId = workDiary.workId;
     		if (work.workTemplateId != AgryeelConst.WorkTemplate.END && work.workTemplateId != AgryeelConst.WorkTemplate.SAIBAIKAISI) {
     			continue;
@@ -174,7 +174,7 @@ public class MotochoCompornent implements AgryellInterface{
     		motochoBase.kukakuGroupColor	  = fieldGroup.fieldGroupColor;
     		motochoBase.workYear 				    = year;
     		motochoBase.rotationSpeedOfYear = rotationSpeedOfYear;
-    		motochoBase.workStartDay 			  = workDiary.workDate;
+    		motochoBase.workStartDay 			  = workDiary.workStartTime;
     		motochoBase.area                = compartment.area;
 
     		oldYear = year;
@@ -188,7 +188,7 @@ public class MotochoCompornent implements AgryellInterface{
       /*------------------------------------------------------------------------------------------------------------*/
       /* 元帳照会基本の反映（現在）                                                                                 */
       /*------------------------------------------------------------------------------------------------------------*/
-  		motochoBase.workEndDay = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+  		motochoBase.workEndDay = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
   		if (motochoBase.workStartDay != null) {
         setBaseInfo(motochoBase);
 		if (oldWork.workTemplateId == AgryeelConst.WorkTemplate.SAIBAIKAISI && oldMotochoBase != null) {
@@ -232,7 +232,7 @@ public class MotochoCompornent implements AgryellInterface{
         	for (WorkDiary workDiary : aryWork) {
 
         		/* 作業開始以前の作業は無効とする */
-        		if (motochoBase.workStartDay.compareTo(workDiary.workDate) > 0) {
+        		if (motochoBase.workStartDay.compareTo(workDiary.workStartTime) > 0) {
         			continue;
         		}
 
@@ -266,7 +266,7 @@ public class MotochoCompornent implements AgryellInterface{
         	for (WorkDiary workDiary : aryWork) {
 
         		/* 作業開始以降のみ有効とする */
-        		if (motochoBase.workStartDay.compareTo(workDiary.workDate) > 0) {
+        		if (motochoBase.workStartDay.compareTo(workDiary.workStartTime) > 0) {
         			continue;
         		}
             /* 播種日以降のみ有効とする */
@@ -289,8 +289,6 @@ public class MotochoCompornent implements AgryellInterface{
         		}
 
         		motochoBase.shukakuEndDate 	        = workDiary.workDate;
-//        		motochoBase.totalShukakuCount++;
-//        		motochoBase.totalShukakuNumber	   += workDiary.shukakuRyo;
             motochoBase.totalShukakuCount += workDiary.shukakuRyo;
             motochoBase.totalShukakuNumber++;
 
@@ -306,7 +304,7 @@ public class MotochoCompornent implements AgryellInterface{
           for (WorkDiary workDiary : aryWork) {
 
             /* 作業開始以降のみ有効とする */
-            if (motochoBase.workStartDay.compareTo(workDiary.workDate) > 0) {
+            if (motochoBase.workStartDay.compareTo(workDiary.workStartTime) > 0) {
               continue;
             }
             Work work = Work.getWork(workDiary.workId);
@@ -324,14 +322,14 @@ public class MotochoCompornent implements AgryellInterface{
       /*------------------------------------------------------------------------------------------------------------*/
       /* 定植情報の反映                                                                                             */
       /*------------------------------------------------------------------------------------------------------------*/
-        int naeCnt = 0;
-		String naeNo = "";
+      int naeCnt = 0;
+      String naeNo = "";
     	if (aryWork.size() > 0) {
 
         	for (WorkDiary workDiary : aryWork) {
 
         		/* 作業開始以前の作業は無効とする */
-        		if (motochoBase.workStartDay.compareTo(workDiary.workDate) > 0) {
+        		if (motochoBase.workStartDay.compareTo(workDiary.workStartTime) > 0) {
         			continue;
         		}
 

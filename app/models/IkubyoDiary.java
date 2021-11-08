@@ -236,7 +236,7 @@ public class IkubyoDiary extends Model {
      * @param endDate
      * @return
      */
-    public static List<IkubyoDiary> getIkubyoDiaryOfWork(String naeNo, Date startDate,Date endDate) {
+    public static List<IkubyoDiary> getIkubyoDiaryOfWork(String naeNo, Timestamp startDate,Timestamp endDate) {
 
       Calendar cStart = Calendar.getInstance();
       Calendar cEnd   = Calendar.getInstance();

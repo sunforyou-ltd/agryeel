@@ -1162,7 +1162,7 @@ public class AICAController extends Controller {
               /* システム日付のまま */
             }
             else {
-              endDate = base.workEndDay;
+              endDate = new java.sql.Date(base.workEndDay.getTime());
             }
           }
           if (base.seiikuDayCount > 0) {
@@ -1728,7 +1728,8 @@ public class AICAController extends Controller {
       long totalC       = 0;
       for (int i=0; i <= dateCount; i++) {
         java.sql.Date sysdate = new java.sql.Date(sys.getTimeInMillis());
-        List<TimeLine> tls = TimeLine.getTimeLineOfFarm(farmId, sysdate, sysdate);
+        java.sql.Timestamp sysTimestamp = new java.sql.Timestamp(sys.getTimeInMillis());
+        List<TimeLine> tls = TimeLine.getTimeLineOfFarm(farmId, sysTimestamp, sysTimestamp);
         double shukakuryo = 0;
         Analysis als = new Analysis();
         for (TimeLine tl : tls ) {
@@ -1876,17 +1877,25 @@ public class AICAController extends Controller {
       //----- パラメータの調整 -----
       //指定された範囲日付の変換
       SimpleDateFormat dateParse = new SimpleDateFormat("yyyyMMdd");
-      java.sql.Date dFrom  = null;
-      java.sql.Date dTo    = null;
+      java.sql.Timestamp dFrom  = null;
+      java.sql.Timestamp dTo    = null;
       try {
-        dFrom = new java.sql.Date(dateParse.parse(dateFrom).getTime());
+        dFrom = new java.sql.Timestamp(dateParse.parse(dateFrom).getTime());
+        Calendar cFrom = Calendar.getInstance();
+        cFrom.setTime(dFrom);
+        DateU.setTime(cFrom, DateU.TimeType.FROM);
+        dFrom = new java.sql.Timestamp(cFrom.getTimeInMillis());
       } catch (ParseException e) {
         resultJson.put("result", AgryeelConst.Result.ERROR);
         resultJson.put("message", "期間指定（自）に誤りがあります。 FROM = " + dateFrom);
         return ok(resultJson);
       }
       try {
-        dTo = new java.sql.Date(dateParse.parse(dateTo).getTime());
+        dTo = new java.sql.Timestamp(dateParse.parse(dateTo).getTime());
+        Calendar cTo = Calendar.getInstance();
+        cTo.setTime(dTo);
+        DateU.setTime(cTo, DateU.TimeType.TO);
+        dTo = new java.sql.Timestamp(cTo.getTimeInMillis());
       } catch (ParseException e) {
         resultJson.put("result", AgryeelConst.Result.ERROR);
         resultJson.put("message", "期間指定（至）に誤りがあります。 TO   = " + dateTo);
@@ -2004,7 +2013,8 @@ public class AICAController extends Controller {
       long totalC       = 0;
       for (int i=0; i <= dateCount; i++) {
         java.sql.Date sysdate = new java.sql.Date(sys.getTimeInMillis());
-        List<TimeLine> tls = TimeLine.getTimeLineOfRange(kukakuId, sysdate, sysdate);
+        java.sql.Timestamp sysTimestamp = new java.sql.Timestamp(sys.getTimeInMillis());
+        List<TimeLine> tls = TimeLine.getTimeLineOfRange(kukakuId, sysTimestamp, sysTimestamp);
         double shukakuryo = 0;
         Analysis als = new Analysis();
         for (TimeLine tl : tls ) {
@@ -2341,7 +2351,7 @@ public class AICAController extends Controller {
           sanpu.put("no", no);
           sanpu.put("name", ct.kukakuName);
           sanpu.put("date", "");
-          List<WorkDiary> wds = WorkDiary.getWorkDiaryOfWork(ct.kukakuId, new java.sql.Date(from.getTimeInMillis()), new java.sql.Date(to.getTimeInMillis()));
+          List<WorkDiary> wds = WorkDiary.getWorkDiaryOfWork(ct.kukakuId, new java.sql.Timestamp(from.getTimeInMillis()), new java.sql.Timestamp(to.getTimeInMillis()));
           for (WorkDiary wd :wds) {
             if (wd.workId != 8) { //消毒以外
               continue;
@@ -2395,7 +2405,7 @@ public class AICAController extends Controller {
           sanpu.put("no", no);
           sanpu.put("name", ct.kukakuName);
           sanpu.put("date", "");
-          List<WorkDiary> wds = WorkDiary.getWorkDiaryOfWork(ct.kukakuId, new java.sql.Date(from.getTimeInMillis()), new java.sql.Date(to.getTimeInMillis()));
+          List<WorkDiary> wds = WorkDiary.getWorkDiaryOfWork(ct.kukakuId, new java.sql.Timestamp(from.getTimeInMillis()), new java.sql.Timestamp(to.getTimeInMillis()));
           for (WorkDiary wd :wds) {
             if (wd.workId != 3 && wd.workId != 10) { //肥料散布/追肥以外
               continue;
@@ -2449,7 +2459,7 @@ public class AICAController extends Controller {
         json.put("dates3", "");
         json.put("datet4", "");
         json.put("dates4", "");
-        List<WorkDiary> wds = WorkDiary.getWorkDiaryOfWork(ct.kukakuId, new java.sql.Date(from.getTimeInMillis()), new java.sql.Date(to.getTimeInMillis()));
+        List<WorkDiary> wds = WorkDiary.getWorkDiaryOfWork(ct.kukakuId, new java.sql.Timestamp(from.getTimeInMillis()), new java.sql.Timestamp(to.getTimeInMillis()));
         int tekisai = 0;
         for (WorkDiary wd :wds) {
           if (wd.workId != 82) { //摘採以外
@@ -2493,17 +2503,25 @@ public class AICAController extends Controller {
       //指定された範囲日付の変換
       SimpleDateFormat dateParse = new SimpleDateFormat("yyyyMMdd");
       DecimalFormat    df        = new DecimalFormat("#,##0.0");
-      java.sql.Date dFrom  = null;
-      java.sql.Date dTo    = null;
+      java.sql.Timestamp dFrom  = null;
+      java.sql.Timestamp dTo    = null;
       try {
-        dFrom = new java.sql.Date(dateParse.parse(dateFrom).getTime());
+        dFrom = new java.sql.Timestamp(dateParse.parse(dateFrom).getTime());
+        Calendar cFrom = Calendar.getInstance();
+        cFrom.setTime(dFrom);
+        DateU.setTime(cFrom, DateU.TimeType.FROM);
+        dFrom = new java.sql.Timestamp(cFrom.getTimeInMillis());
       } catch (ParseException e) {
         resultJson.put("result", AgryeelConst.Result.ERROR);
         resultJson.put("message", "期間指定（自）に誤りがあります。 FROM = " + dateFrom);
         return ok(resultJson);
       }
       try {
-        dTo = new java.sql.Date(dateParse.parse(dateTo).getTime());
+        dTo = new java.sql.Timestamp(dateParse.parse(dateTo).getTime());
+        Calendar cTo = Calendar.getInstance();
+        cTo.setTime(dTo);
+        DateU.setTime(cTo, DateU.TimeType.TO);
+        dTo = new java.sql.Timestamp(cTo.getTimeInMillis());
       } catch (ParseException e) {
         resultJson.put("result", AgryeelConst.Result.ERROR);
         resultJson.put("message", "期間指定（至）に誤りがあります。 TO   = " + dateTo);
@@ -2682,7 +2700,8 @@ public class AICAController extends Controller {
       for (int i=0; i <= dateCount; i++) {
         ObjectNode dayJson = Json.newObject();
         java.sql.Date sysdate = new java.sql.Date(sys.getTimeInMillis());
-        List<TimeLine> tls = TimeLine.getTimeLineOfAccount(accountId, account.farmId, sysdate, sysdate);
+        java.sql.Timestamp sysTimestamp = new java.sql.Timestamp(sys.getTimeInMillis());
+        List<TimeLine> tls = TimeLine.getTimeLineOfAccount(accountId, account.farmId, sysTimestamp, sysTimestamp);
         ObjectNode cropJson = Json.newObject();
         double totalC = 0;
         double totalT = 0;
@@ -3092,7 +3111,7 @@ public class AICAController extends Controller {
       List<ObjectNode> workLists = new ArrayList<ObjectNode>();
       ArrayNode workListApi = mapper.createArrayNode();
       java.sql.Date oWorkDate = null;
-      List<models.WorkDiary> wds = models.WorkDiary.getWorkDiaryOfWork(cs.kukakuId, cs.katadukeDate, cs.hashuDate);
+      List<models.WorkDiary> wds = models.WorkDiary.getWorkDiaryOfWork(cs.kukakuId, cs.katadukeDate, new java.sql.Timestamp(cs.hashuDate.getTime()));
       double oWorkId = -1;
       for (models.WorkDiary wd :wds) {
         int workMode = 0;
@@ -3923,7 +3942,7 @@ public class AICAController extends Controller {
     }
     return ok();
   }
-  private static List<MotochoBase> get10YearsMotochoBase(double pCropId, java.sql.Date pWorkStartDate, double pKukakuId,List<Double> pKeys) {
+  private static List<MotochoBase> get10YearsMotochoBase(double pCropId, java.sql.Timestamp pWorkStartDate, double pKukakuId,List<Double> pKeys) {
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
     Calendar cal = Calendar.getInstance();
     cal.setTime(pWorkStartDate);
