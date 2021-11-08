@@ -265,7 +265,6 @@ public class Compartment extends Model {
       double dym = dy * m;
       double dxncos = dx * n * Math.cos(my);
       double dis = Math.sqrt(dym * dym + dxncos * dxncos) / 1000;
-      Logger.info("[getDistance] distance={} rradius={}", dis, pRadius);
       return dis < pRadius ? true : false;
     }
  }
