@@ -1676,67 +1676,56 @@ public class WorkDiary extends Controller {
         /* 戻り値用JSONデータの生成 */
         ObjectNode 	resultJson = Json.newObject();
         int naeCnt = 0;
-		String naeNo = "";
+        String naeNo = "";
 
         models.WorkDiary workDiary = models.WorkDiary.find.where().eq("work_diary_id", workDiaryId).findUnique();
 
         if (workDiary != null) {
 
-            WorkDiaryThread  wdt  = new WorkDiaryThread();
-            UserComprtnent uc = new UserComprtnent();
-            int getAccount = uc.GetAccountData(session(AgryeelConst.SessionKey.ACCOUNTID));
+          WorkDiaryThread  wdt  = new WorkDiaryThread();
+          UserComprtnent uc = new UserComprtnent();
+          int getAccount = uc.GetAccountData(session(AgryeelConst.SessionKey.ACCOUNTID));
 
-            Compartment ct = Compartment.getCompartmentInfo(workDiary.kukakuId);
-            Work wk = Work.getWork(workDiary.workId);
+          Compartment ct = Compartment.getCompartmentInfo(workDiary.kukakuId);
+          Work wk = Work.getWork(workDiary.workId);
 
-            /* 苗状況照会更新 */
+          /* 苗状況照会更新 */
         	List<WorkDiaryDetail> aryWorkDetail = WorkDiaryDetail.getWorkDiaryDetailList(workDiary.workDiaryId);
         	for (WorkDiaryDetail workDiaryDetail : aryWorkDetail) {
-				if (!workDiaryDetail.naeNo.equals("")) {
-					if (naeNo.indexOf(workDiaryDetail.naeNo) >= 0) {
-						continue;
-					}
-					if (naeCnt > 0) {
-						naeNo = naeNo + ",";
-					}
+          	if (workDiaryDetail.naeNo != null && !workDiaryDetail.naeNo.equals("")) {
+    					if (naeNo.indexOf(workDiaryDetail.naeNo) >= 0) {
+    						continue;
+    					}
+    					if (naeCnt > 0) {
+    						naeNo = naeNo + ",";
+    					}
+    					naeNo = naeNo + workDiaryDetail.naeNo;
+    					naeCnt++;
+    				}
+    			}
 
-					naeNo = naeNo + workDiaryDetail.naeNo;
-					naeCnt++;
-				}
-			}
+          workDiaryDeleteCommit(workDiaryId);
 
-            workDiaryDeleteCommit(workDiaryId);
+          Logger.info("[ WORKDIARY DELETED ] ID:{} NAME:{} KUKAKUID:{} KUKAKUNAME:{} WORKID:{} WORKNAME:{} WORKDIARYID:{}", uc.accountData.accountId, uc.accountData.acountName, ct.kukakuId, ct.kukakuName, wk.workId, wk.workName, workDiaryId);
 
-            Logger.info("[ WORKDIARY DELETED ] ID:{} NAME:{} KUKAKUID:{} KUKAKUNAME:{} WORKID:{} WORKNAME:{} WORKDIARYID:{}", uc.accountData.accountId, uc.accountData.acountName, ct.kukakuId, ct.kukakuName, wk.workId, wk.workName, workDiaryId);
+    			if (!naeNo.equals("")) {
+    				String[] sNaeNos = naeNo.split(",");
+    				for (String nae : sNaeNos) {
+    					/* 元帳照会を更新する */
+    					NaeMotochoCompornent motochoCompornent = new NaeMotochoCompornent(nae);
+    					motochoCompornent.make();
 
-			if (!naeNo.equals("")) {
-				String[] sNaeNos = naeNo.split(",");
-				for (String nae : sNaeNos) {
-					/* 元帳照会を更新する */
-					NaeMotochoCompornent motochoCompornent = new NaeMotochoCompornent(nae);
-					motochoCompornent.make();
+    					/* 苗状況照会を更新する */
+    					NaeStatusCompornent naeStatusCompornent = new NaeStatusCompornent(nae);
+    					naeStatusCompornent.idsps   = null;
+    					naeStatusCompornent.wdDate  = workDiary.workDate;
+    					naeStatusCompornent.update(motochoCompornent.lastMotochoBase);
+    				}
+    			}
 
-					/* 苗状況照会を更新する */
-					NaeStatusCompornent naeStatusCompornent = new NaeStatusCompornent(nae);
-					naeStatusCompornent.idsps   = null;
-					naeStatusCompornent.wdDate  = workDiary.workDate;
-					naeStatusCompornent.update(motochoCompornent.lastMotochoBase);
-				}
-			}
-
-//            /* 元帳照会を更新する */
-//            MotochoCompornent motochoCompornent = new MotochoCompornent(workDiary.kukakuId);
-//            motochoCompornent.make();
-//
-//            /* 区画状況照会を更新する */
-//            CompartmentStatusCompornent compartmentStatusCompornent = new CompartmentStatusCompornent(workDiary.kukakuId);
-//            compartmentStatusCompornent.update(motochoCompornent.lastMotochoBase);
-//
-//            /* 農肥使用回数を再集計する */
-//            NouhiComprtnent.updateUseCount(uc.accountData.farmId);
-            wdt.account   = uc.accountData;
-            wdt.workDiarys.add(workDiary);
-            wdt.start();
+          wdt.account   = uc.accountData;
+          wdt.workDiarys.add(workDiary);
+          wdt.start();
         }
 
         return ok(resultJson);
