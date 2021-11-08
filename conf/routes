@@ -259,10 +259,6 @@ GET     /:systemKind/getSystemManage            controllers.CommonController.get
 GET     /:systemKind/:majorVersion/:minorVersion/:patchVersion/:compUpdate/commitSystemManage            controllers.CommonController.commitSystemManage(systemKind: Integer, majorVersion: Integer, minorVersion: Integer, patchVersion: Integer, compUpdate: Integer)
 
 #-------------------------------------------------------------------------------
-# SyukkaController
-#-------------------------------------------------------------------------------
-GET     /:farmid/shipmentData                   controllers.SyukkaController.shipmentData(farmid:Double)
-#-------------------------------------------------------------------------------
 # ServiceController
 #-------------------------------------------------------------------------------
 GET     /:name/:mail/mailSend                   controllers.ServiceController.mailSend(name:String ,mail:String)
@@ -410,10 +406,12 @@ POST    /:accountId/selectmultikukakucrop                           controllers.
 POST    /:accountId/selectkukakuworkchain                           controllers.APIController.selectkukakuworkchain(accountId: String)
 #- 作業別機器情報取得
 GET     /:farmId/:workId/:kukakuId/getkikiofwork                    controllers.APIController.getkikiofwork(farmId: Double, workId: Double, kukakuId: Double)
+GET     /:farmId/:workId/:chainId/getkikiofworkchain                controllers.APIController.getkikiofworkchain(farmId: Double, workId: Double, chainId: Double)
 #- 機器別アタッチメント情報取得
 GET     /:kikiId/getattachmentofkiki                    			controllers.APIController.getattachmentofkiki(kikiId: Double)
 #- 作業別農肥情報取得
 GET     /:farmId/:workId/:kukakuId/getnouhiofwork                   controllers.APIController.getnouhiofwork(farmId: Double, workId: Double, kukakuId: Double)
+GET     /:farmId/:workId/:chainId/getnouhiofworkchain               controllers.APIController.getnouhiofworkchain(farmId: Double, workId: Double, chainId: Double)
 #- 生産者別ベルト一覧取得
 GET     /:farmId/getbeltooffarm                						controllers.APIController.getbeltooffarm(farmId: Double)
 #- 生産物別品種情報取得
@@ -554,6 +552,8 @@ GET     /:farmId/getyoukioffarm                                     controllers.
 GET     /:farmId/:soilKind/getsoiloffarm                            controllers.APIController.getsoiloffarm(farmId: Double, soilKind: Integer)
 #- 育苗作業中情報取得
 GET     /:accountId/getikubyoworking                           		controllers.APIController.getikubyoworking(accountId: String)
+#- 育苗作業一覧取得
+GET     /:accountId/getworkofikubyo                                 controllers.APIController.getworkofikubyo(accountId: String)
 
 #-------------------------------------------------------------------------------
 # AicAAPI

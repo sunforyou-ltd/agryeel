@@ -1,0 +1,13 @@
+--work_chain_item
+DELETE FROM work_chain_item
+WHERE work_chain_id = 36;
+
+INSERT INTO public.work_chain_item(
+	work_chain_id, sequence_id, work_id, sanpu_combi_id, on_use_kiki_kind, work_mode, next_sequence_id, nouhi_kind, delete_flag)
+	VALUES (36, 0, 206, 0, '1', 1, 0, 0, 0),
+	       (36, 1, 3, 0, '1,2,4,5', 1, 0, 2, 0),
+	       (36, 2, 8, 0, '6,7', 2, 0, 1, 0),
+	       (36, 3, 10, 0, '3', 2, 0, 2, 0),
+	       (36, 4, 9, 0, '11,12,13', 2, 0, 0, 0),
+	       (36, 5, 207, 0, '1', 1, 0, 0, 0),
+	       (36, 6, 208, 0, '1', 1, 0, 0, 0);

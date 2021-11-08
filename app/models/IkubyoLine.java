@@ -40,13 +40,6 @@ public class IkubyoLine extends Model {
      */
     public String message;
     /**
-<<<<<<< HEAD
-     * 作業記録ID
-     */
-    public double workDiaryId;
-    /**
-=======
->>>>>>> e747d9c9b47c3d59e92c6b368bbb246cc6564120
      * タイムラインカラー
      */
     public String timeLineColor;
