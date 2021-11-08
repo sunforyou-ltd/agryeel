@@ -21,13 +21,10 @@ public class NaeStatus extends Model {
      */
     public String naeNo;
     /**
-<<<<<<< HEAD
-=======
      * 生産者ID
      */
     public double farmId;
     /**
->>>>>>> e747d9c9b47c3d59e92c6b368bbb246cc6564120
      * 品種ID
      */
     public String hinsyuId;
@@ -173,5 +170,6 @@ public class NaeStatus extends Model {
     	NaeStatus naeStatus = NaeStatus.find.where().eq("nae_no", naeNo).orderBy("hinsyu_id desc, crop_id desc").findUnique();
 
     	return naeStatus;
+
     }
 }
