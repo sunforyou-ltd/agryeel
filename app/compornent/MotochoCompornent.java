@@ -114,8 +114,11 @@ public class MotochoCompornent implements AgryellInterface{
         /* 元帳照会基本の反映                                                                                         */
         /*------------------------------------------------------------------------------------------------------------*/
     		if (dataMake) {
-
-      		motochoBase.workEndDay = oldDate;
+    		  //oldDateのミリ秒を100減算する
+    		  Calendar calEnd = Calendar.getInstance();
+    		  calEnd.setTimeInMillis(oldDate.getTime());
+    		  calEnd.add(Calendar.MILLISECOND, -100);
+      		motochoBase.workEndDay = new java.sql.Timestamp(calEnd.getTimeInMillis());
 
       		if (motochoBase.workStartDay != null) {
         		setBaseInfo(motochoBase);
