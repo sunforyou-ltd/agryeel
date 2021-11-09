@@ -70,12 +70,10 @@ public class IkubyoLine extends Model {
     /**
      * 作業開始時間
      */
-    @CreatedTimestamp
     public Timestamp workStartTime;
     /**
      * 作業終了時間
      */
-    @CreatedTimestamp
     public Timestamp workEndTime;
     /**
      * 歩数

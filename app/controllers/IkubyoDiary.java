@@ -367,6 +367,9 @@ public class IkubyoDiary extends Controller {
           ikubyoLine.calorie       = ikubyoDiary.calorie;                 //カロリー
           ikubyoLine.heartRate     = ikubyoDiary.heartRate;               //心拍数
           ikubyoLine.naeNo         = ikubyoDiary.naeNo;                   //区画ID
+          ikubyoLine.workStartTime = ikubyoDiary.workStartTime;           //作業開始時間
+          ikubyoLine.workEndTime   = ikubyoDiary.workEndTime;             //作業終了時間
+          ikubyoLine.naeNo         = ikubyoDiary.naeNo;                   //区画ID
           ikubyoLine.accountId     = account.accountId;                   //アカウントID
           ikubyoLine.accountName   = account.acountName;                  //アカウント名
           ikubyoLine.farmId        = account.farmId;                      //農場ID
@@ -592,7 +595,9 @@ public class IkubyoDiary extends Controller {
           planLine.distance       = ikubyoplan.distance;                            //距離
           planLine.calorie        = ikubyoplan.calorie;                             //カロリー
           planLine.heartRate      = ikubyoplan.heartRate;                           //心拍数
-          planLine.naeNo       = ikubyoplan.naeNo;                                  //苗No
+          planLine.naeNo          = ikubyoplan.naeNo;                               //苗No
+          planLine.workStartTime  = ikubyoplan.workStartTime;                       //作業開始時間
+          planLine.workEndTime    = ikubyoplan.workEndTime;                         //作業終了時間
           planLine.accountId      = account.accountId;                              //アカウントID
           planLine.accountName    = account.acountName;                             //アカウント名
           planLine.farmId         = account.farmId;                                 //農場ID
@@ -938,6 +943,8 @@ public class IkubyoDiary extends Controller {
             ikubyoLine.calorie        = ikubyoDiary.calorie;                        //カロリー
             ikubyoLine.heartRate      = ikubyoDiary.heartRate;                      //心拍数
             ikubyoLine.naeNo          = ikubyoDiary.naeNo;                          //苗No
+            ikubyoLine.workStartTime  = ikubyoDiary.workStartTime;                  //作業開始時間
+            ikubyoLine.workEndTime    = ikubyoDiary.workEndTime;                    //作業終了時間
             ikubyoLine.accountId      = account.accountId;                          //アカウントID
             ikubyoLine.accountName    = account.acountName;                         //アカウント名
             ikubyoLine.farmId         = account.farmId;                             //農場ID

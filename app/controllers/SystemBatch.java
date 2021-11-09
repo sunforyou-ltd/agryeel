@@ -952,47 +952,57 @@ public class SystemBatch extends Controller {
 
     for (TimeLine tl : tls) {
 
+      WorkDiary wd = WorkDiary.getWorkDiaryById(tl.workDiaryId);
+      if (wd == null) { //作業記録が存在しないタイムラインは削除する
+        Logger.info("[NONE DIARY] TIMELINEID={} WORKDIARYID={}", tl.timeLineId, tl.workDiaryId);
+        Ebean.createSqlUpdate("DELETE FROM time_line WHERE time_line_id = :timeLineId").setParameter("timeLineId", tl.timeLineId).execute();
+        continue;
+      }
+
+      //作業日付からカレンダーを生成
+      Calendar calWork = Calendar.getInstance();
+      calWork.setTimeInMillis(wd.workDate.getTime());
+
+      //取得した作業記録に開始時間/終了時間が未設定の場合
+      if (wd.workStartTime == null) {
+        Calendar calHosei = Calendar.getInstance();
+        calHosei.set(calWork.get(Calendar.YEAR), calWork.get(Calendar.MONTH), calWork.get(Calendar.DAY_OF_MONTH));
+        wd.setWorkStartTime(new java.sql.Timestamp(calHosei.getTimeInMillis()));
+        wd.setWorkEndTime(new java.sql.Timestamp(calHosei.getTimeInMillis()));
+        wd.update();
+      }
+
       Calendar diffStart = Calendar.getInstance();
-      diffStart.setTimeInMillis(tl.workStartTime.getTime());
+      diffStart.setTimeInMillis(wd.workStartTime.getTime());
       DateU.setTime(diffStart, DateU.TimeType.FROM);
       Calendar diffWork = Calendar.getInstance();
-      diffWork.setTimeInMillis(tl.workDate.getTime());
+      diffWork.setTimeInMillis(wd.workDate.getTime());
       DateU.setTime(diffWork, DateU.TimeType.FROM);
 
       int rtc = diffStart.compareTo(diffWork);
       Logger.info("WORK:{} START:{} RTC:{}", sdf.format(diffWork.getTime()), sdf.format(diffStart.getTime()), rtc);
-      if ( rtc == 0 ) { //作業日付と作業開始時間日付が一致する場合
-        continue;
-      }
+      if ( rtc != 0 ) { //作業日付と作業開始時間日付が一致する場合
+        Calendar calStart = Calendar.getInstance();
+        calStart.setTimeInMillis(wd.workStartTime.getTime());
+        Calendar calEnd = Calendar.getInstance();
+        calEnd.setTimeInMillis(wd.workEndTime.getTime());
 
-      Calendar calStart = Calendar.getInstance();
-      calStart.setTimeInMillis(tl.workStartTime.getTime());
-      Calendar calEnd = Calendar.getInstance();
-      calEnd.setTimeInMillis(tl.workEndTime.getTime());
-      Calendar calWork = Calendar.getInstance();
-      calWork.setTimeInMillis(tl.workDate.getTime());
+        Logger.info("[BeforeChange] START:{} END:{}", sdf.format(calStart.getTime()), sdf.format(calEnd.getTime()));
+        calStart.set(calWork.get(Calendar.YEAR), calWork.get(Calendar.MONTH), calWork.get(Calendar.DAY_OF_MONTH));
+        calEnd.set(calWork.get(Calendar.YEAR), calWork.get(Calendar.MONTH), calWork.get(Calendar.DAY_OF_MONTH));
+        Logger.info("[AfterChange] START:{} END:{}", sdf.format(calStart.getTime()), sdf.format(calEnd.getTime()));
 
-      Logger.info("[BeforeChange] START:{} END:{}", sdf.format(calStart.getTime()), sdf.format(calEnd.getTime()));
-      calStart.set(calWork.get(Calendar.YEAR), calWork.get(Calendar.MONTH), calWork.get(Calendar.DAY_OF_MONTH));
-      calEnd.set(calWork.get(Calendar.YEAR), calWork.get(Calendar.MONTH), calWork.get(Calendar.DAY_OF_MONTH));
-      Logger.info("[AfterChange] START:{} END:{}", sdf.format(calStart.getTime()), sdf.format(calEnd.getTime()));
-
-      TimeLine mtl = TimeLine.find.where().eq("time_line_id", tl.timeLineId).findUnique();
-      if (mtl != null) {
-        mtl.setWorkStartTime(new java.sql.Timestamp(calStart.getTimeInMillis()));
-        mtl.setWorkEndTime(new java.sql.Timestamp(calEnd.getTimeInMillis()));
-        Logger.info("[CHANGE] ID:{} START:{} END:{}", mtl.timeLineId, sdf.format(mtl.workStartTime), sdf.format(mtl.workEndTime));
-        mtl.update();
-      }
-
-
-      WorkDiary wd = WorkDiary.getWorkDiaryById(tl.workDiaryId);
-      if (wd != null) {
         wd.setWorkStartTime(new java.sql.Timestamp(calStart.getTimeInMillis()));
         wd.setWorkEndTime(new java.sql.Timestamp(calEnd.getTimeInMillis()));
         wd.update();
       }
-
+      TimeLine mtl = TimeLine.find.where().eq("time_line_id", tl.timeLineId).findUnique();
+      if (mtl != null) {
+        mtl.setWorkStartTime(wd.workStartTime);
+        mtl.setWorkEndTime(wd.workEndTime);
+        Logger.info("[CHANGE] ID:{} START:{} END:{}", mtl.timeLineId, sdf.format(mtl.workStartTime), sdf.format(mtl.workEndTime));
+        mtl.update();
+      }
     }
 
     Ebean.commitTransaction();
