@@ -54,6 +54,7 @@ import compornent.NaeStatusCompornent;
 import compornent.NouhiComprtnent;
 import compornent.SessionCheckComponent;
 import compornent.UserComprtnent;
+import compornent.WorkChainCompornent;
 import compornent.WorkHistryBaseComprtnent;
 import compornent.WorkHistryDetailComprtnent;
 
@@ -318,6 +319,15 @@ public class WorkDiary extends Controller {
 
           /* 作業記録をこのタイミングで保存する */
           workDiary.save();
+
+          //作付開始自動連携を実施
+          models.WorkDiary autoWorkDiary = WorkChainCompornent.makeAutoStart(workDiary);
+          if ( autoWorkDiary != null ) {                                                                                //自動的に作付開始が生成された場合
+            //スレッドの処理対象に加える
+            ArrayList<WorkDiarySanpu> autoWorkDiarySanpu = new ArrayList<WorkDiarySanpu>();
+            wdt.wdspss.add(autoWorkDiarySanpu);
+            wdt.workDiarys.add(autoWorkDiary);
+          }
 
           /* -- タイムラインを作成する -- */
           TimeLine timeLine = new TimeLine();                                       //タイムラインモデルの生成
