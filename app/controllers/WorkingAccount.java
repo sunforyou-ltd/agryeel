@@ -19,6 +19,7 @@ import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
+import util.DateU;
 import util.StringU;
 import util.TimeU;
 
@@ -101,6 +102,12 @@ public class WorkingAccount extends Controller {
       SimpleDateFormat sdf  = new SimpleDateFormat("MM.dd HH:mm");
       SimpleDateFormat sdf2 = new SimpleDateFormat("MM/dd");
 
+      Calendar calStart = Calendar.getInstance();
+      calStart.setTime(dt);
+      DateU.setTime(calStart, DateU.TimeType.FROM);
+      Calendar calEnd   = Calendar.getInstance();
+      calEnd.setTime(dt);
+      DateU.setTime(calEnd, DateU.TimeType.TO);
 
       double timelineId = 0;
       //----- 全担当者を固定で表示する -----
@@ -137,7 +144,7 @@ public class WorkingAccount extends Controller {
 
         Work wk = working.getWork();
 
-        List<TimeLine> tls = TimeLine.getTimeLineOfAccount(working.accountId, working.farmId, new java.sql.Timestamp(dt.getTime()), new java.sql.Timestamp(dt.getTime()));
+        List<TimeLine> tls = TimeLine.getTimeLineOfAccount(working.accountId, working.farmId, new java.sql.Timestamp(calStart.getTimeInMillis()), new java.sql.Timestamp(calEnd.getTimeInMillis()));
         long wt = 0;
         for (TimeLine tl:tls) {
           WorkDiary wd = WorkDiary.getWorkDiaryById(tl.workDiaryId);
