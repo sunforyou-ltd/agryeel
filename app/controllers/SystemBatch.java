@@ -103,7 +103,7 @@ public class SystemBatch extends Controller {
         	compartmentStatus.nextWorkId				= AgryeelConst.WorkInfo.KATADUKE;
         	compartmentStatus.workColor					= "FFFFFF";
         	compartmentStatus.endWorkId					= 0;
-        	compartmentStatus.katadukeDate				= defaultDate;
+        	compartmentStatus.katadukeDate				= DateU.getSystemTimeStamp();
         	compartmentStatus.save();
 
         }
@@ -159,7 +159,7 @@ public class SystemBatch extends Controller {
 
         	List<models.WorkDiary> workdiary			= models.WorkDiary.find.where("kukaku_id = " + compartmentStatusData.kukakuId + " AND work_id = " + compartmentStatusData.endWorkId).orderBy("work_date desc").findList();
         	for (models.WorkDiary workdiaryData : workdiary) {
-        		compartmentStatusData.finalEndDate		= workdiaryData.workDate;
+        		compartmentStatusData.finalEndDate		= workdiaryData.workStartTime;
         		compartmentStatusData.save();
         		break;
         	}
@@ -439,7 +439,7 @@ public class SystemBatch extends Controller {
       	compartmentStatus.nextWorkId				= AgryeelConst.WorkInfo.KATADUKE;
       	compartmentStatus.workColor					= "FFFFFF";
       	compartmentStatus.endWorkId					= 0;
-      	compartmentStatus.katadukeDate				= defaultDate;
+      	compartmentStatus.katadukeDate				= DateU.getSystemTimeStamp();
       	//----- 追加項目の初期値を設定 -----
         compartmentStatus.hashuCount            = 0;
         compartmentStatus.nowPredictionPoint    = 0;

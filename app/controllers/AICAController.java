@@ -1162,7 +1162,7 @@ public class AICAController extends Controller {
               /* システム日付のまま */
             }
             else {
-              endDate = base.workEndDay;
+              endDate = new java.sql.Date(base.workEndDay.getTime());
             }
           }
           if (base.seiikuDayCount > 0) {
@@ -2879,15 +2879,15 @@ public class AICAController extends Controller {
     }
     SaibaiPlanHinsyuList spl = new SaibaiPlanHinsyuList();
     //区画縛り
-    List<MotochoBase> datas = get10YearsMotochoBase(cwcs.cropId, cs.katadukeDate, cs.kukakuId, keys);
+    List<MotochoBase> datas = get10YearsMotochoBase(cwcs.cropId, new java.sql.Date(cs.katadukeDate.getTime()), cs.kukakuId, keys);
     if (datas.size() == 0) {
       //生産者縛り
-      datas = get10YearsMotochoBase(cwcs.cropId, cs.katadukeDate, 0, keys);
+      datas = get10YearsMotochoBase(cwcs.cropId, new java.sql.Date(cs.katadukeDate.getTime()), 0, keys);
     }
     if (datas.size() == 0) {
       //AICA全体
       keys.clear();
-      datas = get10YearsMotochoBase(cwcs.cropId, cs.katadukeDate, 0, keys);
+      datas = get10YearsMotochoBase(cwcs.cropId, new java.sql.Date(cs.katadukeDate.getTime()), 0, keys);
     }
     if (datas.size() == 0) {
       return ok(resultJson);
@@ -2995,7 +2995,7 @@ public class AICAController extends Controller {
         ObjectNode workList = Json.newObject();
         ArrayNode workListApi = mapper.createArrayNode();
         java.sql.Date oWorkDate = null;
-        List<models.WorkDiary> wds = models.WorkDiary.getWorkDiaryOfWork(tbase.kukakuId, tbase.workStartDay, tbase.workEndDay);
+        List<models.WorkDiary> wds = models.WorkDiary.getWorkDiaryOfWork(tbase.kukakuId, new java.sql.Date(tbase.workStartDay.getTime()), new java.sql.Date(tbase.workEndDay.getTime()));
         double oWorkId = -1;
         Logger.info("[KUKAKU]{} [YEAR]{} [ROTATION]{} [START]{} [END]{} [COUNT]{}", tbase.kukakuId, tbase.workYear, tbase.rotationSpeedOfYear, sdf.format(tbase.workStartDay), sdf.format(tbase.workEndDay), wds.size());
         for (models.WorkDiary wd :wds) {
@@ -3092,7 +3092,7 @@ public class AICAController extends Controller {
       List<ObjectNode> workLists = new ArrayList<ObjectNode>();
       ArrayNode workListApi = mapper.createArrayNode();
       java.sql.Date oWorkDate = null;
-      List<models.WorkDiary> wds = models.WorkDiary.getWorkDiaryOfWork(cs.kukakuId, cs.katadukeDate, cs.hashuDate);
+      List<models.WorkDiary> wds = models.WorkDiary.getWorkDiaryOfWork(cs.kukakuId, new java.sql.Date(cs.katadukeDate.getTime()), new java.sql.Date(cs.hashuDate.getTime()));
       double oWorkId = -1;
       for (models.WorkDiary wd :wds) {
         int workMode = 0;
@@ -3727,15 +3727,15 @@ public class AICAController extends Controller {
         }
         SaibaiPlanHinsyuList spl = new SaibaiPlanHinsyuList();
         //区画縛り
-        List<MotochoBase> datas = get10YearsMotochoBase(cwcs.cropId, cs.katadukeDate, cs.kukakuId, keys);
+        List<MotochoBase> datas = get10YearsMotochoBase(cwcs.cropId, new java.sql.Date(cs.katadukeDate.getTime()), cs.kukakuId, keys);
         if (datas.size() == 0) {
           //生産者縛り
-          datas = get10YearsMotochoBase(cwcs.cropId, cs.katadukeDate, 0, keys);
+          datas = get10YearsMotochoBase(cwcs.cropId, new java.sql.Date(cs.katadukeDate.getTime()), 0, keys);
         }
         if (datas.size() == 0) {
           //AICA全体
           keys.clear();
-          datas = get10YearsMotochoBase(cwcs.cropId, cs.katadukeDate, 0, keys);
+          datas = get10YearsMotochoBase(cwcs.cropId, new java.sql.Date(cs.katadukeDate.getTime()), 0, keys);
         }
         if (datas.size() == 0) {
           continue;

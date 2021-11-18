@@ -1,6 +1,7 @@
 package models;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -143,7 +144,7 @@ public class CompartmentStatus extends Model {
     /**
      * 最終作業日
      */
-    public Date finalEndDate;
+    public Timestamp finalEndDate;
     /**
      * 次回作業ID
      */
@@ -155,7 +156,7 @@ public class CompartmentStatus extends Model {
     /**
      * 片付け日
      */
-    public Date katadukeDate;
+    public Timestamp katadukeDate;
     /**
      * 播種回数
      */

@@ -32,7 +32,6 @@ import models.WorkDiary;
 import models.WorkPlan;
 import models.WorkPlanDetail;
 import models.WorkPlanSanpu;
-
 import play.Logger;
 import play.libs.Json;
 import play.mvc.Controller;
@@ -42,12 +41,11 @@ import util.DateU;
 import com.avaje.ebean.Ebean;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-
-import compornent.HashuCompornent;
 import compornent.MonthWeekList;
 import compornent.SaibaiPlanHinsyuList;
 import compornent.SaibaiPlanHinsyuList.SaibaiPlanHinsyu;
 import compornent.UserComprtnent;
+
 import consts.AgryeelConst;
 
 public class SaibaiPlanController extends Controller {
@@ -255,7 +253,7 @@ public class SaibaiPlanController extends Controller {
                 int diffhashu = (int)DateU.GetDiffDate(tbase.workStartDay, tbase.hashuDate);
                 cal.add(Calendar.DAY_OF_MONTH, diffhashu);
               }
-              List<models.WorkDiary> wds = models.WorkDiary.getWorkDiaryOfWork(tbase.kukakuId, tbase.workStartDay, tbase.workEndDay);
+              List<models.WorkDiary> wds = models.WorkDiary.getWorkDiaryOfWork(tbase.kukakuId, new java.sql.Date(tbase.workStartDay.getTime()), new java.sql.Date(tbase.workEndDay.getTime()));
               double oWorkId = -1;
               for (models.WorkDiary wd :wds) {
                 target.setTime(cal.getTime());
@@ -469,7 +467,7 @@ public class SaibaiPlanController extends Controller {
               int diffhashu = (int)DateU.GetDiffDate(tbase.workStartDay, tbase.hashuDate);
               cal.add(Calendar.DAY_OF_MONTH, diffhashu);
             }
-            List<models.WorkDiary> wds = models.WorkDiary.getWorkDiaryOfWork(tbase.kukakuId, tbase.workStartDay, tbase.workEndDay);
+            List<models.WorkDiary> wds = models.WorkDiary.getWorkDiaryOfWork(tbase.kukakuId, new java.sql.Date(tbase.workStartDay.getTime()), new java.sql.Date(tbase.workEndDay.getTime()));
             double oWorkId = -1;
             for (models.WorkDiary wd :wds) {
               target.setTime(cal.getTime());
