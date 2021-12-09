@@ -273,6 +273,7 @@ public class WorkDiary extends Controller {
         String[] sKukakuIds = sKukakuId.split(",");
         double workDiaryId = 0;
         DecimalFormat df = new DecimalFormat("#,##0.00");
+        boolean editFlag = false;                                                         //編集フラグ
 
         for (String kukakuId : sKukakuIds) {
           models.WorkDiary workDiary = new models.WorkDiary();                              //作業日誌モデルの生成
@@ -283,6 +284,7 @@ public class WorkDiary extends Controller {
           /* 編集時は対象となる作業記録を一旦削除する                          */
           /*-------------------------------------------------------------------*/
           if (editWorkDiaryId != 0) {
+            editFlag = true;
             models.WorkDiary wd =models.WorkDiary.getWorkDiaryById(editWorkDiaryId);
             if (wd != null) {
               workDiary.workStartTime = wd.workStartTime;
@@ -321,12 +323,14 @@ public class WorkDiary extends Controller {
           workDiary.save();
 
           //作付開始自動連携を実施
-          models.WorkDiary autoWorkDiary = WorkChainCompornent.makeAutoStart(workDiary);
-          if ( autoWorkDiary != null ) {                                                                                //自動的に作付開始が生成された場合
-            //スレッドの処理対象に加える
-            ArrayList<WorkDiarySanpu> autoWorkDiarySanpu = new ArrayList<WorkDiarySanpu>();
-            wdt.wdspss.add(autoWorkDiarySanpu);
-            wdt.workDiarys.add(autoWorkDiary);
+          if (!editFlag) {  //新規作成の場合
+            models.WorkDiary autoWorkDiary = WorkChainCompornent.makeAutoStart(workDiary);
+            if ( autoWorkDiary != null ) {                                                                                //自動的に作付開始が生成された場合
+              //スレッドの処理対象に加える
+              ArrayList<WorkDiarySanpu> autoWorkDiarySanpu = new ArrayList<WorkDiarySanpu>();
+              wdt.wdspss.add(autoWorkDiarySanpu);
+              wdt.workDiarys.add(autoWorkDiary);
+            }
           }
 
           /* -- タイムラインを作成する -- */
@@ -599,12 +603,14 @@ public class WorkDiary extends Controller {
           int getAccount = accountComprtnent.GetAccountData(session(AgryeelConst.SessionKey.ACCOUNTID));
           Account ac = accountComprtnent.accountData;
 
-          ac.workId   = 0;
-          ac.fieldId  = 0;
-          ac.workStartTime = null;
-          ac.notificationMessage = "";
-          ac.messageIcon = AgryeelConst.MessageIcon.NONE;
-          ac.workPlanId = 0;
+          //-- インスタンスメソッド化
+//          ac.workId   = 0;
+//          ac.fieldId  = 0;
+//          ac.workStartTime = null;
+//          ac.notificationMessage = "";
+//          ac.messageIcon = AgryeelConst.MessageIcon.NONE;
+//          ac.workPlanId = 0;
+          ac.clearWorkingInfo();
           ac.update();
         }
 
@@ -643,6 +649,7 @@ public class WorkDiary extends Controller {
 
       try {
 
+        WorkDiaryThread  wdt  = new WorkDiaryThread();
         Ebean.beginTransaction();
         int workId = Integer.parseInt(input.get("workId").asText());  //作業IDの取得
         int workPlanId = Integer.parseInt(input.get("workPlanId").asText());  //作業計画ＩＤの取得
@@ -661,6 +668,7 @@ public class WorkDiary extends Controller {
         UserComprtnent myac = new UserComprtnent();
         myac.GetAccountData(session(AgryeelConst.SessionKey.ACCOUNTID));
         Calendar system = Calendar.getInstance();
+        boolean editFlag = false;
 
         for (String kukakuId : sKukakuIds) {
           models.WorkPlan workplan = new models.WorkPlan();                                    //作業日誌モデルの生成
@@ -670,6 +678,7 @@ public class WorkDiary extends Controller {
           /* 編集時は対象となる作業記録を一旦削除する                          */
           /*-------------------------------------------------------------------*/
           if (workPlanId != 0) {
+            editFlag = true;
             WorkPlanController.workPlanDelete(workPlanId);
           }
 
@@ -692,11 +701,22 @@ public class WorkDiary extends Controller {
 
           workplan.workPlanFlag = workPlanType;
           workplan.workPlanUUID = dff.format(myac.accountData.farmId) + sdfu.format(system.getTime()) + myac.accountData.accountId;
-          if (workplan.workPlanFlag == AgryeelConst.WORKPLANFLAG.WORKPLANCOMMIT || workplan.workPlanFlag == AgryeelConst.WORKPLANFLAG.AICAPLANCOMMIT) {
-            workplan.workStartTime = null;
-          }
+//          if (workplan.workPlanFlag == AgryeelConst.WORKPLANFLAG.WORKPLANCOMMIT || workplan.workPlanFlag == AgryeelConst.WORKPLANFLAG.AICAPLANCOMMIT) {
+//            workplan.workStartTime = null;
+//          }
           /* 作業記録をこのタイミングで保存する */
           workplan.save();
+
+          //作付開始自動連携を実施
+          if (!editFlag) {  //新規作成の場合
+            models.WorkDiary autoWorkDiary = WorkChainCompornent.makeAutoStart(workplan);
+            if ( autoWorkDiary != null ) {                                                                                //自動的に作付開始が生成された場合
+              //スレッドの処理対象に加える
+              ArrayList<WorkDiarySanpu> autoWorkDiarySanpu = new ArrayList<WorkDiarySanpu>();
+              wdt.wdspss.add(autoWorkDiarySanpu);
+              wdt.workDiarys.add(autoWorkDiary);
+            }
+          }
 
           /* -- プランラインを作成する -- */
           PlanLine planLine = new PlanLine();                                       //タイムラインモデルの生成
@@ -926,10 +946,12 @@ public class WorkDiary extends Controller {
             int getAccount = accountComprtnent.GetAccountData(session(AgryeelConst.SessionKey.ACCOUNTID));
             Account ac = accountComprtnent.accountData;
 
-            ac.workId   = work.workId;
-            ac.fieldId  = compartment.kukakuId;
-            ac.workStartTime = workplan.workStartTime;
-            ac.workPlanId = workplan.workPlanId;
+            //-- インスタンスメソッド化
+//            ac.workId   = work.workId;
+//            ac.fieldId  = compartment.kukakuId;
+//            ac.workStartTime = workplan.workStartTime;
+//            ac.workPlanId = workplan.workPlanId;
+            ac.setWorkingInfo( work.workId, compartment.kukakuId, workplan.workStartTime, workplan.workPlanId);
             ac.update();
 
             Compartment ct = Compartment.getCompartmentInfo(ac.fieldId);
@@ -945,6 +967,7 @@ public class WorkDiary extends Controller {
           ActiveLog.commit(session(AgryeelConst.SessionKey.ACCOUNTID), SCREENID, ACTIONSUBMIT, String.format("[workPlanId]=%f", planLine.workPlanId));
         }
         Ebean.commitTransaction();
+        wdt.start();
       }
       catch (Exception e) {
         Logger.error(e.getMessage(), e);
@@ -1275,6 +1298,15 @@ public class WorkDiary extends Controller {
             }
             workDiary.save();
 
+            //作付開始自動連携を実施
+            models.WorkDiary autoWorkDiary = WorkChainCompornent.makeAutoStart(workDiary);
+            if ( autoWorkDiary != null ) {                                                                              //自動的に作付開始が生成された場合
+              //スレッドの処理対象に加える
+              ArrayList<WorkDiarySanpu> autoWorkDiarySanpu = new ArrayList<WorkDiarySanpu>();
+              wdt.wdspss.add(autoWorkDiarySanpu);
+              wdt.workDiarys.add(autoWorkDiary);
+            }
+
             /* -- タイムラインを作成する -- */
             TimeLine timeLine = new TimeLine();                                                                       //タイムラインモデルの生成
             sequence = Sequence.GetSequenceValue(Sequence.SequenceIdConst.TIMELINEID);                                //最新シーケンス値の取得
@@ -1551,12 +1583,14 @@ public class WorkDiary extends Controller {
 
           //SystemMessage.makeOneMessage(ac.farmId, "[" + ac.acountName + "] " + ct.kukakuName + "の" + wk.workName + "を終了しました。");
 
-          ac.workId   = 0;
-          ac.fieldId  = 0;
-          ac.workStartTime = null;
-          ac.notificationMessage = "";
-          ac.messageIcon = AgryeelConst.MessageIcon.NONE;
-          ac.workPlanId = 0;
+          //-- インスタンスメソッド化
+//          ac.workId   = 0;
+//          ac.fieldId  = 0;
+//          ac.workStartTime = null;
+//          ac.notificationMessage = "";
+//          ac.messageIcon = AgryeelConst.MessageIcon.NONE;
+//          ac.workPlanId = 0;
+          ac.clearWorkingInfo();
           ac.update();
 
           Ebean.commitTransaction();

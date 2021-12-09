@@ -2003,8 +2003,17 @@ public class AICAController extends Controller {
       long dateCount = DateU.GetDiffDate(dFrom, dTo);
       long totalC       = 0;
       for (int i=0; i <= dateCount; i++) {
+        Calendar calSysFrom = Calendar.getInstance();
+        Calendar calSysTo = Calendar.getInstance();
+
+        calSysFrom.setTime(sys.getTime());
+        DateU.setTime(calSysFrom, DateU.TimeType.FROM);
+        calSysTo.setTime(sys.getTime());
+        DateU.setTime(calSysTo, DateU.TimeType.FROM);
+
         java.sql.Date sysdate = new java.sql.Date(sys.getTimeInMillis());
-        List<TimeLine> tls = TimeLine.getTimeLineOfRange(kukakuId, sysdate, sysdate);
+
+        List<TimeLine> tls = TimeLine.getTimeLineOfRange(kukakuId, DateU.convTimeStamp(calSysFrom), DateU.convTimeStamp(calSysTo));
         double shukakuryo = 0;
         Analysis als = new Analysis();
         for (TimeLine tl : tls ) {
@@ -2341,7 +2350,7 @@ public class AICAController extends Controller {
           sanpu.put("no", no);
           sanpu.put("name", ct.kukakuName);
           sanpu.put("date", "");
-          List<WorkDiary> wds = WorkDiary.getWorkDiaryOfWork(ct.kukakuId, new java.sql.Date(from.getTimeInMillis()), new java.sql.Date(to.getTimeInMillis()));
+          List<WorkDiary> wds = WorkDiary.getWorkDiaryOfWork(ct.kukakuId, new java.sql.Timestamp(from.getTimeInMillis()), new java.sql.Timestamp(to.getTimeInMillis()));
           for (WorkDiary wd :wds) {
             if (wd.workId != 8) { //消毒以外
               continue;
@@ -2395,7 +2404,7 @@ public class AICAController extends Controller {
           sanpu.put("no", no);
           sanpu.put("name", ct.kukakuName);
           sanpu.put("date", "");
-          List<WorkDiary> wds = WorkDiary.getWorkDiaryOfWork(ct.kukakuId, new java.sql.Date(from.getTimeInMillis()), new java.sql.Date(to.getTimeInMillis()));
+          List<WorkDiary> wds = WorkDiary.getWorkDiaryOfWork(ct.kukakuId, new java.sql.Timestamp(from.getTimeInMillis()), new java.sql.Timestamp(to.getTimeInMillis()));
           for (WorkDiary wd :wds) {
             if (wd.workId != 3 && wd.workId != 10) { //肥料散布/追肥以外
               continue;
@@ -2449,7 +2458,7 @@ public class AICAController extends Controller {
         json.put("dates3", "");
         json.put("datet4", "");
         json.put("dates4", "");
-        List<WorkDiary> wds = WorkDiary.getWorkDiaryOfWork(ct.kukakuId, new java.sql.Date(from.getTimeInMillis()), new java.sql.Date(to.getTimeInMillis()));
+        List<WorkDiary> wds = WorkDiary.getWorkDiaryOfWork(ct.kukakuId, new java.sql.Timestamp(from.getTimeInMillis()), new java.sql.Timestamp(to.getTimeInMillis()));
         int tekisai = 0;
         for (WorkDiary wd :wds) {
           if (wd.workId != 82) { //摘採以外
@@ -2995,7 +3004,7 @@ public class AICAController extends Controller {
         ObjectNode workList = Json.newObject();
         ArrayNode workListApi = mapper.createArrayNode();
         java.sql.Date oWorkDate = null;
-        List<models.WorkDiary> wds = models.WorkDiary.getWorkDiaryOfWork(tbase.kukakuId, new java.sql.Date(tbase.workStartDay.getTime()), new java.sql.Date(tbase.workEndDay.getTime()));
+        List<models.WorkDiary> wds = models.WorkDiary.getWorkDiaryOfWork(tbase.kukakuId, new java.sql.Timestamp(tbase.workStartDay.getTime()), new java.sql.Timestamp(tbase.workEndDay.getTime()));
         double oWorkId = -1;
         Logger.info("[KUKAKU]{} [YEAR]{} [ROTATION]{} [START]{} [END]{} [COUNT]{}", tbase.kukakuId, tbase.workYear, tbase.rotationSpeedOfYear, sdf.format(tbase.workStartDay), sdf.format(tbase.workEndDay), wds.size());
         for (models.WorkDiary wd :wds) {
@@ -3092,7 +3101,7 @@ public class AICAController extends Controller {
       List<ObjectNode> workLists = new ArrayList<ObjectNode>();
       ArrayNode workListApi = mapper.createArrayNode();
       java.sql.Date oWorkDate = null;
-      List<models.WorkDiary> wds = models.WorkDiary.getWorkDiaryOfWork(cs.kukakuId, new java.sql.Date(cs.katadukeDate.getTime()), new java.sql.Date(cs.hashuDate.getTime()));
+      List<models.WorkDiary> wds = models.WorkDiary.getWorkDiaryOfWork(cs.kukakuId, new java.sql.Timestamp(cs.katadukeDate.getTime()), new java.sql.Timestamp(cs.hashuDate.getTime()));
       double oWorkId = -1;
       for (models.WorkDiary wd :wds) {
         int workMode = 0;

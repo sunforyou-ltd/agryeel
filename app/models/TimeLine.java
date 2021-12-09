@@ -143,9 +143,9 @@ public class TimeLine extends Model {
      * @param endDate
      * @returnaccountidaccountidaccountid
      */
-    public static List<TimeLine> getTimeLineOfRange(double kukakuId, Date startDate,Date endDate) {
+    public static List<TimeLine> getTimeLineOfRange(double kukakuId, java.sql.Timestamp startDate,java.sql.Timestamp endDate) {
 
-    	List<TimeLine> aryTimeLine = TimeLine.find.where().eq("kukaku_id", kukakuId).between("work_date", startDate, endDate).orderBy("work_date desc, work_id desc, update_time desc").findList();
+    	List<TimeLine> aryTimeLine = TimeLine.find.where().eq("kukaku_id", kukakuId).between("work_start_time", startDate, endDate).orderBy("work_date desc, work_id desc, work_start_time desc").findList();
 
     	return aryTimeLine;
 

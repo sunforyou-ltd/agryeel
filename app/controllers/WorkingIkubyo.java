@@ -1,27 +1,24 @@
 package controllers;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 import models.Account;
-import models.Compartment;
 import models.Hinsyu;
 import models.IkubyoPlan;
 import models.IkubyoPlanLine;
 import models.NaeStatus;
-import models.TimeLine;
 import models.Work;
 import play.Logger;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
+
 import com.avaje.ebean.Ebean;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import compornent.FieldComprtnent;
 import compornent.SessionCheckComponent;
 import compornent.UserComprtnent;
 
@@ -192,10 +189,12 @@ public class WorkingIkubyo extends Controller {
           }
         }
 
-        ac.workId   = 0;
-        ac.fieldId  = 0;
-        ac.workStartTime = null;
-        ac.workPlanId = 0;
+        //--インスタンスメソッド化
+//        ac.workId   = 0;
+//        ac.fieldId  = 0;
+//        ac.workStartTime = null;
+//        ac.workPlanId = 0;
+        ac.clearWorkingInfo();
         ac.update();
 
         Ebean.commitTransaction();

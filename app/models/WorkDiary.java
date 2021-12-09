@@ -304,17 +304,10 @@ public class WorkDiary extends Model {
      * @param endDate
      * @return
      */
-    public static List<WorkDiary> getWorkDiaryOfWork(double kukakuId, Date startDate,Date endDate) {
+    public static List<WorkDiary> getWorkDiaryOfWork(double kukakuId, java.sql.Timestamp startDate,java.sql.Timestamp endDate) {
 
-      Calendar cStart = Calendar.getInstance();
-      Calendar cEnd   = Calendar.getInstance();
-      cStart.setTimeInMillis(startDate.getTime());
-      cEnd.setTimeInMillis(endDate.getTime());
 
-      DateU.setTime(cStart, DateU.TimeType.FROM);
-      DateU.setTime(cEnd, DateU.TimeType.FROM);
-
-    	List<WorkDiary> aryWorkDiary = WorkDiary.find.where().eq("kukaku_id", kukakuId).between("work_date", new java.sql.Timestamp(cStart.getTimeInMillis()), new java.sql.Timestamp(cEnd.getTimeInMillis())).orderBy("work_date").findList();
+    	List<WorkDiary> aryWorkDiary = WorkDiary.find.where().eq("kukaku_id", kukakuId).between("work_start_time", startDate, endDate).orderBy("work_start_time").findList();
 
     	return aryWorkDiary;
 

@@ -489,10 +489,12 @@ public class WorkPlanController extends Controller {
         }
 
 
-        ac.workId         = wp.workId;
-        ac.fieldId        = compartment.kukakuId;
-        ac.workStartTime  = new java.sql.Timestamp(system.getTimeInMillis());
-        ac.workPlanId     = wp.workPlanId;
+        //--インスタンスメソッド化
+//        ac.workId         = wp.workId;
+//        ac.fieldId        = compartment.kukakuId;
+//        ac.workStartTime  = new java.sql.Timestamp(system.getTimeInMillis());
+//        ac.workPlanId     = wp.workPlanId;
+        ac.setWorkingInfo(wp.workId, compartment.kukakuId, DateU.getSystemTimeStamp(), wp.workPlanId);
         ac.update();
 
         Compartment ct = Compartment.getCompartmentInfo(ac.fieldId);

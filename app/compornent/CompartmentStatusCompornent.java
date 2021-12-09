@@ -290,7 +290,7 @@ public class CompartmentStatusCompornent implements AgryellInterface {
             compartmentStatus.shukakuStartDate        = nullDate;     //収穫開始日を初期化する
             compartmentStatus.shukakuEndDate          = nullDate;     //収穫終了日を初期化する
             compartmentStatus.totalShukakuCount       = 0;            //収穫量を初期化する
-            compartmentStatus.katadukeDate            = workDiaryData.workDate;
+            compartmentStatus.katadukeDate            = workDiaryData.workStartTime;
 
             break;
           case AgryeelConst.WorkTemplate.SANPU:

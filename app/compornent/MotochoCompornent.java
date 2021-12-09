@@ -63,7 +63,7 @@ public class MotochoCompornent implements AgryellInterface{
     	boolean initDataFlag	   = true;
     	boolean dataMake		     = false;
       java.sql.Date nullDate	 = DateU.GetNullDate();
-      java.sql.Date oldDate    = null;
+      java.sql.Timestamp oldDate    = null;
 
       MotochoBase motochoBase  = new MotochoBase();
       MotochoBase oldMotochoBase  = null;
@@ -102,7 +102,7 @@ public class MotochoCompornent implements AgryellInterface{
     	for (WorkDiary workDiary : aryWorkDiary) {
 
     	  Work work = Work.getWork(workDiary.workId);
-    	  oldDate   = workDiary.workDate;
+    	  oldDate   = workDiary.workStartTime;
     	  this.lastWorkId = workDiary.workId;
     		if (work.workTemplateId != AgryeelConst.WorkTemplate.END && work.workTemplateId != AgryeelConst.WorkTemplate.SAIBAIKAISI) {
     			continue;
@@ -115,7 +115,8 @@ public class MotochoCompornent implements AgryellInterface{
         /*------------------------------------------------------------------------------------------------------------*/
     		if (dataMake) {
 
-      		motochoBase.workEndDay = oldDate;
+      		motochoBase.workEndDay = new java.sql.Timestamp( oldDate.getTime());
+          DateU.addCalendar(motochoBase.workEndDay, Calendar.MILLISECOND, -100);
 
       		if (motochoBase.workStartDay != null) {
         		setBaseInfo(motochoBase);
@@ -174,7 +175,7 @@ public class MotochoCompornent implements AgryellInterface{
     		motochoBase.kukakuGroupColor	  = fieldGroup.fieldGroupColor;
     		motochoBase.workYear 				    = year;
     		motochoBase.rotationSpeedOfYear = rotationSpeedOfYear;
-    		motochoBase.workStartDay 			  = workDiary.workDate;
+    		motochoBase.workStartDay 			  = workDiary.workStartTime;
     		motochoBase.area                = compartment.area;
 
     		oldYear = year;
@@ -188,7 +189,7 @@ public class MotochoCompornent implements AgryellInterface{
       /*------------------------------------------------------------------------------------------------------------*/
       /* 元帳照会基本の反映（現在）                                                                                 */
       /*------------------------------------------------------------------------------------------------------------*/
-  		motochoBase.workEndDay = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+  		motochoBase.workEndDay = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
   		if (motochoBase.workStartDay != null) {
         setBaseInfo(motochoBase);
 		if (oldWork.workTemplateId == AgryeelConst.WorkTemplate.SAIBAIKAISI && oldMotochoBase != null) {

@@ -253,7 +253,7 @@ public class SaibaiPlanController extends Controller {
                 int diffhashu = (int)DateU.GetDiffDate(tbase.workStartDay, tbase.hashuDate);
                 cal.add(Calendar.DAY_OF_MONTH, diffhashu);
               }
-              List<models.WorkDiary> wds = models.WorkDiary.getWorkDiaryOfWork(tbase.kukakuId, new java.sql.Date(tbase.workStartDay.getTime()), new java.sql.Date(tbase.workEndDay.getTime()));
+              List<models.WorkDiary> wds = models.WorkDiary.getWorkDiaryOfWork(tbase.kukakuId, new java.sql.Timestamp(tbase.workStartDay.getTime()), new java.sql.Timestamp(tbase.workEndDay.getTime()));
               double oWorkId = -1;
               for (models.WorkDiary wd :wds) {
                 target.setTime(cal.getTime());
@@ -467,7 +467,7 @@ public class SaibaiPlanController extends Controller {
               int diffhashu = (int)DateU.GetDiffDate(tbase.workStartDay, tbase.hashuDate);
               cal.add(Calendar.DAY_OF_MONTH, diffhashu);
             }
-            List<models.WorkDiary> wds = models.WorkDiary.getWorkDiaryOfWork(tbase.kukakuId, new java.sql.Date(tbase.workStartDay.getTime()), new java.sql.Date(tbase.workEndDay.getTime()));
+            List<models.WorkDiary> wds = models.WorkDiary.getWorkDiaryOfWork(tbase.kukakuId, new java.sql.Timestamp(tbase.workStartDay.getTime()), new java.sql.Timestamp(tbase.workEndDay.getTime()));
             double oWorkId = -1;
             for (models.WorkDiary wd :wds) {
               target.setTime(cal.getTime());
