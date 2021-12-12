@@ -282,16 +282,18 @@ public class NouhiComprtnent implements AgryellInterface{
              //育苗管理分の散布回数取得
              List<models.WorkDiaryDetail> wddl = models.WorkDiaryDetail.find.where().eq("work_diary_id", wd.workDiaryId).findList();
              for (models.WorkDiaryDetail wdd : wddl) {
-               if (!wdd.naeNo.equals("")) {
-                 //----- 苗状況情報の取得 -----
-                 NaeStatus ns = NaeStatus.getStatusOfNae(wdd.naeNo);
-                 if (ns != null) {
-                   //----- 散布回数のチェック -----
-                   List<models.IkubyoDiary> idl = models.IkubyoDiary.find.where().eq("nae_no", wdd.naeNo).between("work_date", ns.katadukeDate, ns.finalEndDate).findList();
-                   for (models.IkubyoDiary id : idl) {
-                     models.IkubyoDiarySanpu ids = models.IkubyoDiarySanpu.find.where().eq("ikubyo_diary_id", id.ikubyoDiaryId).eq("nouhi_id", p.nouhiId).findUnique();
-                     if (ids != null) {
-                       sanpuCount++;
+               if (wdd.naeNo != null) {
+                 if(!wdd.naeNo.equals("")) {
+                   //----- 苗状況情報の取得 -----
+                   NaeStatus ns = NaeStatus.getStatusOfNae(wdd.naeNo);
+                   if (ns != null) {
+                     //----- 散布回数のチェック -----
+                     List<models.IkubyoDiary> idl = models.IkubyoDiary.find.where().eq("nae_no", wdd.naeNo).between("work_date", ns.katadukeDate, ns.finalEndDate).findList();
+                     for (models.IkubyoDiary id : idl) {
+                       models.IkubyoDiarySanpu ids = models.IkubyoDiarySanpu.find.where().eq("ikubyo_diary_id", id.ikubyoDiaryId).eq("nouhi_id", p.nouhiId).findUnique();
+                       if (ids != null) {
+                         sanpuCount++;
+                       }
                      }
                    }
                  }
