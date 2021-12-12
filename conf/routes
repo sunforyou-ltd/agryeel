@@ -736,6 +736,8 @@ GET     /:from/:to/setUuidOfDay controllers.SystemBatch.setUuidOfDay( from:Strin
 GET     /:year/execInfoOfFarm controllers.SystemBatch.execInfoOfFarm( year:Integer)
 #- 指定日のSenSproutデータを取得する
 GET     /:pDate/getSensProutData controllers.SystemBatch.getSensProutData( pDate:String)
+#- 作業開始日付を作業日付と一致させる
+GET     /patchWorkDate2WorkStartEndTime controllers.SystemBatch.patchWorkDate2WorkStartEndTime()
 #-------------------------------------------------------------------------------
 # AICA SCORE
 #-------------------------------------------------------------------------------
