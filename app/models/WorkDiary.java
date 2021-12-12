@@ -146,10 +146,12 @@ public class WorkDiary extends Model {
     /**
      * 作業開始時間
      */
+    //Ebeanで時間の更新が不可能な為、@CreateTimeStampを削除
     public Timestamp workStartTime;
     /**
      * 作業終了時間
      */
+    //Ebeanで時間の更新が不可能な為、@CreateTimeStampを削除
     public Timestamp workEndTime;
     /**
      * 歩数
@@ -220,6 +222,21 @@ public class WorkDiary extends Model {
      */
     public double haikiRyo;
 
+    /**
+     * 開始時刻を設定する（Ebean更新対策）
+     * @param pWorkStartTime
+     */
+    public void setWorkStartTime(Timestamp pWorkStartTime) {
+      this.workStartTime = pWorkStartTime;
+    }
+    /**
+     * 終了時刻を設定する（Ebean更新対策）
+     * @param pWorkEndTime
+     */
+    public void setWorkEndTime(Timestamp pWorkEndTime) {
+      this.workEndTime = pWorkEndTime;
+    }
+
     public static Finder<Long, WorkDiary> find = new Finder<Long, WorkDiary>(Long.class, WorkDiary.class);
 
     /**
@@ -257,7 +274,7 @@ public class WorkDiary extends Model {
      * @param endDate
      * @return
      */
-    public static List<WorkDiary> getWorkDiaryOfWork(double workId, double kukakuId, Date startDate,Date endDate) {
+    public static List<WorkDiary> getWorkDiaryOfWork(double workId, double kukakuId, Timestamp startDate,Timestamp endDate) {
 
       Calendar cStart = Calendar.getInstance();
       Calendar cEnd   = Calendar.getInstance();
@@ -267,7 +284,7 @@ public class WorkDiary extends Model {
       DateU.setTime(cStart, DateU.TimeType.FROM);
       DateU.setTime(cEnd, DateU.TimeType.FROM);
 
-    	List<WorkDiary> aryWorkDiary = WorkDiary.find.where().eq("work_id", workId).eq("kukaku_id", kukakuId).between("work_date", new java.sql.Timestamp(cStart.getTimeInMillis()), new java.sql.Timestamp(cEnd.getTimeInMillis())).orderBy("work_date").findList();
+    	List<WorkDiary> aryWorkDiary = WorkDiary.find.where().eq("work_id", workId).eq("kukaku_id", kukakuId).between("work_start_time", startDate, endDate).orderBy("work_date").findList();
 
     	return aryWorkDiary;
 
@@ -281,7 +298,7 @@ public class WorkDiary extends Model {
      * @param endDate
      * @return
      */
-    public static List<WorkDiary> getWorkDiaryOfWork(List<Integer> aryWorkId, double kukakuId, Date startDate,Date endDate) {
+    public static List<WorkDiary> getWorkDiaryOfWork(List<Integer> aryWorkId, double kukakuId, Timestamp startDate,Timestamp endDate) {
 
       Calendar cStart = Calendar.getInstance();
       Calendar cEnd   = Calendar.getInstance();
@@ -291,7 +308,7 @@ public class WorkDiary extends Model {
       DateU.setTime(cStart, DateU.TimeType.FROM);
       DateU.setTime(cEnd, DateU.TimeType.FROM);
 
-    	List<WorkDiary> aryWorkDiary = WorkDiary.find.where().eq("kukaku_id", kukakuId).between("work_date", new java.sql.Timestamp(cStart.getTimeInMillis()), new java.sql.Timestamp(cEnd.getTimeInMillis())).in("work_id", aryWorkId).orderBy("work_date").findList();
+    	List<WorkDiary> aryWorkDiary = WorkDiary.find.where().eq("kukaku_id", kukakuId).between("work_start_time", startDate, endDate).in("work_id", aryWorkId).orderBy("work_date").findList();
 
     	return aryWorkDiary;
 

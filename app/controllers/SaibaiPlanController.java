@@ -625,7 +625,7 @@ public class SaibaiPlanController extends Controller {
       end.set(Calendar.MONTH, month);
       end.set(Calendar.DAY_OF_MONTH, end.getActualMaximum(Calendar.DAY_OF_MONTH));
 
-      List<TimeLine> tls = TimeLine.getTimeLineOfFarm(farmId, new java.sql.Date(start.getTimeInMillis()), new java.sql.Date(end.getTimeInMillis()));
+      List<TimeLine> tls = TimeLine.getTimeLineOfFarm(farmId, new java.sql.Timestamp(start.getTimeInMillis()), new java.sql.Timestamp(end.getTimeInMillis()));
 
       for (TimeLine tl : tls) {
         WorkDiary wd = WorkDiary.getWorkDiaryById(tl.workDiaryId);

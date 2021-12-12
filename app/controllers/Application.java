@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -54,14 +55,14 @@ import play.mvc.Result;
 import play.mvc.Security;
 import util.DateU;
 import util.ListrU;
+import util.MathU;
 import util.StringU;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import compornent.CompartmentStatusCompornent;
 import compornent.CropComprtnent;
 import compornent.FieldComprtnent;
@@ -2505,6 +2506,7 @@ Logger.debug("[ GET WORK ] END");
       FarmStatus farmStatus = farm.getFarmStatus();
 
       Compartment compartmentData = FieldComprtnent.getCompartment(kukakuId);
+      Timestamp systemTime = new java.sql.Timestamp(Calendar.getInstance().getTimeInMillis());
 
       if (compartmentData != null) {
         CompartmentStatus compartmentStatusData = FieldComprtnent.getCompartmentStatusFromMotocho(compartmentData.kukakuId, year, rotation);
@@ -2793,8 +2795,8 @@ Logger.debug("[ GET WORK ] END");
           }
           else {
             if (oldDate.compareTo(wd.workDate) != 0) {
-              datas.put(String.valueOf(idx), todayDatas);
-              mixdatas.put(String.valueOf(idx), totalDatas);
+              datas.put(String.valueOf(idx), MathU.round(todayDatas, 2));
+              mixdatas.put(String.valueOf(idx), MathU.round(totalDatas, 2));
               idx++;
               labels.put(String.valueOf(idx), sdf.format(wd.workDate));
               Logger.debug("[ DATE  SANPU ] " + todayDatas);
@@ -2807,15 +2809,17 @@ Logger.debug("[ GET WORK ] END");
           for (WorkDiarySanpu wdsd : wdss) {
             double hosei = 1;
             Nouhi nouhi = Nouhi.getNouhiInfo(wdsd.nouhiId);
-            if (nouhi.unitKind == 1 || nouhi.unitKind == 2) { //単位種別がKgかLの場合
-              hosei = 0.001;
-            }
+            //グラフはKgとLに無条件補正する
+//            if (nouhi.unitKind == 1 || nouhi.unitKind == 2) { //単位種別がKgかLの場合
+//              hosei = 0.001;
+//            }
+            hosei = 0.001;
             totalDatas += (wdsd.sanpuryo * hosei);
             todayDatas += (wdsd.sanpuryo * hosei);
           }
         }
-        datas.put(String.valueOf(idx), todayDatas);
-        mixdatas.put(String.valueOf(idx), totalDatas);
+        datas.put(String.valueOf(idx), MathU.round(todayDatas, 2));
+        mixdatas.put(String.valueOf(idx), MathU.round(totalDatas, 2));
         Logger.debug("[ DATE  SANPU ] " + todayDatas);
         Logger.debug("[ TOTAL SANPU ] " + totalDatas);
         kJ.put("disinfectionLabel"    , labels);
