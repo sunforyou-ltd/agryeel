@@ -2021,13 +2021,7 @@ public class AICAController extends Controller {
         DateU.setTime(calSysTo, DateU.TimeType.FROM);
 
         java.sql.Date sysdate = new java.sql.Date(sys.getTimeInMillis());
-<<<<<<< HEAD
-
         List<TimeLine> tls = TimeLine.getTimeLineOfRange(kukakuId, DateU.convTimeStamp(calSysFrom), DateU.convTimeStamp(calSysTo));
-=======
-        java.sql.Timestamp sysTimestamp = new java.sql.Timestamp(sys.getTimeInMillis());
-        List<TimeLine> tls = TimeLine.getTimeLineOfRange(kukakuId, sysTimestamp, sysTimestamp);
->>>>>>> 01ad18a70a9836a84e903120d8f49520f490b97d
         double shukakuryo = 0;
         Analysis als = new Analysis();
         for (TimeLine tl : tls ) {
@@ -2911,15 +2905,15 @@ public class AICAController extends Controller {
     }
     SaibaiPlanHinsyuList spl = new SaibaiPlanHinsyuList();
     //区画縛り
-    List<MotochoBase> datas = get10YearsMotochoBase(cwcs.cropId, new java.sql.Date(cs.katadukeDate.getTime()), cs.kukakuId, keys);
+    List<MotochoBase> datas = get10YearsMotochoBase(cwcs.cropId, cs.katadukeDate, cs.kukakuId, keys);
     if (datas.size() == 0) {
       //生産者縛り
-      datas = get10YearsMotochoBase(cwcs.cropId, new java.sql.Date(cs.katadukeDate.getTime()), 0, keys);
+      datas = get10YearsMotochoBase(cwcs.cropId, cs.katadukeDate, 0, keys);
     }
     if (datas.size() == 0) {
       //AICA全体
       keys.clear();
-      datas = get10YearsMotochoBase(cwcs.cropId, new java.sql.Date(cs.katadukeDate.getTime()), 0, keys);
+      datas = get10YearsMotochoBase(cwcs.cropId, cs.katadukeDate, 0, keys);
     }
     if (datas.size() == 0) {
       return ok(resultJson);
@@ -3124,11 +3118,7 @@ public class AICAController extends Controller {
       List<ObjectNode> workLists = new ArrayList<ObjectNode>();
       ArrayNode workListApi = mapper.createArrayNode();
       java.sql.Date oWorkDate = null;
-<<<<<<< HEAD
       List<models.WorkDiary> wds = models.WorkDiary.getWorkDiaryOfWork(cs.kukakuId, new java.sql.Timestamp(cs.katadukeDate.getTime()), new java.sql.Timestamp(cs.hashuDate.getTime()));
-=======
-      List<models.WorkDiary> wds = models.WorkDiary.getWorkDiaryOfWork(cs.kukakuId, cs.katadukeDate, new java.sql.Timestamp(cs.hashuDate.getTime()));
->>>>>>> 01ad18a70a9836a84e903120d8f49520f490b97d
       double oWorkId = -1;
       for (models.WorkDiary wd :wds) {
         int workMode = 0;
@@ -3763,15 +3753,15 @@ public class AICAController extends Controller {
         }
         SaibaiPlanHinsyuList spl = new SaibaiPlanHinsyuList();
         //区画縛り
-        List<MotochoBase> datas = get10YearsMotochoBase(cwcs.cropId, new java.sql.Date(cs.katadukeDate.getTime()), cs.kukakuId, keys);
+        List<MotochoBase> datas = get10YearsMotochoBase(cwcs.cropId, cs.katadukeDate, cs.kukakuId, keys);
         if (datas.size() == 0) {
           //生産者縛り
-          datas = get10YearsMotochoBase(cwcs.cropId, new java.sql.Date(cs.katadukeDate.getTime()), 0, keys);
+          datas = get10YearsMotochoBase(cwcs.cropId, cs.katadukeDate, 0, keys);
         }
         if (datas.size() == 0) {
           //AICA全体
           keys.clear();
-          datas = get10YearsMotochoBase(cwcs.cropId, new java.sql.Date(cs.katadukeDate.getTime()), 0, keys);
+          datas = get10YearsMotochoBase(cwcs.cropId, cs.katadukeDate, 0, keys);
         }
         if (datas.size() == 0) {
           continue;
