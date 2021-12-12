@@ -554,6 +554,8 @@ public class WorkDiary extends Controller {
           timeLine.kukakuName       = compartment.kukakuName;                           //区画名
           timeLine.accountId        = account.accountId;                              //アカウントID
           timeLine.accountName      = account.acountName;                             //アカウント名
+          timeLine.workStartTime  = workDiary.workStartTime;                           //作業開始時間
+          timeLine.workEndTime    = workDiary.workEndTime;                             //作業終了時間
           timeLine.farmId         = account.farmId;                               //農場ID
           timeLine.workPlanFlag   = workDiary.workPlanFlag;                       //作業計画フラグ
 
@@ -668,7 +670,6 @@ public class WorkDiary extends Controller {
         UserComprtnent myac = new UserComprtnent();
         myac.GetAccountData(session(AgryeelConst.SessionKey.ACCOUNTID));
         Calendar system = Calendar.getInstance();
-        boolean editFlag = false;
 
         for (String kukakuId : sKukakuIds) {
           models.WorkPlan workplan = new models.WorkPlan();                                    //作業日誌モデルの生成
@@ -678,7 +679,6 @@ public class WorkDiary extends Controller {
           /* 編集時は対象となる作業記録を一旦削除する                          */
           /*-------------------------------------------------------------------*/
           if (workPlanId != 0) {
-            editFlag = true;
             WorkPlanController.workPlanDelete(workPlanId);
           }
 
@@ -706,17 +706,6 @@ public class WorkDiary extends Controller {
 //          }
           /* 作業記録をこのタイミングで保存する */
           workplan.save();
-
-          //作付開始自動連携を実施
-          if (!editFlag) {  //新規作成の場合
-            models.WorkDiary autoWorkDiary = WorkChainCompornent.makeAutoStart(workplan);
-            if ( autoWorkDiary != null ) {                                                                                //自動的に作付開始が生成された場合
-              //スレッドの処理対象に加える
-              ArrayList<WorkDiarySanpu> autoWorkDiarySanpu = new ArrayList<WorkDiarySanpu>();
-              wdt.wdspss.add(autoWorkDiarySanpu);
-              wdt.workDiarys.add(autoWorkDiary);
-            }
-          }
 
           /* -- プランラインを作成する -- */
           PlanLine planLine = new PlanLine();                                       //タイムラインモデルの生成

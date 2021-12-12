@@ -86,12 +86,10 @@ public class TimeLine extends Model {
     /**
      * 作業開始時間
      */
-    @CreatedTimestamp
     public Timestamp workStartTime;
     /**
      * 作業終了時間
      */
-    @CreatedTimestamp
     public Timestamp workEndTime;
     /**
      * 歩数
@@ -144,6 +142,9 @@ public class TimeLine extends Model {
      * @returnaccountidaccountidaccountid
      */
     public static List<TimeLine> getTimeLineOfRange(double kukakuId, java.sql.Timestamp startDate,java.sql.Timestamp endDate) {
+
+      DateU.putTimeLog(startDate);
+      DateU.putTimeLog(endDate);
 
     	List<TimeLine> aryTimeLine = TimeLine.find.where().eq("kukaku_id", kukakuId).between("work_start_time", startDate, endDate).orderBy("work_date desc, work_id desc, work_start_time desc").findList();
 
@@ -426,6 +427,8 @@ public class TimeLine extends Model {
       timeLine.accountId      = account.accountId;                              //アカウントID
       timeLine.accountName    = account.acountName;                             //アカウント名
       timeLine.farmId         = account.farmId;                                 //農場ID
+      timeLine.workStartTime  = workDiary.workStartTime;                        //作業開始時間
+      timeLine.workEndTime    = workDiary.workEndTime;                          //作業終了時間
       timeLine.workPlanFlag   = workDiary.workPlanFlag;                         //作業計画フラグ
 
     }

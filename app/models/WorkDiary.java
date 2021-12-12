@@ -229,7 +229,7 @@ public class WorkDiary extends Model {
      */
     public static List<WorkDiary> getWorkDiary(double kukakuId) {
 
-    	List<WorkDiary> aryWorkDiary = WorkDiary.find.where().eq("kukaku_id", kukakuId).orderBy("work_date asc, work_id asc").findList();
+    	List<WorkDiary> aryWorkDiary = WorkDiary.find.where().eq("kukaku_id", kukakuId).orderBy("work_date asc, work_start_time asc, work_id asc").findList();
 
     	return aryWorkDiary;
 

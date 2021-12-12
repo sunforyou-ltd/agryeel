@@ -233,7 +233,7 @@ public class MotochoCompornent implements AgryellInterface{
         	for (WorkDiary workDiary : aryWork) {
 
         		/* 作業開始以前の作業は無効とする */
-        		if (motochoBase.workStartDay.compareTo(workDiary.workDate) > 0) {
+        		if (motochoBase.workStartDay.compareTo(workDiary.workStartTime) > 0) {
         			continue;
         		}
 
@@ -267,7 +267,7 @@ public class MotochoCompornent implements AgryellInterface{
         	for (WorkDiary workDiary : aryWork) {
 
         		/* 作業開始以降のみ有効とする */
-        		if (motochoBase.workStartDay.compareTo(workDiary.workDate) > 0) {
+        		if (motochoBase.workStartDay.compareTo(workDiary.workStartTime) > 0) {
         			continue;
         		}
             /* 播種日以降のみ有効とする */
@@ -307,7 +307,7 @@ public class MotochoCompornent implements AgryellInterface{
           for (WorkDiary workDiary : aryWork) {
 
             /* 作業開始以降のみ有効とする */
-            if (motochoBase.workStartDay.compareTo(workDiary.workDate) > 0) {
+            if (motochoBase.workStartDay.compareTo(workDiary.workStartTime) > 0) {
               continue;
             }
             Work work = Work.getWork(workDiary.workId);
@@ -332,7 +332,7 @@ public class MotochoCompornent implements AgryellInterface{
         	for (WorkDiary workDiary : aryWork) {
 
         		/* 作業開始以前の作業は無効とする */
-        		if (motochoBase.workStartDay.compareTo(workDiary.workDate) > 0) {
+        		if (motochoBase.workStartDay.compareTo(workDiary.workStartTime) > 0) {
         			continue;
         		}
 
@@ -492,7 +492,7 @@ public class MotochoCompornent implements AgryellInterface{
       for (WorkDiary workDiary : aryWork) {
 
         /* 作業開始以前の作業は無効とする */
-        if (motochoBase.workStartDay.compareTo(workDiary.workDate) > 0) {
+        if (motochoBase.workStartDay.compareTo(workDiary.workStartTime) > 0) {
           continue;
         }
 
