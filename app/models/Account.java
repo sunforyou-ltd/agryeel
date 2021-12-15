@@ -10,6 +10,8 @@ import play.db.ebean.Model;
 
 import com.avaje.ebean.annotation.UpdatedTimestamp;
 
+import consts.AgryeelConst;
+
 @Entity
 /**
  * 【AGRYEEL】アカウント情報モデル
@@ -134,6 +136,21 @@ public class Account extends Model {
     public short deleteFlag;
 
     public static Finder<Long, Account> find = new Finder<Long, Account>(Long.class, Account.class);
+
+    public void setWorkingInfo(double pWorkId, double pFieldId, Timestamp pWorkStartTime, double pWorkPlanId) {
+      this.workId         = pWorkId;
+      this.fieldId        = pFieldId;
+      this.workStartTime  = pWorkStartTime;
+      this.workPlanId     = pWorkPlanId;
+    }
+    public void clearWorkingInfo() {
+      this.workId               = 0;
+      this.fieldId              = 0;
+      this.workStartTime        = null;
+      this.workPlanId           = 0;
+      this.notificationMessage  = "";
+      this.messageIcon          = AgryeelConst.MessageIcon.NONE;
+    }
 
     /**
      * 対象生産者のアカウント情報を取得する

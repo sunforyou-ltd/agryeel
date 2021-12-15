@@ -55,6 +55,10 @@ public class WorkChainItem extends Model {
      * 削除フラグ
      */
     public short deleteFlag;
+    /**
+     * 作付開始連携フラグ
+     */
+    public int autoStartFlag;
 
     public static Finder<Long, WorkChainItem> find = new Finder<Long, WorkChainItem>(Long.class, WorkChainItem.class);
 

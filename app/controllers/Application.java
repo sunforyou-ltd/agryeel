@@ -2511,6 +2511,11 @@ Logger.debug("[ GET WORK ] END");
       if (compartmentData != null) {
         CompartmentStatus compartmentStatusData = FieldComprtnent.getCompartmentStatusFromMotocho(compartmentData.kukakuId, year, rotation);
 
+        //-------------- 日付範囲キーを変数化する -------------------------------
+        java.sql.Timestamp tStart   = compartmentStatusData.katadukeDate;
+        java.sql.Timestamp tEnd     = compartmentStatusData.finalEndDate;
+        java.sql.Timestamp tsystem  = DateU.getSystemTimeStamp();
+
         kJ.put("kukakuId"            , compartmentData.kukakuId);                    //区画ID
         kJ.put("kukakuName"          , compartmentData.kukakuName);                  //区画名
         double area = compartmentData.area;
@@ -2769,10 +2774,10 @@ Logger.debug("[ GET WORK ] END");
         }
         List<WorkDiary> wds;
         if (year != 0 && rotation != 0) {
-          wds   = WorkDiary.find.where().eq("kukaku_id", compartmentData.kukakuId).in("work_id", disinfectionKey).between("work_start_time", compartmentStatusData.katadukeDate, compartmentStatusData.finalEndDate).orderBy("work_date").findList();
+          wds   = WorkDiary.find.where().eq("kukaku_id", compartmentData.kukakuId).in("work_id", disinfectionKey).between("work_start_time", tStart, tEnd).orderBy("work_date").findList();
         }
         else {
-          wds   = WorkDiary.find.where().eq("kukaku_id", compartmentData.kukakuId).in("work_id", disinfectionKey).between("work_start_time", compartmentStatusData.katadukeDate, systemTime).orderBy("work_date").findList();
+          wds   = WorkDiary.find.where().eq("kukaku_id", compartmentData.kukakuId).in("work_id", disinfectionKey).between("work_start_time", tStart, tsystem).orderBy("work_date").findList();
         }
         labels    = Json.newObject();
         datas     = Json.newObject();
@@ -2850,10 +2855,10 @@ Logger.debug("[ GET WORK ] END");
           }
         }
         if (year != 0 && rotation != 0) {
-          wds   = WorkDiary.find.where().eq("kukaku_id", compartmentData.kukakuId).in("work_id", kansuiKey).between("work_start_time", compartmentStatusData.katadukeDate, compartmentStatusData.finalEndDate).orderBy("work_date").findList();
+          wds   = WorkDiary.find.where().eq("kukaku_id", compartmentData.kukakuId).in("work_id", kansuiKey).between("work_start_time", tStart, tEnd).orderBy("work_date").findList();
         }
         else {
-          wds   = WorkDiary.find.where().eq("kukaku_id", compartmentData.kukakuId).in("work_id", kansuiKey).between("work_start_time", compartmentStatusData.katadukeDate, systemTime).orderBy("work_date").findList();
+          wds   = WorkDiary.find.where().eq("kukaku_id", compartmentData.kukakuId).in("work_id", kansuiKey).between("work_start_time", tStart, tsystem).orderBy("work_date").findList();
         }
         labels    = Json.newObject();
         datas     = Json.newObject();
@@ -2924,10 +2929,10 @@ Logger.debug("[ GET WORK ] END");
           }
         }
         if (year != 0 && rotation != 0) {
-          wds   = WorkDiary.find.where().eq("kukaku_id", compartmentData.kukakuId).in("work_id", tuihiKey).between("work_start_time", compartmentStatusData.katadukeDate, compartmentStatusData.finalEndDate).orderBy("work_date").findList();
+          wds   = WorkDiary.find.where().eq("kukaku_id", compartmentData.kukakuId).in("work_id", tuihiKey).between("work_start_time", tStart, tEnd).orderBy("work_date").findList();
         }
         else {
-          wds   = WorkDiary.find.where().eq("kukaku_id", compartmentData.kukakuId).in("work_id", tuihiKey).between("work_start_time", compartmentStatusData.katadukeDate, systemTime).orderBy("work_date").findList();
+          wds   = WorkDiary.find.where().eq("kukaku_id", compartmentData.kukakuId).in("work_id", tuihiKey).between("work_start_time", tStart, tsystem).orderBy("work_date").findList();
         }
         labels    = Json.newObject();
         datas     = Json.newObject();
@@ -3015,10 +3020,10 @@ Logger.debug("[ GET WORK ] END");
           }
         }
         if (year != 0 && rotation != 0) {
-          wds   = WorkDiary.find.where().eq("kukaku_id", compartmentData.kukakuId).in("work_id", shukakuKey).between("work_start_time", compartmentStatusData.katadukeDate, compartmentStatusData.finalEndDate).orderBy("work_date").findList();
+          wds   = WorkDiary.find.where().eq("kukaku_id", compartmentData.kukakuId).in("work_id", shukakuKey).between("work_start_time", tStart, tEnd).orderBy("work_date").findList();
         }
         else {
-          wds   = WorkDiary.find.where().eq("kukaku_id", compartmentData.kukakuId).in("work_id", shukakuKey).between("work_start_time", compartmentStatusData.katadukeDate, systemTime).orderBy("work_date").findList();
+          wds   = WorkDiary.find.where().eq("kukaku_id", compartmentData.kukakuId).in("work_id", shukakuKey).between("work_start_time", tStart, tsystem).orderBy("work_date").findList();
         }
         labels    = Json.newObject();
         datas     = Json.newObject();
@@ -3197,14 +3202,15 @@ Logger.debug("[ GET WORK ] END");
         /* アカウント情報からタイムライン情報を取得する */
         List<TimeLine> timeLine;
         if (year != 0 && rotation != 0) {
-          timeLine = TimeLine.find.where().eq("kukaku_id", compartmentData.kukakuId).between("work_start_time", compartmentStatusData.katadukeDate, compartmentStatusData.finalEndDate).orderBy("work_date desc, work_start_time desc").findList();
+          timeLine = TimeLine.find.where().eq("kukaku_id", compartmentData.kukakuId).between("work_start_time", tStart, tEnd).orderBy("work_date desc, work_start_time desc").findList();
         }
         else {
-          timeLine = TimeLine.find.where().eq("kukaku_id", compartmentData.kukakuId).between("work_start_time", compartmentStatusData.katadukeDate, systemTime).orderBy("work_date desc, work_start_time desc").findList();
+          timeLine = TimeLine.find.where().eq("kukaku_id", compartmentData.kukakuId).between("work_start_time", tStart, tsystem).orderBy("work_date desc, work_start_time desc").findList();
         }
 
         SimpleDateFormat sdf2  = new SimpleDateFormat("MM.dd HH:mm");
         SimpleDateFormat sdf3 = new SimpleDateFormat("MM/dd");
+        SimpleDateFormat sdft  = new SimpleDateFormat("yyyyMMddHHmmssSSS");
 
         for (TimeLine timeLineData : timeLine) {                                        //作業情報をJSONデータに格納する
 
@@ -3231,7 +3237,7 @@ Logger.debug("[ GET WORK ] END");
           timeLineJson.put("fieldId"      , cpt.fieldId);                               //圃場ID
           timeLineJson.put("fieldGroupId" , cpt.getFieldGroupInfo().fieldGroupId);      //圃場グループID
 
-          timelineListJson.put(Double.toString(timeLineData.timeLineId), timeLineJson);
+          timelineListJson.put(sdft.format(timeLineData.workStartTime), timeLineJson);
           timelineListJsonApi.add(timeLineJson);
 
         }

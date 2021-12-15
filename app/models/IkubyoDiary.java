@@ -246,7 +246,7 @@ public class IkubyoDiary extends Model {
       DateU.setTime(cStart, DateU.TimeType.FROM);
       DateU.setTime(cEnd, DateU.TimeType.FROM);
 
-    	List<IkubyoDiary> aryIkubyoDiary = IkubyoDiary.find.where().eq("nae_no", naeNo).between("work_date", new java.sql.Timestamp(cStart.getTimeInMillis()), new java.sql.Timestamp(cEnd.getTimeInMillis())).orderBy("work_date").findList();
+    	List<IkubyoDiary> aryIkubyoDiary = IkubyoDiary.find.where().eq("nae_no", naeNo).between("work_date", startDate, endDate).orderBy("work_date").findList();
 
     	return aryIkubyoDiary;
 

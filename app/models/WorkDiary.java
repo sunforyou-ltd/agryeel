@@ -321,10 +321,10 @@ public class WorkDiary extends Model {
      * @param endDate
      * @return
      */
-    public static List<WorkDiary> getWorkDiaryOfWork(double kukakuId, Timestamp startDate,Timestamp endDate) {
+    public static List<WorkDiary> getWorkDiaryOfWork(double kukakuId, java.sql.Timestamp startDate,java.sql.Timestamp endDate) {
 
 
-    	List<WorkDiary> aryWorkDiary = WorkDiary.find.where().eq("kukaku_id", kukakuId).between("work_start_time", startDate, endDate).orderBy("work_date").findList();
+    	List<WorkDiary> aryWorkDiary = WorkDiary.find.where().eq("kukaku_id", kukakuId).between("work_start_time", startDate, endDate).orderBy("work_start_time").findList();
 
     	return aryWorkDiary;
 

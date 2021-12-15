@@ -104,7 +104,7 @@ public class SystemBatch extends Controller {
         	compartmentStatus.nextWorkId				= AgryeelConst.WorkInfo.KATADUKE;
         	compartmentStatus.workColor					= "FFFFFF";
         	compartmentStatus.endWorkId					= 0;
-        	compartmentStatus.katadukeDate				= defaultTimestamp;
+        	compartmentStatus.katadukeDate				= DateU.getSystemTimeStamp();
         	compartmentStatus.save();
 
         }
@@ -444,7 +444,7 @@ public class SystemBatch extends Controller {
       	compartmentStatus.nextWorkId				= AgryeelConst.WorkInfo.KATADUKE;
       	compartmentStatus.workColor					= "FFFFFF";
       	compartmentStatus.endWorkId					= 0;
-      	compartmentStatus.katadukeDate				= defaultTimestamp;
+      	compartmentStatus.katadukeDate				= DateU.getSystemTimeStamp();
       	//----- 追加項目の初期値を設定 -----
         compartmentStatus.hashuCount            = 0;
         compartmentStatus.nowPredictionPoint    = 0;

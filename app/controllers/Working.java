@@ -15,6 +15,8 @@ import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
+import util.DateU;
+
 import com.avaje.ebean.Ebean;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -221,9 +223,11 @@ public class Working extends Controller {
         int getAccount = accountComprtnent.GetAccountData(session(AgryeelConst.SessionKey.ACCOUNTID));
         Account ac = accountComprtnent.accountData;
 
-        ac.workId   = Double.parseDouble(workid);
-        ac.fieldId  = Double.parseDouble(kukakuid);
-        ac.workStartTime = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
+        //--インスタンスメソッド化
+//        ac.workId   = Double.parseDouble(workid);
+//        ac.fieldId  = Double.parseDouble(kukakuid);
+//        ac.workStartTime = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
+        ac.setWorkingInfo(Double.parseDouble(workid), Double.parseDouble(kukakuid), DateU.getSystemTimeStamp(), 0);
         ac.update();
 
         Compartment ct = Compartment.getCompartmentInfo(ac.fieldId);
@@ -301,10 +305,12 @@ public class Working extends Controller {
           }
         }
 
-        ac.workId   = 0;
-        ac.fieldId  = 0;
-        ac.workStartTime = null;
-        ac.workPlanId = 0;
+        //-- インスタンスメソッド化
+//        ac.workId   = 0;
+//        ac.fieldId  = 0;
+//        ac.workStartTime = null;
+//        ac.workPlanId = 0;
+        ac.clearWorkingInfo();
         ac.update();
 
         Ebean.commitTransaction();

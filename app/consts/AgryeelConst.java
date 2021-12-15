@@ -1179,6 +1179,14 @@ public class AgryeelConst {
 		public static final String		FROMADDRESS				= "service@sunforyou.jp";
 	}
 
+  /**
+   * 作業ＩＤ
+   * @author kimura
+   *
+   */
+  public class WorkId {
+    public static final int START          = 13;
+  }
 	/**
 	 * 作業テンプレート
 	 * @author kimura

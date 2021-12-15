@@ -7,8 +7,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import javax.swing.plaf.ListUI;
-
 import models.Compartment;
 import models.CompartmentStatus;
 import models.CompartmentWorkChainStatus;
@@ -17,10 +15,13 @@ import models.Field;
 import models.FieldGroup;
 import models.FieldGroupList;
 import models.PosttoPoint;
+import models.Sequence;
+import models.TimeLine;
 import models.Weather;
 import models.Work;
 import models.WorkChain;
 import models.WorkChainItem;
+import models.WorkDiary;
 import models.WorkHistryBase;
 import models.WorkLastTime;
 import models.WorkTemplate;
@@ -1173,5 +1174,117 @@ public class WorkChainCompornent implements AgryellInterface{
    */
   public static CompartmentWorkChainStatus getCompartmentWorkChainStatus(double pKukakuId) {
     return CompartmentWorkChainStatus.find.where().eq("kukaku_id", pKukakuId).findUnique();
+  }
+  /**
+   * 指定された時間の直前に作付け開始を作成する
+   * @param pWd
+   */
+  public static models.WorkDiary makeAutoStart( models.WorkDiary pWd) {
+
+    //作業記録の生成
+    WorkDiary wd        = null;
+
+    //現在選択中のワークチェインを取得
+    CompartmentStatus compartmentStatusData = FieldComprtnent.getCompartmentStatus(pWd.kukakuId);                       //区画状況を取得
+    if (compartmentStatusData == null) {                                                                                //区画状況が取得できない場合
+      return wd;                                                                                                        //処理を中断
+    }
+    CompartmentWorkChainStatus cws = compartmentStatusData.getWorkChainStatus();                                        //区画ワークチェイン情報を取得
+    WorkChainItem wci = WorkChainItem.getWorkChainItemOfWorkId(cws.workChainId, pWd.workId);                            //ワークチェイン明細をワークIDから取得
+    if ( wci == null ) {                                                                                                //ワークチェイン明細を取得できない場合
+      return wd;                                                                                                        //処理を中断
+    }
+    if ( wci.autoStartFlag == 0) {                                                                                      //作付開始連携がOFFの場合
+      return wd;                                                                                                        //処理を中断
+    }
+
+    //作業開始時間の自動生成
+    Calendar calStart = Calendar.getInstance();
+    calStart.setTimeInMillis(pWd.workStartTime.getTime());
+    calStart.add( Calendar.MILLISECOND, -100);
+
+    //作業記録の生成
+    wd        = new WorkDiary();
+
+    Sequence sequence   = Sequence.GetSequenceValue(Sequence.SequenceIdConst.WORKDIARYID);
+    double workDiaryId  = sequence.sequenceValue;
+
+    wd.workDiaryId  = workDiaryId;                                                                                      //作業記録ID
+    wd.workId       = AgryeelConst.WorkId.START;                                                                        //作業ID
+    wd.kukakuId     = pWd.kukakuId;                                                                                     //区画ID
+    wd.workPlanFlag = AgryeelConst.WORKPLANFLAG.WORKDIARYCOMMIT;                                                        //作業計画フラグ
+    wd.workDate     = pWd.workDate;                                                                                     //作業日付
+    wd.workTime     = 0;                                                                                                //作業時間
+    wd.accountId    = pWd.accountId;                                                                                    //アカウントID
+
+    wd.workStartTime  = new java.sql.Timestamp(calStart.getTime().getTime());                                           //作業開始時間
+    wd.workEndTime    = new java.sql.Timestamp(calStart.getTime().getTime());                                           //作業終了時間
+
+    wd.save();
+
+    //タイムラインの生成
+    Work work = Work.find.where().eq("work_id", AgryeelConst.WorkId.START).findUnique();                                //作業情報モデルの取得
+    TimeLine timeLine = new TimeLine();
+    TimeLine.setTimeLineData( timeLine, wd, work);
+    timeLine.save();
+
+    return wd;
+
+  }
+  /**
+   * 指定された時間の直前に作付け開始を作成する
+   * @param pWd
+   */
+  public static models.WorkDiary makeAutoStart( models.WorkPlan pWd) {
+
+    //作業記録の生成
+    WorkDiary wd        = null;
+
+    //現在選択中のワークチェインを取得
+    CompartmentStatus compartmentStatusData = FieldComprtnent.getCompartmentStatus(pWd.kukakuId);                       //区画状況を取得
+    if (compartmentStatusData == null) {                                                                                //区画状況が取得できない場合
+      return wd;                                                                                                        //処理を中断
+    }
+    CompartmentWorkChainStatus cws = compartmentStatusData.getWorkChainStatus();                                        //区画ワークチェイン情報を取得
+    WorkChainItem wci = WorkChainItem.getWorkChainItemOfWorkId(cws.workChainId, pWd.workId);                            //ワークチェイン明細をワークIDから取得
+    if ( wci == null ) {                                                                                                //ワークチェイン明細を取得できない場合
+      return wd;                                                                                                        //処理を中断
+    }
+    if ( wci.autoStartFlag == 0) {                                                                                      //作付開始連携がOFFの場合
+      return wd;                                                                                                        //処理を中断
+    }
+
+    //作業開始時間の自動生成
+    Calendar calStart = Calendar.getInstance();
+    calStart.setTimeInMillis(pWd.workStartTime.getTime());
+    calStart.add( Calendar.MILLISECOND, -100);
+
+    //作業記録の生成
+    wd        = new WorkDiary();
+
+    Sequence sequence   = Sequence.GetSequenceValue(Sequence.SequenceIdConst.WORKDIARYID);
+    double workDiaryId  = sequence.sequenceValue;
+
+    wd.workDiaryId  = workDiaryId;                                                                                      //作業記録ID
+    wd.workId       = AgryeelConst.WorkId.START;                                                                        //作業ID
+    wd.kukakuId     = pWd.kukakuId;                                                                                     //区画ID
+    wd.workPlanFlag = AgryeelConst.WORKPLANFLAG.WORKDIARYCOMMIT;                                                        //作業計画フラグ
+    wd.workDate     = pWd.workDate;                                                                                     //作業日付
+    wd.workTime     = 0;                                                                                                //作業時間
+    wd.accountId    = pWd.accountId;                                                                                    //アカウントID
+
+    wd.workStartTime  = new java.sql.Timestamp(calStart.getTime().getTime());                                           //作業開始時間
+    wd.workEndTime    = new java.sql.Timestamp(calStart.getTime().getTime());                                           //作業終了時間
+
+    wd.save();
+
+    //タイムラインの生成
+    Work work = Work.find.where().eq("work_id", AgryeelConst.WorkId.START).findUnique();                                //作業情報モデルの取得
+    TimeLine timeLine = new TimeLine();
+    TimeLine.setTimeLineData( timeLine, wd, work);
+    timeLine.save();
+
+    return wd;
+
   }
 }
