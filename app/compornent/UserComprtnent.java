@@ -352,10 +352,12 @@ public class UserComprtnent implements AgryellInterface{
       if (farmStatusData != null) { //生産者ステータス情報が存在する
         pJson.put("contractplan"      , farmStatusData.contractPlan);
         pJson.put("ikubyoFunction"    , farmStatusData.ikubyoFunction);
+        pJson.put("kukakuSelectMethod", farmStatusData.kukakuSelectMethod);
       }
       else {
         pJson.put("contractplan"      , JSON_NONE);
         pJson.put("ikubyoFunction"    , JSON_NONE);
+        pJson.put("kukakuSelectMethod", JSON_NONE);
       }
 
       //----- 担当者情報 -----
@@ -600,10 +602,12 @@ public class UserComprtnent implements AgryellInterface{
       if (farmStatusData != null) { //生産者ステータス情報が存在する
         pJson.put("contractplan"      , farmStatusData.contractPlan);
         pJson.put("ikubyoFunction"    , farmStatusData.ikubyoFunction);
+        pJson.put("kukakuSelectMethod", farmStatusData.kukakuSelectMethod);
       }
       else {
         pJson.put("contractplan"      , JSON_NONE);
         pJson.put("ikubyoFunction"    , JSON_NONE);
+        pJson.put("kukakuSelectMethod", JSON_NONE);
       }
     }
     else {

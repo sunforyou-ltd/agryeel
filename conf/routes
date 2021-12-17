@@ -238,6 +238,7 @@ GET     /getWorkPlanAutoCreate                  controllers.CommonController.get
 GET     /getWorkDiaryDiscription                controllers.CommonController.getWorkDiaryDiscription()
 GET     /getSyukauInputCount                    controllers.CommonController.getSyukauInputCount()
 GET     /getIkubyoFunction                      controllers.CommonController.getIkubyoFunction()
+GET     /getKukakuSelectMethod                  controllers.CommonController.getKukakuSelectMethod()
 GET     /getTimeLineWorking                     controllers.CommonController.getTimeLineWorking()
 GET     /:workId/:kukakuId/getKikiOfWorkJson    controllers.CommonController.getKikiOfWorkJson(workId: Double, kukakuId: Double)
 GET     /:workId/:chainId/getKikiOfWorkChainJson controllers.CommonController.getKikiOfWorkChainJson(workId: Double, chainId: Double)
@@ -396,6 +397,8 @@ GET    /:kukakuId/getmotochohistry              					controllers.APIController.g
 GET     /getdisplaystatus                							controllers.APIController.getdisplaystatus()
 #- アカウントID別圃場グループ取得
 GET    /:accountId/getfieldgroupofaccount       					controllers.APIController.getfieldgroupofaccount(accountId: String)
+#- アカウントID別圃場取得
+GET    /:accountId/getfieldofaccount       							controllers.APIController.getfieldofaccount(accountId: String)
 #- 区画検索条件をアカウント状況に反映
 POST    /:accountId/kukakusearchcommit                              controllers.APIController.kukakusearchcommit(accountId: String)
 #- 区画生産物変更要求

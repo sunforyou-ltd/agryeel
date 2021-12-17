@@ -23,6 +23,7 @@ import models.Crop;
 import models.CropGroup;
 import models.CropGroupList;
 import models.Farm;
+import models.Field;
 import models.FieldGroup;
 import models.Hinsyu;
 import models.HinsyuOfFarm;
@@ -813,6 +814,43 @@ public class APIController extends Controller {
           else {
             jd.put("flag" , 0);
           }
+          listJson.add(jd);
+
+        }
+      }
+
+      resultJson.put("datalist" , listJson);
+
+      return ok(resultJson);
+    }
+
+
+    /**
+     * アカウントID別圃場取得
+     * @return
+     */
+    public static Result getfieldofaccount(String accountId) {
+
+      /* 戻り値用JSONデータの生成 */
+      ObjectNode resultJson = Json.newObject();
+      ObjectMapper mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
+      ArrayNode listJson = mapper.createArrayNode();
+
+      UserComprtnent uc = new UserComprtnent();
+      uc.GetAccountData(accountId);
+
+      List<Field> fs = Field.getFieldOfFarm(uc.accountData.farmId);
+      if (fs.size() > 0) {
+        for (Field f : fs) {
+          if (f.deleteFlag == 1) { // 削除済みの場合
+            continue;
+          }
+
+          ObjectNode jd = Json.newObject();
+
+          jd.put("id"   , f.fieldId);
+          jd.put("name" , f.fieldName);
+          jd.put("flag" , 0);
           listJson.add(jd);
 
         }

@@ -84,6 +84,10 @@ public class FarmStatus extends Model {
      * 育苗機能
      */
     public int ikubyoFunction;
+    /**
+     * 区画選択方法
+     */
+    public int kukakuSelectMethod;
 
     public static Finder<Long, FarmStatus> find = new Finder<Long, FarmStatus>(Long.class, FarmStatus.class);
 

@@ -291,5 +291,9 @@ public class Common extends Model {
          * 育苗機能
          */
         public static final int     IKUBYOFUNCTION = 63;
+        /**
+         * 区画選択方法
+         */
+        public static final int     KUKAKUSELECTMETHOD = 64;
     }
 }

@@ -176,6 +176,13 @@
         htmlString+= '</div>';
         htmlString+= '</div>';
 
+        /* 区画選択方法 */
+        htmlString+= '<div class="row">';
+        htmlString+= '<div class="col s10 offset-s1 mst-item-title">';
+        htmlString+= '区画選択方法<a href="#selectmodal"  class="collection-item selectmodal-trigger" title="区画選択方法選択"" data="getKukakuSelectMethod" displayspan="#G2702KukakuSelectMethodSpan"><span id="G2702KukakuSelectMethodSpan" class="blockquote-input">未選択</span></a>';
+        htmlString+= '</div>';
+        htmlString+= '</div>';
+
         htmlString+= '</form>';
         htmlString+= '</div>';
         htmlString+= '</div>';
@@ -262,6 +269,14 @@
         }
         selectClose();
 
+        //----- 区画選択方法 -----
+        selectDataGet("#G2702KukakuSelectMethodSpan", "getKukakuSelectMethod");
+        var oJson = selectData(jsonResult.kukakuSelectMethod);
+        if (oJson != undefined) {
+          oJson.select = true;
+        }
+        selectClose();
+
         },
           dataType:'json',
           contentType:'text/json',
@@ -312,6 +327,7 @@
         var historyReference = selectConvertJson("#G2702HistoryReferenceSpan");
         var syukakuInputCount = selectConvertJson("#G2702SyukakuInputCountSpan");
         var ikubyoFunction = selectConvertJson("#G2702IkubyoFunctionSpan");
+        var kukakuSelectMethod = selectConvertJson("#G2702KukakuSelectMethodSpan");
 
         jsondata["areaUnit"]         = areaUnit;
         jsondata["kisyo"]            = kisyo;
@@ -320,6 +336,7 @@
         jsondata["historyReference"] = historyReference;
         jsondata["syukakuInputCount"] = syukakuInputCount;
         jsondata["ikubyoFunction"] = ikubyoFunction;
+        jsondata["kukakuSelectMethod"] = kukakuSelectMethod;
 
 	    console.log("jsondata", jsondata);
 

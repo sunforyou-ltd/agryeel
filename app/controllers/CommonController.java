@@ -1364,6 +1364,28 @@ public class CommonController extends Controller {
       return ok(resultJson);
   }
 
+
+  /**
+   * 区画選択方法を取得する
+   * @return
+   */
+  public static Result getKukakuSelectMethod() {
+
+      /* 戻り値用JSONデータの生成 */
+      ObjectNode resultJson = Json.newObject();
+      ObjectNode listJson = Json.newObject();
+
+      CommonComprtnent cc = new CommonComprtnent();
+
+      int result = cc.getCommonJson(Common.ConstClass.KUKAKUSELECTMETHOD, listJson);
+
+      resultJson.put("datalist" , listJson);
+      resultJson.put("flag"     , 0);
+      resultJson.put("result"   , "SUCCESS");
+
+      return ok(resultJson);
+  }
+
   /**
    * 該当区画のワークチェーン作業一覧を取得する
    * @return
