@@ -764,5 +764,5 @@ GET     /:farmId/:year/getCost controllers.ManagementController.getCost( farmId:
 GET     /:farmId/:year/updateCost controllers.ManagementController.updateCost( farmId:Double, year:Integer)
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /.well-known/pki-validation/77f87aa94637ec331663bed5bbc5dca4.txt controllers.UI.sslserverfile()
+GET     /.well-known/pki-validation/df488890b9ceb39e683e4a76a928f6d0.txt controllers.UI.sslserverfile()
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

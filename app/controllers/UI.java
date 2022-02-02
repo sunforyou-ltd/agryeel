@@ -18,7 +18,7 @@ public class UI extends Controller {
         return ok(views.html.ui.render());
     }
     public static Result sslserverfile() {
-        File file = new File("C:\\agryeel\\public\\.well-known\\pki-validation\\858dc8e19b6bb937be31010814de08f3.txt");
+        File file = new File("C:\\agryeel\\public\\.well-known\\pki-validation\\df488890b9ceb39e683e4a76a928f6d0.txt");
         return ok(file);
     }
 }
