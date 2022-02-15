@@ -2,6 +2,7 @@ package models;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.List;
 
 import javax.persistence.Entity;
 
@@ -158,5 +159,19 @@ public class MotochoBase extends Model {
     public String naeNo;
 
     public static Finder<Long, MotochoBase> find = new Finder<Long, MotochoBase>(Long.class, MotochoBase.class);
+
+    public static MotochoBase getMotochoBase(double pKukakuId, java.sql.Timestamp pStart) {
+      MotochoBase result = null;                                                                                        /* 元帳基本情報 */
+
+      List<MotochoBase> mbs = MotochoBase.find.where().eq("kukaku_id", pKukakuId)
+                                                      .ge("work_start_day", pStart)
+                                                      .le("work_end_day", pStart)
+                                                      .orderBy("work_start_day").findList();                            /* 元帳基本情報を取得 */
+      if (mbs.size() > 0) {                                                                                             /* データが取得できた場合 */
+        result = mbs.get(0);                                                                                            /* データを戻り値に格納する */
+      }
+
+      return result;                                                                                                    /* 戻り値 */
+    }
 
 }

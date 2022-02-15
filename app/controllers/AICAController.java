@@ -1456,6 +1456,23 @@ public class AICAController extends Controller {
             base.put("year"     , cWork.get(Calendar.YEAR));
             base.put("month"    , cWork.get(Calendar.MONTH) + 1);
             base.put("day"      , cWork.get(Calendar.DAY_OF_MONTH));
+            //----- 品目情報 -----
+            String hinmokuName = "";                                                                                    /* 品目名 */
+            MotochoBase mb = MotochoBase.getMotochoBase(tl.kukakuId, tl.workStartTime);                                 /* 作業記録から対象の元帳基本情報を取得する */
+            if ( mb != null) {                                                                                          /* 取得できた場合 */
+              hinmokuName = mb.cropName;                                                                                /* 品目名をセット */
+            }
+            else {                                                                                                      /* 基本情報を取得できなかった場合 */
+              CompartmentWorkChainStatus cwcs =
+              CompartmentWorkChainStatus.getCompartmentWorkChainStatusFromKEY(tl.kukakuId);                             /* 区画ワークチェインステータスを取得 */
+              if ( cwcs != null ) {                                                                                     /* 区画ワークチェインが取得できた場合 */
+                Crop crop = Crop.getCropInfo(cwcs.cropId);                                                              /* 品目情報を取得 */
+                if ( crop != null) {                                                                                    /* 品目が取得できた場合 */
+                  hinmokuName = crop.cropName;                                                                          /* 品目名をセット */
+                }
+              }
+            }
+            base.put("hinmoku", hinmokuName);                                                                           /* 品目名を出力 */
             //----- 作業情報 -----
             base.put("kukaku"   , tl.kukakuName);
             base.put("tanto"    , tl.accountName);
