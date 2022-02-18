@@ -309,6 +309,8 @@ GET     /:farmId/:targetMonth/outWorkdiary      controllers.AICAController.outWo
 GET     /:farmId/:dateFrom/:dateTo/:cropId/AICADataoutput    controllers.AICAController.AICADataoutput(farmId: Double, dateFrom: String, dateTo: String, cropId: Double)
 #- 作業明細出力
 GET     /:farmId/:dateFrom/:dateTo/WorkDiaryDataoutput       controllers.AICAController.WorkDiaryDataoutput(farmId: Double, dateFrom: String, dateTo: String)
+#- 圃場作付担当者/作業別集計時間取得
+GET     /:farmId/:dateFrom/:dateTo/AICAWorkTimeOutput        controllers.AICAController.AICAWorkTimeOutput(farmId: Double, dateFrom: String, dateTo: String)
 #- 収穫分析情報出力
 GET     /:farmId/:dateFrom/:dateTo/:cropId/ShukakuDataOutput controllers.AICAController.ShukakuDataOutput(farmId: Double, dateFrom: String, dateTo: String, cropId: String)
 #- 収穫分析情報出力

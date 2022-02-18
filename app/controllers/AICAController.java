@@ -61,6 +61,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import compornent.AicaCompornent;
 import compornent.Analysis;
+import compornent.AnalysisString;
 import compornent.FieldComprtnent;
 import compornent.SaibaiPlanHinsyuList;
 import compornent.UserComprtnent;
@@ -1688,6 +1689,148 @@ public class AICAController extends Controller {
 
       resultJson.put("count", totalC);
       resultJson.put("out"  , datalist);
+      return ok(resultJson);
+    }
+    /**
+     * 圃場作付担当者／作業別時間取得
+     * @param farmId    生産者ID
+     * @param dateFrom  開始日付
+     * @param dateTo    終了日付
+     * @return          終了ステータス
+     */
+    public static Result AICAWorkTimeOutput(double farmId, String dateFrom, String dateTo) {
+      ObjectNode resultJson = Json.newObject();
+
+      //----- パラメータの調整 -----
+      //生産者情報の取得
+      Farm fm = Farm.find.where().eq("farm_id", farmId).findUnique();
+      if (fm == null) {
+        resultJson.put("result", AgryeelConst.Result.ERROR);
+        resultJson.put("message", "指定された生産者ＩＤが存在しません。");
+        return ok(resultJson);
+      }
+
+      //指定された範囲日付の変換
+      SimpleDateFormat dateParse = new SimpleDateFormat("yyyyMMdd");
+      java.sql.Date dFrom  = null;
+      java.sql.Date dTo    = null;
+      try {
+        dFrom = new java.sql.Date(dateParse.parse(dateFrom).getTime());
+      } catch (ParseException e) {
+        resultJson.put("result", AgryeelConst.Result.ERROR);
+        resultJson.put("message", "期間指定（自）に誤りがあります。 FROM = " + dateFrom);
+        return ok(resultJson);
+      }
+      try {
+        dTo = new java.sql.Date(dateParse.parse(dateTo).getTime());
+      } catch (ParseException e) {
+        resultJson.put("result", AgryeelConst.Result.ERROR);
+        resultJson.put("message", "期間指定（至）に誤りがあります。 TO   = " + dateTo);
+        return ok(resultJson);
+      }
+
+      //----- 区画情報の取得 -----
+      List<Compartment> cts = Compartment.getCompartmentOfFarm(farmId);
+      if (cts.size() == 0) {
+        resultJson.put("result", AgryeelConst.Result.ERROR);
+        resultJson.put("message", "該当する区画が存在しません。");
+        return ok(resultJson);
+      }
+
+      DecimalFormat decf  = new DecimalFormat("00000");
+      SimpleDateFormat sdfs = new SimpleDateFormat("MM/dd");
+      long totalCount = 0;
+      List<MotochoBase> bases = null;
+      ObjectNode datalist = Json.newObject();
+      Analysis        alsWork   = new Analysis();
+      AnalysisString  alsTanto  = new AnalysisString();
+      //----- 集計単位の基本情報を作成する -----
+      List<Account> acs = Account.getAccountOfFarm(farmId);
+      for (Account ac : acs) {
+        alsTanto.add(ac.accountId);                     /* 担当者別別集計結果にキーを追加する */
+      }
+      List<Work> wks = Work.getWorkOfBaseFarm(farmId);
+      for (Work wk : wks) {
+        alsWork.add(wk.workId);                         /* 担当者別別集計結果にキーを追加する */
+      }
+      for (Compartment cp : cts) {  //区画分ループする
+
+        bases = MotochoBase.find.where()
+            .eq("kukaku_id", cp.kukakuId)
+            .between("hashu_date", dFrom, dTo)
+            .orderBy("work_year DESC, rotation_speed_of_year DESC")
+            .findList();
+        //----- 元帳基本情報の取得 -----
+        for (MotochoBase base : bases) {
+
+          ObjectNode outjson = Json.newObject();
+          ObjectNode motocho = Json.newObject();
+
+          Calendar cHashu = Calendar.getInstance();
+          cHashu.setTime(base.hashuDate);
+
+          motocho.put("year"    , cHashu.get(Calendar.YEAR));
+          motocho.put("month"   , cHashu.get(Calendar.MONTH) + 1);
+          motocho.put("day"     , cHashu.get(Calendar.DAY_OF_MONTH));
+          motocho.put("week"    , cHashu.get(Calendar.WEEK_OF_YEAR));
+
+          Field fd = cp.getFieldInfo();
+          motocho.put("field"   , fd.fieldName);
+          motocho.put("kukaku"  , cp.kukakuName);
+
+          motocho.put("crop"    , base.cropName);
+          motocho.put("hinsyu"  , base.hinsyuName);
+
+          //----- 作業記録情報の取得 -----
+          ObjectNode tantoList      = Json.newObject();
+          ObjectNode workList       = Json.newObject();
+          List<WorkDiary> wds = WorkDiary.find.where().eq("kukaku_id", base.kukakuId).between("work_start_time", base.workStartDay, base.workEndDay).orderBy("work_start_time ASC").findList();
+          Logger.info("DATA COUNT={}", wds.size());
+          alsWork.clearValue();                             /* 集計値を初期化 */
+          alsTanto.clearValue();                            /* 集計値を初期化 */
+          for (WorkDiary wd : wds) {                        /* 作業記録分ループする */
+            alsWork.put(wd.workId, wd.workTime);            /* 作業別集計結果に作業時間を加算する */
+            alsTanto.put(wd.accountId, wd.workTime);        /* 担当者別別集計結果に作業時間を加算する */
+          }
+          //----- 担当者別集計結果の出力 -----
+          List<String>  aryTantos = alsTanto.getKeys();     /* 担当者別集計結果キーを取得する */
+          for (String sKey : aryTantos) {                   /* キー分ループする */
+            Account ac = Account.getAccount(sKey);          /* 担当者モデルの取得 */
+            if ( ac == null) {                              /* 担当者モデルが取得できない場合 */
+              continue;                                     /* 処理をスキップ */
+            }
+            ObjectNode data       = Json.newObject();
+            data.put("key", sKey);                          /* キーを出力 */
+            data.put("name",ac.acountName);                 /* 担当者名を出力する */
+            data.put("value", alsTanto.data(sKey));         /* 集計値を出力する */
+            tantoList.put(sKey, data);                      /* 担当者リストに追加する */
+          }
+          Logger.info("TANTO COUNT={}", tantoList.size());
+          //----- 作業別集計結果の出力 -----
+          List<Double>  aryWorks = alsWork.getKeys();       /* 作業別集計結果キーを取得する */
+          for (Double dKey : aryWorks) {                    /* キー分ループする */
+            Work wk = Work.getWork(dKey);                   /* 作業モデルの取得 */
+            if ( wk == null) {                              /* 作業モデルが取得できない場合 */
+              continue;                                     /* 処理をスキップ */
+            }
+            ObjectNode data       = Json.newObject();
+            data.put("key", String.valueOf(dKey));          /* キーを出力 */
+            data.put("name",wk.workName);                   /* 作業名を出力する */
+            data.put("color",wk.workColor);                 /* カラーを出力する */
+            data.put("value", alsWork.data(dKey));          /* 集計値を出力する */
+            workList.put(String.valueOf(dKey), data);       /* 作業リストに追加する */
+          }
+          Logger.info("WORK COUNT={}", workList.size());
+          //----- 各種リストをJSONとして格納 -----
+          outjson.put("motocho" , motocho);                 /* 元帳情報 */
+          outjson.put("tanto"   , tantoList);               /* 担当者リスト */
+          outjson.put("tantoc"  , tantoList.size());        /* 担当者件数 */
+          outjson.put("work"    , workList);                /* 作業リスト */
+          outjson.put("workc"   , workList.size());         /* 作業件数 */
+          datalist.put(decf.format(base.kukakuId) + decf.format(base.workYear) + decf.format(base.rotationSpeedOfYear), outjson);
+        }
+      }
+      resultJson.put("out", datalist);
       return ok(resultJson);
     }
   //public static Result ShukakuDataOutput(double kukakuId, String dateFrom, String dateTo) {
