@@ -26,6 +26,8 @@ import util.DateU;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import consts.AgryeelConst;
+
 /**
  * 【AGRYEEL】農肥コンポーネント
  *
@@ -184,7 +186,13 @@ public class NouhiComprtnent implements AgryellInterface{
    if (cwcs != null) {
      WorkChainItem wci = WorkChainItem.getWorkChainItemOfWorkId(cwcs.workChainId, pWorkId);
      if (wci != null) {
-       List<Nouhi> nouhiList = Nouhi.find.where().in("farm_id", farmId).eq("nouhi_kind", wci.nouhiKind).order("use_count desc, nouhi_id asc").findList();
+       List<Nouhi> nouhiList = new ArrayList<Nouhi>();
+       if (wci.nouhiKind == AgryeelConst.NouhiKind.NOUHI) { //農薬／肥料の両方を選択可能とする
+           nouhiList = Nouhi.find.where().in("farm_id", farmId).order("use_count desc, nouhi_id asc").findList();
+       }
+       else {
+           nouhiList = Nouhi.find.where().in("farm_id", farmId).eq("nouhi_kind", wci.nouhiKind).order("use_count desc, nouhi_id asc").findList();
+       }
        for (Nouhi nouhi : nouhiList) {
          if (nouhi.deleteFlag == 1) { // 削除済みの場合
            continue;
@@ -209,7 +217,13 @@ public class NouhiComprtnent implements AgryellInterface{
 
    WorkChainItem wci = WorkChainItem.getWorkChainItemOfWorkId(pChainId, pWorkId);
    if (wci != null) {
-     List<Nouhi> nouhiList = Nouhi.find.where().in("farm_id", farmId).eq("nouhi_kind", wci.nouhiKind).order("use_count desc, nouhi_id asc").findList();
+     List<Nouhi> nouhiList = new ArrayList<Nouhi>();
+     if (wci.nouhiKind == AgryeelConst.NouhiKind.NOUHI) { //農薬／肥料の両方を選択可能とする
+         nouhiList = Nouhi.find.where().in("farm_id", farmId).order("use_count desc, nouhi_id asc").findList();
+     }
+     else {
+         nouhiList = Nouhi.find.where().in("farm_id", farmId).eq("nouhi_kind", wci.nouhiKind).order("use_count desc, nouhi_id asc").findList();
+     }
      for (Nouhi nouhi : nouhiList) {
        if (nouhi.deleteFlag == 1) { // 削除済みの場合
          continue;

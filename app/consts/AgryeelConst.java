@@ -1226,6 +1226,7 @@ public class AgryeelConst {
     public static final int NONE           = 0;
     public static final int NOUYAKU        = 1;
     public static final int HIRYO          = 2;
+    public static final int NOUHI          = 99;
   }
   public class WorkDiaryMode {
     public static final int INIT          = 1;
