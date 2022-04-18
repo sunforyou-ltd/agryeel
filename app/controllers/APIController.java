@@ -80,8 +80,8 @@ import compornent.KansuiCompornent;
 import compornent.MabikiCompornent;
 import compornent.MotochoCompornent;
 import compornent.MultiCompornent;
-import compornent.NaehashuCompornent;
 import compornent.NaeStatusCompornent;
+import compornent.NaehashuCompornent;
 import compornent.NichoChoseiCompornent;
 import compornent.NomalCompornent;
 import compornent.NoukouCompornent;
@@ -1084,7 +1084,13 @@ public class APIController extends Controller {
         if (cwcs != null) {
           WorkChainItem wci = WorkChainItem.getWorkChainItemOfWorkId(cwcs.workChainId, workId);
           if (wci != null) {
-            List<Nouhi> nouhiList = Nouhi.find.where().in("farm_id", farmId).eq("nouhi_kind", wci.nouhiKind).order("use_count desc, nouhi_id asc").findList();
+    	    List<Nouhi> nouhiList = new ArrayList<Nouhi>();
+    	    if (wci.nouhiKind == AgryeelConst.NouhiKind.NOUHI) { //農薬／肥料の両方を選択可能とする
+                nouhiList = Nouhi.find.where().in("farm_id", farmId).order("use_count desc, nouhi_id asc").findList();
+    	    }
+    	    else {
+                nouhiList = Nouhi.find.where().in("farm_id", farmId).eq("nouhi_kind", wci.nouhiKind).order("use_count desc, nouhi_id asc").findList();
+    	    }
             for (Nouhi nouhi : nouhiList) {
               if (nouhi.deleteFlag == 1) { // 削除済みの場合
                 continue;
