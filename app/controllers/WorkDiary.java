@@ -192,6 +192,9 @@ public class WorkDiary extends Controller {
         FarmComprtnent fc = new FarmComprtnent();
         fc.GetFarmData(accountComprtnent.accountData.farmId);
 
+        resultJson.put("yukouSeibunInput", fc.farmStatusData.yukoSeibunInput);                                          //有効成分入力を取得
+
+
         /*-------------------------------------------------------------------*/
         /* 作業情報の取得
         /*-------------------------------------------------------------------*/
@@ -366,6 +369,9 @@ public class WorkDiary extends Controller {
               String unit = nouhi.getUnitString();
 
               timeLine.message        +=  nouhi.nouhiName + "&nbsp;&nbsp;" + nouhi.bairitu + "倍&nbsp;&nbsp;" + df.format(wds.sanpuryo * nouhi.getUnitHosei()) + unit + sanpuName + "<br>";
+              if (!"".equals(wds.yukoSeibun)) { //有効成分が入力されている場合
+                timeLine.message        +=  "*" + wds.yukoSeibun + "<br>";
+              }
               timeLine.message        +=  "--------------------------------------------------<br>";
 
               wdsps.add(wds);
@@ -741,6 +747,9 @@ public class WorkDiary extends Controller {
               String unit = nouhi.getUnitString();
 
               planLine.message        +=  nouhi.nouhiName + "&nbsp;&nbsp;" + nouhi.bairitu + "倍&nbsp;&nbsp;" + df.format(wds.sanpuryo * nouhi.getUnitHosei()) + unit + sanpuName + "<br>";
+              if (!"".equals(wds.yukoSeibun)) { //有効成分が入力されている場合
+                planLine.message        +=  "*" + wds.yukoSeibun + "<br>";
+              }
               planLine.message       +=  "--------------------------------------------------<br>";
 
             }
@@ -1232,6 +1241,7 @@ public class WorkDiary extends Controller {
               wds.sanpuryo            = wps.sanpuryo;
               wds.kukakuStatusUpdate  = wps.kukakuStatusUpdate;
               wds.motochoUpdate       = wps.motochoUpdate;
+              wds.yukoSeibun          = wps.yukoSeibun;
               wds.save();
               whb.stack(wds);         //散布情報を履歴情報として格納する
               //農肥履歴情報の更新
@@ -1331,6 +1341,9 @@ public class WorkDiary extends Controller {
                 String unit = nouhi.getUnitString();
 
                 timeLine.message        +=  nouhi.nouhiName + "&nbsp;&nbsp;" + nouhi.bairitu + "倍&nbsp;&nbsp;" + df.format(nouhi.sanpuryo * nouhi.getUnitHosei()) + unit + sanpuName + "<br>";
+                if (!"".equals(wds.yukoSeibun)) { //有効成分が入力されている場合
+                  timeLine.message        +=  "*" + wds.yukoSeibun + "<br>";
+                }
                 timeLine.message       +=  "--------------------------------------------------<br>";
 
                 wdsps.add(wds);

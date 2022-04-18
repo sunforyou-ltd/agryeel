@@ -1,7 +1,6 @@
 package models;
 
 import java.sql.Date;
-import java.util.List;
 
 import javax.persistence.Entity;
 
@@ -88,6 +87,10 @@ public class FarmStatus extends Model {
      * 区画選択方法
      */
     public int kukakuSelectMethod;
+    /**
+     * 有効成分入力
+     */
+    public int yukoSeibunInput;
 
     public static Finder<Long, FarmStatus> find = new Finder<Long, FarmStatus>(Long.class, FarmStatus.class);
 

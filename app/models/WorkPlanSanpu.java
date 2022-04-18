@@ -16,7 +16,7 @@ import play.db.ebean.Model;
 public class WorkPlanSanpu extends Model {
 
     /**
-   * 
+   *
    */
   private static final long serialVersionUID = -9053165922072064821L;
     /**
@@ -59,6 +59,10 @@ public class WorkPlanSanpu extends Model {
      * 元帳照会反映フラグ
      */
     public int motochoUpdate;
+    /**
+     * 有効成分
+     */
+    public String yukoSeibun;
 
     public static Finder<Long, WorkPlanSanpu> find = new Finder<Long, WorkPlanSanpu>(Long.class, WorkPlanSanpu.class);
 

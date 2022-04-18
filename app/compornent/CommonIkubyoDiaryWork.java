@@ -886,6 +886,7 @@ public abstract class CommonIkubyoDiaryWork implements AgryellInterface {
             nouhi.put("bairitu"		, ikubyoDiarySanpu.bairitu);
             nouhi.put("sanpuryo"	, df.format(ikubyoDiarySanpu.sanpuryo * hosei));
             nouhi.put("unitKind"	, unitKind);
+            nouhi.put("yukoSeibun", ikubyoDiarySanpu.yukoSeibun);
             nouhiList.put(String.valueOf(ikubyoDiarySanpu.nouhiId), nouhi);
             nouhiListApi.add(nouhi);
 
@@ -976,6 +977,7 @@ public abstract class CommonIkubyoDiaryWork implements AgryellInterface {
           nouhi.put("bairitu"   , ikubyoPlanSanpu.bairitu);
           nouhi.put("sanpuryo"  , df.format(ikubyoPlanSanpu.sanpuryo * hosei));
           nouhi.put("unitKind"  , unitKind);
+          nouhi.put("yukoSeibun", ikubyoPlanSanpu.yukoSeibun);
           nouhiList.put(String.valueOf(ikubyoPlanSanpu.nouhiId), nouhi);
           nouhiListApi.add(nouhi);
 

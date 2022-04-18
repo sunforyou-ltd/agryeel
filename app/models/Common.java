@@ -295,5 +295,9 @@ public class Common extends Model {
          * 区画選択方法
          */
         public static final int     KUKAKUSELECTMETHOD = 64;
+        /**
+         * 有効成分入力
+         */
+        public static final int     YUKOUSEIBUNINPUT = 65;
     }
 }

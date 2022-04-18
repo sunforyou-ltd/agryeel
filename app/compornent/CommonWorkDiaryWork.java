@@ -251,6 +251,7 @@ public abstract class CommonWorkDiaryWork implements AgryellInterface {
                 /* 農肥前回情報として保存する */
                 nouhi.bairitu   = Double.parseDouble(nouhiInfoList.get(nouhiIndex).get("bairitu").asText());          //倍率を取得する
                 nouhi.sanpuryo  = Double.parseDouble(nouhiInfoList.get(nouhiIndex).get("sanpuryo").asText());         //散布量を取得する
+                String yukouSeibun = nouhiInfoList.get(nouhiIndex).get("yukoSeibun").asText();                        //有効成分を取得する
                 nouhi.sanpuryo *= hosei;
                 double sanpuryo = nouhi.sanpuryo;
                 Compartment cp = Compartment.getCompartmentInfo(wkd.kukakuId);
@@ -288,6 +289,7 @@ public abstract class CommonWorkDiaryWork implements AgryellInterface {
                 wds.nouhiId       = nouhiId;                                        //農肥ＩＤ
                 wds.bairitu       = nouhi.bairitu;                                  //倍率
                 wds.sanpuryo      = sanpuryo;                                       //散布量
+                wds.yukoSeibun    = yukouSeibun;                                    //有効成分
                 wds.kukakuStatusUpdate  = AgryeelConst.UpdateFlag.NONE;                             //区画状況照会反映フラグ
                 wds.motochoUpdate     = AgryeelConst.UpdateFlag.NONE;                             //元帳照会反映フラグ
 
@@ -1322,6 +1324,7 @@ public abstract class CommonWorkDiaryWork implements AgryellInterface {
         nouhi.put("bairitu"   , wds.bairitu);
         nouhi.put("sanpuryo"  , df.format(sanpryo * hosei));
         nouhi.put("unitKind"  , unitKind);
+        nouhi.put("yukoSeibun"  , wds.yukoSeibun);
         nouhiList.put(String.valueOf(wds.nouhiId), nouhi);
         nouhiListApi.add(nouhi);
 
@@ -1477,6 +1480,7 @@ public abstract class CommonWorkDiaryWork implements AgryellInterface {
             nouhi.put("bairitu"		, workDiarySanpu.bairitu);
             nouhi.put("sanpuryo"	, df.format(workDiarySanpu.sanpuryo * hosei));
             nouhi.put("unitKind"	, unitKind);
+            nouhi.put("yukoSeibun", workDiarySanpu.yukoSeibun);
             nouhiList.put(String.valueOf(workDiarySanpu.nouhiId), nouhi);
             nouhiListApi.add(nouhi);
 
@@ -1567,6 +1571,7 @@ public abstract class CommonWorkDiaryWork implements AgryellInterface {
           nouhi.put("bairitu"   , workPlanSanpu.bairitu);
           nouhi.put("sanpuryo"  , df.format(workPlanSanpu.sanpuryo * hosei));
           nouhi.put("unitKind"  , unitKind);
+          nouhi.put("yukoSeibun", workPlanSanpu.yukoSeibun);
           nouhiList.put(String.valueOf(workPlanSanpu.nouhiId), nouhi);
           nouhiListApi.add(nouhi);
 

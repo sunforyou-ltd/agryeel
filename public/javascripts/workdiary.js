@@ -19,6 +19,7 @@
 
   var oInputJson = {};
   var workPlanId = 0;
+  var yukouSeibunInput = 0; //有効成分入力
 
   /* 初期処理時イベント */
   $(function(){
@@ -78,6 +79,7 @@
           workinfo.worktemplateid   = jsonResult["workTemplateId"];
           workinfo.kukakuid         = jsonResult["kukakuId"];
           workinfo.workdateautoset  = jsonResult["workdateautoset"];
+          yukouSeibunInput          = jsonResult["yukouSeibunInput"];
 
           //----- 共通項目ヘッダ部の生成 START -----
           htmlString	= "";												//可変HTML文字列を初期化
@@ -770,7 +772,7 @@
 
                 	  var nouhiData	= nouhi[nouhiKey];
                 	  maxNouhiIndex++;							//農肥インデックスをカウントアップする
-                	  htmlString+= MakeNouhiSanpuDisplay(maxNouhiIndex, nouhiData["nouhiId"], nouhiData["nouhiName"], nouhiData["bairitu"], nouhiData["sanpuryo"], unitKind[nouhiData["unitKind"]]);
+                	  htmlString+= MakeNouhiSanpuDisplay(maxNouhiIndex, nouhiData["nouhiId"], nouhiData["nouhiName"], nouhiData["bairitu"], nouhiData["sanpuryo"], unitKind[nouhiData["unitKind"]], nouhiData["yukoSeibun"]);
 
                   }
               }
@@ -1626,7 +1628,7 @@
   }
 
   /* 農肥散布情報表示マークアップ生成 */
-  function MakeNouhiSanpuDisplay(nouhiIndex, nouhiId, nouhiName, bairitu, sanpuryo, unit) {
+  function MakeNouhiSanpuDisplay(nouhiIndex, nouhiId, nouhiName, bairitu, sanpuryo, unit, yukouSeibun) {
 
       var htmlString	=	"";		/* 農肥情報表示マークアップ */
 
@@ -1667,6 +1669,10 @@
       htmlString+= '<input type="hidden" id="G0005Sanpuryo' + nouhiIndex + '" value="' + sanpuryo + '"/>';
       htmlString+= '<input type="hidden" id="G0005Unit' + nouhiIndex + '" value="' + unit + '" />';
       htmlString+= '</div>';
+      htmlString+= '<div class="col s12 input-field wd yukou-seibun">';
+      htmlString+= '<span class="item-title">有効成分</span><span id="G0005YukouSeibun' + nouhiIndex + 'Span" class="item">' + yukouSeibun + '</span>';
+      htmlString+= '<input type="hidden" id="G0005YukouSeibun' + nouhiIndex + '" value="' + yukouSeibun + '"/>';
+      htmlString+= '</div>';
       htmlString+= '<a class="waves-effect waves-light btn-floating btn red info-delete right" deleteid="G0005NouhiInfo-' + nouhiIndex + '"><i class="material-icons large">clear</i></a>';
       htmlString+= '</div>';
       htmlString+= '</div>';
@@ -1695,6 +1701,10 @@
       htmlString+= '<span class="item-title">散布量</span><span id="G0005Sanpuryo' + nouhiIndex + 'Span" class="item">' + 0 + '</span><span class="item" id="G0005Unit' + nouhiIndex + 'Span"></span><i class="material-icons orange-text text-lighten-1 small right calcTarget" targetId="G0005Sanpuryo' + nouhiIndex + '">keyboard</i>';
       htmlString+= '<input type="hidden" id="G0005Sanpuryo' + nouhiIndex + '" value="0.00"/>';
       htmlString+= '<input type="hidden" id="G0005Unit' + nouhiIndex + '" value="" />';
+      htmlString+= '</div>';
+      htmlString+= '<div class="col s12 input-field wd yukou-seibun">';
+      htmlString+= '<input id="G0005YukouSeibun' + nouhiIndex + '" type="text" maxlength="256" class="string-color"/>';
+      htmlString+= '<label for="G0005YukouSeibun' + nouhiIndex + '">有効成分</label>';
       htmlString+= '</div>';
       htmlString+= '<a class="waves-effect waves-light btn-floating btn blue darken-1 nouhi-commit-btn right" idindex="' + nouhiIndex + '"><i class="material-icons large">add</i></a>';
       htmlString+= '</div>';
@@ -1893,6 +1903,7 @@
           nouhiJson["nouhiId"]  = $("#G0005Nouhi" + $(nouhiData).attr('nouhiIndex') + "Value").val();
           nouhiJson["bairitu"]  = $("#G0005Bairitu" + $(nouhiData).attr('nouhiIndex')).val();
           nouhiJson["sanpuryo"]   = $("#G0005Sanpuryo" + $(nouhiData).attr('nouhiIndex')).val();
+          nouhiJson["yukoSeibun"]   = $("#G0005YukouSeibun" + $(nouhiData).attr('nouhiIndex')).val();
 
           nouhiDataList.push(nouhiJson);
         }
@@ -2388,6 +2399,7 @@
        ,{ "id" : "G0005Bairitu" + nouhiInfoIdIndex			, "name" : "倍率"		, "json" : "bairitu"	, "check" : {}}
        ,{ "id" : "G0005Sanpuryo" + nouhiInfoIdIndex			, "name" : "散布量"		, "json" : "sanpuryo"	, "check" : {}}
        ,{ "id" : "G0005Unit" + nouhiInfoIdIndex				, "name" : "単位種別"	, "json" : "tani"		, "check" : {}}
+       ,{ "id" : "G0005YukouSeibun" + nouhiInfoIdIndex       , "name" : "有効成分" , "json" : "yukoSeibun"   , "check" : {}}
     ];
 
     /* 入力項目のチェック */
@@ -2398,9 +2410,10 @@
     var bairitu = $("#G0005Bairitu" + nouhiInfoIdIndex).val();
     var sanpu 	= $("#G0005Sanpuryo" + nouhiInfoIdIndex).val();
     var unit 	= $("#G0005Unit" + nouhiInfoIdIndex).val();
+    var yukou   = $("#G0005YukouSeibun" + nouhiInfoIdIndex).val();
 
 
-    htmlString+= MakeNouhiSanpuDisplay(nouhiInfoIdIndex, $("#G0005Nouhi" + nouhiInfoIdIndex + "Value").val(), $("#G0005Nouhi" + nouhiInfoIdIndex + "Span").html(), bairitu, sanpu, unit);
+    htmlString+= MakeNouhiSanpuDisplay(nouhiInfoIdIndex, $("#G0005Nouhi" + nouhiInfoIdIndex + "Value").val(), $("#G0005Nouhi" + nouhiInfoIdIndex + "Span").html(), bairitu, sanpu, unit, yukou);
 
     /*----- 新規農肥情報を追加する -----*/
     maxNouhiIndex++;

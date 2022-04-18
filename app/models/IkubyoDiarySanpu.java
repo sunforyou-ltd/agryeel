@@ -51,6 +51,10 @@ public class IkubyoDiarySanpu extends Model {
      * 苗状況照会反映フラグ
      */
     public int naeStatusUpdate;
+    /**
+     * 有効成分
+     */
+    public String yukoSeibun;
 
     public static Finder<Long, IkubyoDiarySanpu> find = new Finder<Long, IkubyoDiarySanpu>(Long.class, IkubyoDiarySanpu.class);
 
