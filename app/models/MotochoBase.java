@@ -164,8 +164,8 @@ public class MotochoBase extends Model {
       MotochoBase result = null;                                                                                        /* 元帳基本情報 */
 
       List<MotochoBase> mbs = MotochoBase.find.where().eq("kukaku_id", pKukakuId)
-                                                      .ge("work_start_day", pStart)
-                                                      .le("work_end_day", pStart)
+                                                      .le("work_start_day", pStart)
+                                                      .ge("work_end_day", pStart)
                                                       .orderBy("work_start_day").findList();                            /* 元帳基本情報を取得 */
       if (mbs.size() > 0) {                                                                                             /* データが取得できた場合 */
         result = mbs.get(0);                                                                                            /* データを戻り値に格納する */
