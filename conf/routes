@@ -144,7 +144,7 @@ GET     /:workPlanId/:accountId/workPlanTantouChange  controllers.WorkPlanContro
 GET     /:workPlanId/:workDate/workPlanDateChange     controllers.WorkPlanController.workDateChange(workPlanId: Double, workDate:String)
 GET     /:workPlanId/workPlanDelete                   controllers.WorkPlanController.workPlanDelete(workPlanId: Double)
 GET     /:workPlanId/:kukakuId/workPlanCopy           controllers.WorkPlanController.workPlanCopy(workPlanId: Double, kukakuId:Double)
-GET     /:workChainId/:kukakuId/:accountId/:planDate/:copyCount/makeWorkPlanChain           controllers.WorkPlanController.makeWorkPlanChain(workChainId: Double, kukakuId:Double, accountId:String, planDate:String, copyCount:String)
+GET     /:workChainId/:kukakuIds/:accountId/:planDate/:copyCount/makeWorkPlanChain           controllers.WorkPlanController.makeWorkPlanChain(workChainId: Double, kukakuIds:String, accountId:String, planDate:String, copyCount:String)
 POST    /workPlanUuidOnDayChange                      controllers.WorkPlanController.workPlanUuidOnDayChange()
 #-------------------------------------------------------------------------------
 # IkubyoController
@@ -559,7 +559,8 @@ GET     /:farmId/:soilKind/getsoiloffarm                            controllers.
 GET     /:accountId/getikubyoworking                           		controllers.APIController.getikubyoworking(accountId: String)
 #- 育苗作業一覧取得
 GET     /:accountId/getworkofikubyo                                 controllers.APIController.getworkofikubyo(accountId: String)
-
+#- 作業指示一括作成
+GET     /:accountId/:workChainId/:kukakuIds/:targetId/:planDate/:copyCount/makeWorkPlanChainAPI controllers.APIController.makeWorkPlanChain(accountId:String, workChainId: Double, kukakuIds:String, targetId:String, planDate:String, copyCount:String)
 #-------------------------------------------------------------------------------
 # AicAAPI
 #-------------------------------------------------------------------------------

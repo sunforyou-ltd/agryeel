@@ -986,7 +986,7 @@ public class WorkPlanController extends Controller {
       return ok(resultJson);
     }
     @Security.Authenticated(SessionCheckComponent.class)
-    public static Result makeWorkPlanChain(double workChainId, double kukakuId, String accountId, String planDate, String copyCount) {
+    public static Result makeWorkPlanChain(double workChainId, String kukakuIds, String accountId, String planDate, String copyCount) {
       ObjectNode resultJson = Json.newObject();
       SimpleDateFormat sdfu = new SimpleDateFormat("yyyyMMddHHmmssSSS");
       SimpleDateFormat sdfp = new SimpleDateFormat("yyyyMMdd");
@@ -1002,7 +1002,7 @@ public class WorkPlanController extends Controller {
 
         int count = Integer.parseInt(copyCount);
 
-        Logger.info("***** makeWorkPlanChain START WorkChain[{}] KukakuId[{}] AccountId[{}] PlanDate[{}] CopyCount[{}]*****", workChainId, kukakuId, accountId, planDate, copyCount);
+        Logger.info("***** makeWorkPlanChain START WorkChain[{}] KukakuId[{}] AccountId[{}] PlanDate[{}] CopyCount[{}]*****", workChainId, kukakuIds, accountId, planDate, copyCount);
 
         List<WorkChainItem> wcis = WorkChainItem.getWorkChainItemList( workChainId, "next_sequence_id desc, sequence_id desc");
 
@@ -1026,371 +1026,376 @@ public class WorkPlanController extends Controller {
           sAccountName = ac.acountName;
         }
 
-        UserComprtnent ac = new UserComprtnent();
-        ac.GetAccountData(session(AgryeelConst.SessionKey.ACCOUNTID));
-        FarmStatus fs = FarmStatus.getFarmStatus(ac.accountData.farmId);
-        List<CompartmentStatus> css = CompartmentStatus.getStatusOfCompartment(kukakuId);
-        CompartmentStatus cs = css.get(0);
-        CompartmentWorkChainStatus cwcs = CompartmentWorkChainStatus.find.where().eq("kukaku_id", kukakuId).findUnique();
+        String kids[] = kukakuIds.split(",");
 
-        for (int i = 0; i< count; i++) {
-          int targetId = -1;
-          Analysis als = new Analysis();
-          for (WorkChainItem wci : wcis) {
-            Logger.info(">>>> SequenceId[{}] WorkId[{}] Next[{}].", wci.sequenceId, wci.workId, wci.nextSequenceId);
-            if (targetId != -1 && wci.nextSequenceId == 0) {
-              Logger.info(">>>> Skip.");
-              continue;
-            }
-            targetId = wci.nextSequenceId;
-            WorkChainItem wcit = WorkChainItem.getWorkChainItemOfSeq(workChainId, targetId);
+        for (String kid : kids) {
+        	double kukakuId = Double.parseDouble(kid);
+            UserComprtnent ac = new UserComprtnent();
+            ac.GetAccountData(session(AgryeelConst.SessionKey.ACCOUNTID));
+            FarmStatus fs = FarmStatus.getFarmStatus(ac.accountData.farmId);
+            List<CompartmentStatus> css = CompartmentStatus.getStatusOfCompartment(kukakuId);
+            CompartmentStatus cs = css.get(0);
+            CompartmentWorkChainStatus cwcs = CompartmentWorkChainStatus.find.where().eq("kukaku_id", kukakuId).findUnique();
 
-            Work work = Work.find.where().eq("work_id", wcit.workId).findUnique();                       //作業情報モデルの取得
-            if (work == null) { //作業モデルが取得できていない場合
-              Logger.info(">>>> NOT EXISTS Work Skip.");
-              continue;
-            }
-            if (work.workTemplateId == AgryeelConst.WorkTemplate.END
-                || work.workTemplateId == AgryeelConst.WorkTemplate.SAIBAIKAISI) {  //作付開始と栽培開始は除外
-              Logger.info(">>>> END Work Skip.");
-              continue;
-            }
-            if (als.check(targetId)) { //作成済みの場合
-              Logger.info(">>>> EXISTS MAKE Skip.");
-              continue;
-            }
-            als.add(targetId);
-            //履歴値参照方法により取得方法を変更する
-            List<WorkDiary> wds = new ArrayList<WorkDiary>();
-            switch (fs.historyReference) {
-            case AgryeelConst.HISTRYREFERENCE.SAMECOUNT://前年同一回数
-              Logger.info(">>>>> TYPE:{} YEAR:{} ROTATION:{}", "SAMECOUNT", cs.workYear - 1, cs.rotationSpeedOfYear);
-              MotochoBase mb = MotochoBase.find.where().eq("kukaku_id", kukakuId).eq("work_year", cs.workYear - 1).eq("rotation_speed_of_year", cs.rotationSpeedOfYear).findUnique();
-              if (mb != null) {
-                wds = WorkDiary.find.where().eq("work_id", wcit.workId).eq("kukaku_id", kukakuId).between("work_date", mb.workStartDay, mb.workEndDay).orderBy("work_date desc").findList();
-              }
-              break;
+            for (int i = 0; i< count; i++) {
+              int targetId = -1;
+              Analysis als = new Analysis();
+              for (WorkChainItem wci : wcis) {
+                Logger.info(">>>> SequenceId[{}] WorkId[{}] Next[{}].", wci.sequenceId, wci.workId, wci.nextSequenceId);
+                if (targetId != -1 && wci.nextSequenceId == 0) {
+                  Logger.info(">>>> Skip.");
+                  continue;
+                }
+                targetId = wci.nextSequenceId;
+                WorkChainItem wcit = WorkChainItem.getWorkChainItemOfSeq(workChainId, targetId);
 
-            case AgryeelConst.HISTRYREFERENCE.SAMESEASON://前年同一時期
-              Calendar start  = Calendar.getInstance();
-              Calendar end    = Calendar.getInstance();
-              start.add(Calendar.MONTH, -1);
-              end.add(Calendar.MONTH, 1);
-              java.sql.Date dStart  = new Date(start.getTimeInMillis());
-              java.sql.Date dEnd    = new Date(end.getTimeInMillis());
-
-              Logger.info(">>>>> TYPE:{} START:{} END:{}", "SAMESEASON", sdf.format(dStart), sdf.format(dEnd));
-              List<MotochoBase> mbs = MotochoBase.find.where().eq("kukaku_id", kukakuId).eq("work_year", cs.workYear - 1).between("hashu_date", dStart, dEnd).orderBy("rotation_speed_of_year desc").findList();
-              if (mbs.size() > 0) {
-                wds = WorkDiary.find.where().eq("work_id", wcit.workId).eq("kukaku_id", kukakuId).between("work_date", mbs.get(0).workStartDay, mbs.get(0).workEndDay).orderBy("work_date desc").findList();
-              }
-              break;
-
-            case AgryeelConst.HISTRYREFERENCE.SAMEKUKAKU://前回同一区画
-              Logger.info(">>>>> TYPE:{}", "SAMEKUKAKU");
-              wds = WorkDiary.find.where().eq("work_id", wcit.workId).eq("kukaku_id", kukakuId).orderBy("work_date desc").findList();
-              break;
-            default:
-              List<CompartmentWorkChainStatus> twcis = CompartmentWorkChainStatus.find.where().eq("farm_id", ac.accountData.farmId).eq("crop_id", cwcs.cropId).orderBy("kukaku_id").findList();
-              List<Double> kukakuKey = new ArrayList<Double>();
-              for (CompartmentWorkChainStatus twci :twcis) {
-                kukakuKey.add(twci.kukakuId);
-              }
-              Logger.info(">>>>> TYPE:{} CROP:{} KUKAKUCOUNT{}", "SAMEKUKAKU", cwcs.cropId, kukakuKey.size());
-              wds = WorkDiary.find.where().eq("work_id", wcit.workId).in("kukaku_id", kukakuKey).orderBy("work_date desc").findList();
-              break;
-            }
-            if (wds.size() == 0) {
-              Logger.info(">>>> NOT EXISTS HISTRY DARA NEW MAKE.");
-              WorkDiary wd = new WorkDiary();
-              wd.workId = wcit.workId;
-              wds.add(wd);
-            }
-            for (WorkDiary wd : wds) {
-
-                if (wd != null) {
-                  //----- 作業計画の自動作成 -----
-                  Logger.info(">>>> BASE WorkDiary ID:{} DATE:{} WORK:{} KUKAKU:{}.", wd.workDiaryId, wd.workDate, wd.workId, wd.kukakuId);
-                  WorkPlan workplan = new WorkPlan();
-                  Sequence sequence     = Sequence.GetSequenceValue(Sequence.SequenceIdConst.WORKPLANID); //最新シーケンス値の取得
-                  double nworkPlanId    = sequence.sequenceValue;
-                  workplan.workPlanId          = nworkPlanId;
-                  workplan.workId              = wd.workId;
-                  workplan.kukakuId            = kukakuId;
-                  workplan.hillId              = wd.hillId;
-                  workplan.lineId              = wd.lineId;
-                  workplan.stockId             = wd.stockId;
-                  workplan.accountId           = sAccountId;
-                  workplan.workDate            = systemdate;
-                  workplan.workTime            = wd.workTime;
-                  workplan.shukakuRyo          = wd.shukakuRyo;
-                  workplan.detailSettingKind   = wd.detailSettingKind;
-                  workplan.combiId             = wd.combiId;
-                  workplan.kikiId              = wd.kikiId;
-                  workplan.attachmentId        = wd.attachmentId;
-                  workplan.hinsyuId            = wd.hinsyuId;
-                  workplan.beltoId             = wd.beltoId;
-                  workplan.kabuma              = wd.kabuma;
-                  workplan.joukan              = wd.joukan;
-                  workplan.jousu               = wd.jousu;
-                  workplan.hukasa              = wd.hukasa;
-                  workplan.kansuiPart          = wd.kansuiPart;
-                  workplan.kansuiSpace         = wd.kansuiSpace;
-                  workplan.kansuiMethod        = wd.kansuiMethod;
-                  workplan.kansuiRyo           = wd.kansuiRyo;
-                  workplan.syukakuNisugata     = wd.syukakuNisugata;
-                  workplan.syukakuSitsu        = wd.syukakuSitsu;
-                  workplan.syukakuSize         = wd.syukakuSize;
-                  workplan.kukakuStatusUpdate  = wd.kukakuStatusUpdate;
-                  workplan.motochoUpdate       = wd.motochoUpdate;
-                  workplan.workRemark          = wd.workRemark;
-                  workplan.workStartTime       = wd.workStartTime;
-                  workplan.workEndTime         = wd.workEndTime;
-                  workplan.numberOfSteps       = 0;
-                  workplan.distance            = 0;
-                  workplan.calorie             = 0;
-                  workplan.heartRate           = 0;
-                  workplan.useMulti            = wd.useMulti;
-                  workplan.retusu              = wd.retusu;
-                  workplan.naemaisu            = wd.naemaisu;
-                  workplan.useHole             = wd.useHole;
-                  workplan.maisu               = wd.maisu;
-                  workplan.useBaido            = wd.useBaido;
-                  workplan.senteiHeight        = wd.senteiHeight;
-                  workplan.workPlanFlag        = AgryeelConst.WORKPLANFLAG.WORKPLANCOMMIT;
-                  workplan.workPlanUUID        = df.format(ac.accountData.farmId) + sdfu.format(system.getTime()) + ac.accountData.accountId;
-                  workplan.shitateHonsu        = wd.shitateHonsu;
-                  workplan.nicho               = wd.nicho;
-                  workplan.haikiRyo            = wd.haikiRyo;
-
-                  workplan.save();
-
-                  //----- 作業散布計画の自動作成 -----
-                  List<models.WorkDiarySanpu> wdss = models.WorkDiarySanpu.find.where().eq("work_diary_id", wd.workDiaryId).orderBy("work_diary_sequence asc").findList();
-                  int workDiarySequence = 0;
-                  for (models.WorkDiarySanpu wdsp : wdss) {
-                    models.WorkPlanSanpu nwps = new WorkPlanSanpu();
-
-                    workDiarySequence++;
-                    nwps.workPlanId          = nworkPlanId;
-                    nwps.workDiarySequence   = workDiarySequence;
-                    nwps.sanpuMethod         = wdsp.sanpuMethod;
-                    nwps.kikiId              = wdsp.kikiId;
-                    nwps.attachmentId        = wdsp.attachmentId;
-                    nwps.nouhiId             = wdsp.nouhiId;
-                    nwps.bairitu             = wdsp.bairitu;
-                    nwps.sanpuryo            = wdsp.sanpuryo;
-                    nwps.kukakuStatusUpdate  = wdsp.kukakuStatusUpdate;
-                    nwps.motochoUpdate       = wdsp.motochoUpdate;
-                    nwps.save();
-                  }
-
-                  //----- 作業詳細計画の自動作成 -----
-                  List<models.WorkDiaryDetail> wdds = models.WorkDiaryDetail.find.where().eq("work_diary_id", wd.workDiaryId).orderBy("work_diary_sequence asc").findList();
-                  workDiarySequence = 0;
-                  for (models.WorkDiaryDetail wdd : wdds) {
-                    models.WorkPlanDetail nwpd = new WorkPlanDetail();
-
-                    workDiarySequence++;
-                    nwpd.workPlanId          = nworkPlanId;
-                    nwpd.workDiarySequence   = workDiarySequence;
-                    nwpd.workDetailKind      = wdd.workDetailKind;
-                    nwpd.suryo               = wdd.suryo;
-                    nwpd.sizaiId             = wdd.sizaiId;
-                    nwpd.comment             = wdd.comment;
-                    nwpd.syukakuNisugata     = wdd.syukakuNisugata;
-                    nwpd.syukakuSitsu        = wdd.syukakuSitsu;
-                    nwpd.syukakuSize         = wdd.syukakuSize;
-                    nwpd.syukakuKosu         = wdd.syukakuKosu;
-                    nwpd.shukakuRyo          = wdd.shukakuRyo;
-                    nwpd.syukakuHakosu       = wdd.syukakuHakosu;
-                    nwpd.syukakuNinzu        = wdd.syukakuNinzu;
-                    nwpd.save();
-                  }
-
-                /* -- プランラインを作成する -- */
-                PlanLine planLine = new PlanLine();                                       //タイムラインモデルの生成
-                Compartment compartment = Compartment.find.where().eq("kukaku_id", workplan.kukakuId).findUnique();   //区画情報モデルの取得
-
-                planLine.workPlanId = workplan.workPlanId;
-
-                planLine.updateTime       = DateU.getSystemTimeStamp();
-                planLine.message        = "【" + work.workName + "情報】<br>";
-                List<WorkPlanDetail> wpds;
-                switch ((int)work.workTemplateId) {
-                case AgryeelConst.WorkTemplate.NOMAL:
-                  planLine.message        += "";                                 //メッセージ
-                  break;
-                case AgryeelConst.WorkTemplate.SANPU:
-
-                  List<WorkPlanSanpu> wpssp = WorkPlanSanpu.getWorkPlanSanpuList(workplan.workPlanId);
-
-                  for (WorkPlanSanpu wps : wpssp) {
-
-                    /* 農肥IDから農肥情報を取得する */
-                    Nouhi nouhi = Nouhi.find.where().eq("nouhi_id",  wps.nouhiId).findUnique();
-
-                    String sanpuName  = "";
-
-                    if (wps.sanpuMethod != 0) {
-                        sanpuName = "&nbsp;&nbsp;&nbsp;&nbsp;[" + Common.GetCommonValue(Common.ConstClass.SANPUMETHOD, wps.sanpuMethod) + "]";
-                    }
-
-                    String unit = nouhi.getUnitString();
-
-                    planLine.message        +=  nouhi.nouhiName + "&nbsp;&nbsp;" + nouhi.bairitu + "倍&nbsp;&nbsp;" + df2.format(wps.sanpuryo * nouhi.getUnitHosei()) + unit + sanpuName + "<br>";
-                    planLine.message       +=  "--------------------------------------------------<br>";
-
-                  }
-
-                  break;
-                case AgryeelConst.WorkTemplate.HASHU:
-                  planLine.message       += "<品種> " + Hinsyu.getMultiHinsyuName(workplan.hinsyuId) + "<br>";
-                  planLine.message       += "<株間> " + workplan.kabuma + "cm<br>";
-                  planLine.message       += "<条間> " + workplan.joukan + "cm<br>";
-                  planLine.message       += "<条数> " + workplan.jousu  + "cm<br>";
-                  planLine.message       += "<深さ> " + workplan.hukasa + "cm<br>";
-                  planLine.message       += "<機器> " + Kiki.getKikiName(workplan.kikiId) + "<br>";
-                  planLine.message       += "<アタッチメント> " + Attachment.getAttachmentName(workplan.attachmentId) + "<br>";
-                  planLine.message       += "<ベルト> " + Belto.getBeltoName(workplan.beltoId) + "<br>";
-                  planLine.message       +=  "--------------------------------------------------<br>";
-                  break;
-                case AgryeelConst.WorkTemplate.SHUKAKU:
-                  List<WorkPlanDetail> wpdsp = WorkPlanDetail.getWorkPlanDetailList(workplan.workPlanId);
-                  int idx = 0;
-                  for (WorkPlanDetail wpd : wpdsp) {
-                    if (wpd.shukakuRyo == 0) {
-                      continue;
-                    }
-                    idx++;
-                    planLine.message       += "<荷姿" + idx + "> "     + Nisugata.getNisugataName(wpd.syukakuNisugata) + "<br>";
-                    planLine.message       += "<質" + idx + "> "       + Shitu.getShituName(wpd.syukakuSitsu) + "<br>";
-                    planLine.message       += "<サイズ" + idx + "> "   + Size.getSizeName(wpd.syukakuSize) + "<br>";
-                    planLine.message       += "<個数" + idx + "> "   + wpd.syukakuKosu + "個" + "<br>";
-                    planLine.message       += "<収穫量" + idx + "> "   + wpd.shukakuRyo + "Kg" + "<br>";
-                    planLine.message       +=  "--------------------------------------------------<br>";
-
-                  }
-                  if (idx == 0) {
-                    planLine.message       += "<荷姿> "     + Nisugata.getNisugataName(workplan.syukakuNisugata) + "<br>";
-                    planLine.message       += "<質> "       + Shitu.getShituName(workplan.syukakuSitsu) + "<br>";
-                    planLine.message       += "<サイズ> "   + Size.getSizeName(workplan.syukakuSize) + "<br>";
-                    planLine.message       += "<収穫量> "   + workplan.shukakuRyo + "Kg" + "<br>";
-                    planLine.message       +=  "--------------------------------------------------<br>";
+                Work work = Work.find.where().eq("work_id", wcit.workId).findUnique();                       //作業情報モデルの取得
+                if (work == null) { //作業モデルが取得できていない場合
+                  Logger.info(">>>> NOT EXISTS Work Skip.");
+                  continue;
+                }
+                if (work.workTemplateId == AgryeelConst.WorkTemplate.END
+                    || work.workTemplateId == AgryeelConst.WorkTemplate.SAIBAIKAISI) {  //作付開始と栽培開始は除外
+                  Logger.info(">>>> END Work Skip.");
+                  continue;
+                }
+                if (als.check(targetId)) { //作成済みの場合
+                  Logger.info(">>>> EXISTS MAKE Skip.");
+                  continue;
+                }
+                als.add(targetId);
+                //履歴値参照方法により取得方法を変更する
+                List<WorkDiary> wds = new ArrayList<WorkDiary>();
+                switch (fs.historyReference) {
+                case AgryeelConst.HISTRYREFERENCE.SAMECOUNT://前年同一回数
+                  Logger.info(">>>>> TYPE:{} YEAR:{} ROTATION:{}", "SAMECOUNT", cs.workYear - 1, cs.rotationSpeedOfYear);
+                  MotochoBase mb = MotochoBase.find.where().eq("kukaku_id", kukakuId).eq("work_year", cs.workYear - 1).eq("rotation_speed_of_year", cs.rotationSpeedOfYear).findUnique();
+                  if (mb != null) {
+                    wds = WorkDiary.find.where().eq("work_id", wcit.workId).eq("kukaku_id", kukakuId).between("work_date", mb.workStartDay, mb.workEndDay).orderBy("work_date desc").findList();
                   }
                   break;
-                case AgryeelConst.WorkTemplate.NOUKO:
-                  planLine.message       += "<機器> " + Kiki.getKikiName(workplan.kikiId) + "<br>";
-                  planLine.message       += "<アタッチメント> " + Attachment.getAttachmentName(workplan.attachmentId) + "<br>";
-                  planLine.message       +=  "--------------------------------------------------<br>";
-                  break;
-                case AgryeelConst.WorkTemplate.KANSUI:
-                  planLine.message       += "<潅水方法> " + Common.GetCommonValue(Common.ConstClass.KANSUI, workplan.kansuiMethod) + "<br>";
-                  planLine.message       += "<機器> " + Kiki.getKikiName(workplan.kikiId) + "<br>";
-                  planLine.message       += "<潅水量> " + workplan.kansuiRyo + "L" + "<br>";
-                  planLine.message       +=  "--------------------------------------------------<br>";
-                  break;
-                case AgryeelConst.WorkTemplate.KAISHU:
-                  wpds = WorkPlanDetail.getWorkPlanDetailList(workplan.workPlanId);
-                  idx = 0;
-                  for (WorkPlanDetail wpd : wpds) {
-                    idx++;
-                    planLine.message        +=  "<数量" + idx + ">" + "&nbsp;&nbsp;" + wpd.suryo + "個<br>";
 
-                  }
-                  planLine.message       +=  "--------------------------------------------------<br>";
-                  break;
-                case AgryeelConst.WorkTemplate.DACHAKU:
-                  wpds = WorkPlanDetail.getWorkPlanDetailList(workplan.workPlanId);
-                  idx = 0;
-                  for (WorkPlanDetail wpd : wpds) {
-                    idx++;
-                    planLine.message        +=  "<資材" + idx + ">" + "&nbsp;&nbsp;" + Common.GetCommonValue(Common.ConstClass.ITOSIZAI, (int)wpd.sizaiId, true) + "<br>";
+                case AgryeelConst.HISTRYREFERENCE.SAMESEASON://前年同一時期
+                  Calendar start  = Calendar.getInstance();
+                  Calendar end    = Calendar.getInstance();
+                  start.add(Calendar.MONTH, -1);
+                  end.add(Calendar.MONTH, 1);
+                  java.sql.Date dStart  = new Date(start.getTimeInMillis());
+                  java.sql.Date dEnd    = new Date(end.getTimeInMillis());
 
-                  }
-                  planLine.message       +=  "--------------------------------------------------<br>";
-                  break;
-                case AgryeelConst.WorkTemplate.COMMENT:
-                  wpds = WorkPlanDetail.getWorkPlanDetailList(workplan.workPlanId);
-                  idx = 0;
-                  for (WorkPlanDetail wpd : wpds) {
-                    idx++;
-                    planLine.message        +=  "<コメント" + idx + ">" + "&nbsp;&nbsp;" + wpd.comment + "<br>";
-
-                  }
-                  planLine.message       +=  "--------------------------------------------------<br>";
-                  break;
-                case AgryeelConst.WorkTemplate.MALTI:
-                  planLine.message       += "<使用マルチ> " + Common.GetCommonValue(Common.ConstClass.ITOMULTI, (int)workplan.useMulti, true) + "<br>";
-                  planLine.message       += "<列数> " + workplan.retusu + "列" + "<br>";
-                  planLine.message       +=  "--------------------------------------------------<br>";
-                  break;
-                case AgryeelConst.WorkTemplate.TEISHOKU:
-                  planLine.message       += "<使用苗枚数> " + workplan.naemaisu + "枚" + "<br>";
-                  planLine.message       += "<列数> " + workplan.retusu + "列" + "<br>";
-                  planLine.message       +=  "--------------------------------------------------<br>";
-                  break;
-                case AgryeelConst.WorkTemplate.NAEHASHU:
-                  planLine.message       += "<使用穴数> " + workplan.useHole + "穴" + "<br>";
-                  planLine.message       += "<枚数> " + workplan.maisu + "枚" + "<br>";
-                  planLine.message       += "<使用培土> " + Common.GetCommonValue(Common.ConstClass.ITOBAIDO, (int)workplan.useBaido, true) + "<br>";
-                  planLine.message       +=  "--------------------------------------------------<br>";
-                  break;
-                case AgryeelConst.WorkTemplate.SENTEI:
-                  planLine.message       += "<剪定高> " + workplan.senteiHeight + "cm" + "<br>";
-                  planLine.message       +=  "--------------------------------------------------<br>";
-                  break;
-                case AgryeelConst.WorkTemplate.MABIKI:
-                  planLine.message       += "<仕立本数> " + workplan.shitateHonsu + "本" + "<br>";
-                  planLine.message       +=  "--------------------------------------------------<br>";
-                  break;
-                case AgryeelConst.WorkTemplate.NICHOCHOSEI:
-                  planLine.message       += "<日長> " + workplan.nicho + "時間" + "<br>";
-                  planLine.message       +=  "--------------------------------------------------<br>";
-                  break;
-                case AgryeelConst.WorkTemplate.SENKA:
-                  wpdsp = WorkPlanDetail.getWorkPlanDetailList(workplan.workPlanId);
-                  idx = 0;
-                  for (WorkPlanDetail wpd : wpdsp) {
-                    if (wpd.syukakuKosu == 0 && wpd.syukakuHakosu == 0) {
-                      continue;
-                    }
-                    idx++;
-                    planLine.message       += "<等級" + idx + "> "       + Shitu.getShituName(wpd.syukakuSitsu) + "<br>";
-                    planLine.message       += "<階級" + idx + "> "   + Size.getSizeName(wpd.syukakuSize) + "<br>";
-                    planLine.message       += "<箱数" + idx + "> "   + wpd.syukakuHakosu + "ケース" + "<br>";
-                    planLine.message       += "<本数" + idx + "> "   + wpd.syukakuKosu + "本" + "<br>";
-                    planLine.message       += "<人数" + idx + "> "   + wpd.syukakuNinzu + "人" + "<br>";
-                    planLine.message       += "<収穫量" + idx + "> " + wpd.shukakuRyo + "Kg" + "<br>";
-                    planLine.message       +=  "--------------------------------------------------<br>";
-
+                  Logger.info(">>>>> TYPE:{} START:{} END:{}", "SAMESEASON", sdf.format(dStart), sdf.format(dEnd));
+                  List<MotochoBase> mbs = MotochoBase.find.where().eq("kukaku_id", kukakuId).eq("work_year", cs.workYear - 1).between("hashu_date", dStart, dEnd).orderBy("rotation_speed_of_year desc").findList();
+                  if (mbs.size() > 0) {
+                    wds = WorkDiary.find.where().eq("work_id", wcit.workId).eq("kukaku_id", kukakuId).between("work_date", mbs.get(0).workStartDay, mbs.get(0).workEndDay).orderBy("work_date desc").findList();
                   }
                   break;
-                case AgryeelConst.WorkTemplate.HAIKI:
-                  planLine.message       += "<廃棄量> " + workplan.haikiRyo + "Kg" + "<br>";
-                  planLine.message       +=  "--------------------------------------------------<br>";
+
+                case AgryeelConst.HISTRYREFERENCE.SAMEKUKAKU://前回同一区画
+                  Logger.info(">>>>> TYPE:{}", "SAMEKUKAKU");
+                  wds = WorkDiary.find.where().eq("work_id", wcit.workId).eq("kukaku_id", kukakuId).orderBy("work_date desc").findList();
+                  break;
+                default:
+                  List<CompartmentWorkChainStatus> twcis = CompartmentWorkChainStatus.find.where().eq("farm_id", ac.accountData.farmId).eq("crop_id", cwcs.cropId).orderBy("kukaku_id").findList();
+                  List<Double> kukakuKey = new ArrayList<Double>();
+                  for (CompartmentWorkChainStatus twci :twcis) {
+                    kukakuKey.add(twci.kukakuId);
+                  }
+                  Logger.info(">>>>> TYPE:{} CROP:{} KUKAKUCOUNT{}", "SAMEKUKAKU", cwcs.cropId, kukakuKey.size());
+                  wds = WorkDiary.find.where().eq("work_id", wcit.workId).in("kukaku_id", kukakuKey).orderBy("work_date desc").findList();
                   break;
                 }
+                if (wds.size() == 0) {
+                  Logger.info(">>>> NOT EXISTS HISTRY DARA NEW MAKE.");
+                  WorkDiary wd = new WorkDiary();
+                  wd.workId = wcit.workId;
+                  wds.add(wd);
+                }
+                for (WorkDiary wd : wds) {
 
-                planLine.planLineColor  = work.workColor;                             //プランラインカラー
-                planLine.workId         = work.workId;                                    //作業ID
-                planLine.workName       = work.workName;                                  //作業名
-                planLine.workDate       = workplan.workDate;                              //作業日
-                planLine.kukakuId       = compartment.kukakuId;                           //区画ID
-                planLine.kukakuName     = compartment.kukakuName;                         //区画名
-                planLine.accountId      = sAccountId;                                     //アカウントＩＤ
-                planLine.accountName    = sAccountName;                                   //アカウント名
-                planLine.farmId         = ac.accountData.farmId;                          //農場ID
-                planLine.workPlanFlag   = workplan.workPlanFlag;                          //作業計画フラグ
-                planLine.workPlanUUID   = workplan.workPlanUUID;                          //作業計画UUID
+                    if (wd != null) {
+                      //----- 作業計画の自動作成 -----
+                      Logger.info(">>>> BASE WorkDiary ID:{} DATE:{} WORK:{} KUKAKU:{}.", wd.workDiaryId, wd.workDate, wd.workId, wd.kukakuId);
+                      WorkPlan workplan = new WorkPlan();
+                      Sequence sequence     = Sequence.GetSequenceValue(Sequence.SequenceIdConst.WORKPLANID); //最新シーケンス値の取得
+                      double nworkPlanId    = sequence.sequenceValue;
+                      workplan.workPlanId          = nworkPlanId;
+                      workplan.workId              = wd.workId;
+                      workplan.kukakuId            = kukakuId;
+                      workplan.hillId              = wd.hillId;
+                      workplan.lineId              = wd.lineId;
+                      workplan.stockId             = wd.stockId;
+                      workplan.accountId           = sAccountId;
+                      workplan.workDate            = systemdate;
+                      workplan.workTime            = wd.workTime;
+                      workplan.shukakuRyo          = wd.shukakuRyo;
+                      workplan.detailSettingKind   = wd.detailSettingKind;
+                      workplan.combiId             = wd.combiId;
+                      workplan.kikiId              = wd.kikiId;
+                      workplan.attachmentId        = wd.attachmentId;
+                      workplan.hinsyuId            = wd.hinsyuId;
+                      workplan.beltoId             = wd.beltoId;
+                      workplan.kabuma              = wd.kabuma;
+                      workplan.joukan              = wd.joukan;
+                      workplan.jousu               = wd.jousu;
+                      workplan.hukasa              = wd.hukasa;
+                      workplan.kansuiPart          = wd.kansuiPart;
+                      workplan.kansuiSpace         = wd.kansuiSpace;
+                      workplan.kansuiMethod        = wd.kansuiMethod;
+                      workplan.kansuiRyo           = wd.kansuiRyo;
+                      workplan.syukakuNisugata     = wd.syukakuNisugata;
+                      workplan.syukakuSitsu        = wd.syukakuSitsu;
+                      workplan.syukakuSize         = wd.syukakuSize;
+                      workplan.kukakuStatusUpdate  = wd.kukakuStatusUpdate;
+                      workplan.motochoUpdate       = wd.motochoUpdate;
+                      workplan.workRemark          = wd.workRemark;
+                      workplan.workStartTime       = wd.workStartTime;
+                      workplan.workEndTime         = wd.workEndTime;
+                      workplan.numberOfSteps       = 0;
+                      workplan.distance            = 0;
+                      workplan.calorie             = 0;
+                      workplan.heartRate           = 0;
+                      workplan.useMulti            = wd.useMulti;
+                      workplan.retusu              = wd.retusu;
+                      workplan.naemaisu            = wd.naemaisu;
+                      workplan.useHole             = wd.useHole;
+                      workplan.maisu               = wd.maisu;
+                      workplan.useBaido            = wd.useBaido;
+                      workplan.senteiHeight        = wd.senteiHeight;
+                      workplan.workPlanFlag        = AgryeelConst.WORKPLANFLAG.WORKPLANCOMMIT;
+                      workplan.workPlanUUID        = df.format(ac.accountData.farmId) + sdfu.format(system.getTime()) + ac.accountData.accountId;
+                      workplan.shitateHonsu        = wd.shitateHonsu;
+                      workplan.nicho               = wd.nicho;
+                      workplan.haikiRyo            = wd.haikiRyo;
 
-                planLine.save();                                                          //タイムラインを追加
+                      workplan.save();
 
+                      //----- 作業散布計画の自動作成 -----
+                      List<models.WorkDiarySanpu> wdss = models.WorkDiarySanpu.find.where().eq("work_diary_id", wd.workDiaryId).orderBy("work_diary_sequence asc").findList();
+                      int workDiarySequence = 0;
+                      for (models.WorkDiarySanpu wdsp : wdss) {
+                        models.WorkPlanSanpu nwps = new WorkPlanSanpu();
+
+                        workDiarySequence++;
+                        nwps.workPlanId          = nworkPlanId;
+                        nwps.workDiarySequence   = workDiarySequence;
+                        nwps.sanpuMethod         = wdsp.sanpuMethod;
+                        nwps.kikiId              = wdsp.kikiId;
+                        nwps.attachmentId        = wdsp.attachmentId;
+                        nwps.nouhiId             = wdsp.nouhiId;
+                        nwps.bairitu             = wdsp.bairitu;
+                        nwps.sanpuryo            = wdsp.sanpuryo;
+                        nwps.kukakuStatusUpdate  = wdsp.kukakuStatusUpdate;
+                        nwps.motochoUpdate       = wdsp.motochoUpdate;
+                        nwps.save();
+                      }
+
+                      //----- 作業詳細計画の自動作成 -----
+                      List<models.WorkDiaryDetail> wdds = models.WorkDiaryDetail.find.where().eq("work_diary_id", wd.workDiaryId).orderBy("work_diary_sequence asc").findList();
+                      workDiarySequence = 0;
+                      for (models.WorkDiaryDetail wdd : wdds) {
+                        models.WorkPlanDetail nwpd = new WorkPlanDetail();
+
+                        workDiarySequence++;
+                        nwpd.workPlanId          = nworkPlanId;
+                        nwpd.workDiarySequence   = workDiarySequence;
+                        nwpd.workDetailKind      = wdd.workDetailKind;
+                        nwpd.suryo               = wdd.suryo;
+                        nwpd.sizaiId             = wdd.sizaiId;
+                        nwpd.comment             = wdd.comment;
+                        nwpd.syukakuNisugata     = wdd.syukakuNisugata;
+                        nwpd.syukakuSitsu        = wdd.syukakuSitsu;
+                        nwpd.syukakuSize         = wdd.syukakuSize;
+                        nwpd.syukakuKosu         = wdd.syukakuKosu;
+                        nwpd.shukakuRyo          = wdd.shukakuRyo;
+                        nwpd.syukakuHakosu       = wdd.syukakuHakosu;
+                        nwpd.syukakuNinzu        = wdd.syukakuNinzu;
+                        nwpd.save();
+                      }
+
+                    /* -- プランラインを作成する -- */
+                    PlanLine planLine = new PlanLine();                                       //タイムラインモデルの生成
+                    Compartment compartment = Compartment.find.where().eq("kukaku_id", workplan.kukakuId).findUnique();   //区画情報モデルの取得
+
+                    planLine.workPlanId = workplan.workPlanId;
+
+                    planLine.updateTime       = DateU.getSystemTimeStamp();
+                    planLine.message        = "【" + work.workName + "情報】<br>";
+                    List<WorkPlanDetail> wpds;
+                    switch ((int)work.workTemplateId) {
+                    case AgryeelConst.WorkTemplate.NOMAL:
+                      planLine.message        += "";                                 //メッセージ
+                      break;
+                    case AgryeelConst.WorkTemplate.SANPU:
+
+                      List<WorkPlanSanpu> wpssp = WorkPlanSanpu.getWorkPlanSanpuList(workplan.workPlanId);
+
+                      for (WorkPlanSanpu wps : wpssp) {
+
+                        /* 農肥IDから農肥情報を取得する */
+                        Nouhi nouhi = Nouhi.find.where().eq("nouhi_id",  wps.nouhiId).findUnique();
+
+                        String sanpuName  = "";
+
+                        if (wps.sanpuMethod != 0) {
+                            sanpuName = "&nbsp;&nbsp;&nbsp;&nbsp;[" + Common.GetCommonValue(Common.ConstClass.SANPUMETHOD, wps.sanpuMethod) + "]";
+                        }
+
+                        String unit = nouhi.getUnitString();
+
+                        planLine.message        +=  nouhi.nouhiName + "&nbsp;&nbsp;" + nouhi.bairitu + "倍&nbsp;&nbsp;" + df2.format(wps.sanpuryo * nouhi.getUnitHosei()) + unit + sanpuName + "<br>";
+                        planLine.message       +=  "--------------------------------------------------<br>";
+
+                      }
+
+                      break;
+                    case AgryeelConst.WorkTemplate.HASHU:
+                      planLine.message       += "<品種> " + Hinsyu.getMultiHinsyuName(workplan.hinsyuId) + "<br>";
+                      planLine.message       += "<株間> " + workplan.kabuma + "cm<br>";
+                      planLine.message       += "<条間> " + workplan.joukan + "cm<br>";
+                      planLine.message       += "<条数> " + workplan.jousu  + "cm<br>";
+                      planLine.message       += "<深さ> " + workplan.hukasa + "cm<br>";
+                      planLine.message       += "<機器> " + Kiki.getKikiName(workplan.kikiId) + "<br>";
+                      planLine.message       += "<アタッチメント> " + Attachment.getAttachmentName(workplan.attachmentId) + "<br>";
+                      planLine.message       += "<ベルト> " + Belto.getBeltoName(workplan.beltoId) + "<br>";
+                      planLine.message       +=  "--------------------------------------------------<br>";
+                      break;
+                    case AgryeelConst.WorkTemplate.SHUKAKU:
+                      List<WorkPlanDetail> wpdsp = WorkPlanDetail.getWorkPlanDetailList(workplan.workPlanId);
+                      int idx = 0;
+                      for (WorkPlanDetail wpd : wpdsp) {
+                        if (wpd.shukakuRyo == 0) {
+                          continue;
+                        }
+                        idx++;
+                        planLine.message       += "<荷姿" + idx + "> "     + Nisugata.getNisugataName(wpd.syukakuNisugata) + "<br>";
+                        planLine.message       += "<質" + idx + "> "       + Shitu.getShituName(wpd.syukakuSitsu) + "<br>";
+                        planLine.message       += "<サイズ" + idx + "> "   + Size.getSizeName(wpd.syukakuSize) + "<br>";
+                        planLine.message       += "<個数" + idx + "> "   + wpd.syukakuKosu + "個" + "<br>";
+                        planLine.message       += "<収穫量" + idx + "> "   + wpd.shukakuRyo + "Kg" + "<br>";
+                        planLine.message       +=  "--------------------------------------------------<br>";
+
+                      }
+                      if (idx == 0) {
+                        planLine.message       += "<荷姿> "     + Nisugata.getNisugataName(workplan.syukakuNisugata) + "<br>";
+                        planLine.message       += "<質> "       + Shitu.getShituName(workplan.syukakuSitsu) + "<br>";
+                        planLine.message       += "<サイズ> "   + Size.getSizeName(workplan.syukakuSize) + "<br>";
+                        planLine.message       += "<収穫量> "   + workplan.shukakuRyo + "Kg" + "<br>";
+                        planLine.message       +=  "--------------------------------------------------<br>";
+                      }
+                      break;
+                    case AgryeelConst.WorkTemplate.NOUKO:
+                      planLine.message       += "<機器> " + Kiki.getKikiName(workplan.kikiId) + "<br>";
+                      planLine.message       += "<アタッチメント> " + Attachment.getAttachmentName(workplan.attachmentId) + "<br>";
+                      planLine.message       +=  "--------------------------------------------------<br>";
+                      break;
+                    case AgryeelConst.WorkTemplate.KANSUI:
+                      planLine.message       += "<潅水方法> " + Common.GetCommonValue(Common.ConstClass.KANSUI, workplan.kansuiMethod) + "<br>";
+                      planLine.message       += "<機器> " + Kiki.getKikiName(workplan.kikiId) + "<br>";
+                      planLine.message       += "<潅水量> " + workplan.kansuiRyo + "L" + "<br>";
+                      planLine.message       +=  "--------------------------------------------------<br>";
+                      break;
+                    case AgryeelConst.WorkTemplate.KAISHU:
+                      wpds = WorkPlanDetail.getWorkPlanDetailList(workplan.workPlanId);
+                      idx = 0;
+                      for (WorkPlanDetail wpd : wpds) {
+                        idx++;
+                        planLine.message        +=  "<数量" + idx + ">" + "&nbsp;&nbsp;" + wpd.suryo + "個<br>";
+
+                      }
+                      planLine.message       +=  "--------------------------------------------------<br>";
+                      break;
+                    case AgryeelConst.WorkTemplate.DACHAKU:
+                      wpds = WorkPlanDetail.getWorkPlanDetailList(workplan.workPlanId);
+                      idx = 0;
+                      for (WorkPlanDetail wpd : wpds) {
+                        idx++;
+                        planLine.message        +=  "<資材" + idx + ">" + "&nbsp;&nbsp;" + Common.GetCommonValue(Common.ConstClass.ITOSIZAI, (int)wpd.sizaiId, true) + "<br>";
+
+                      }
+                      planLine.message       +=  "--------------------------------------------------<br>";
+                      break;
+                    case AgryeelConst.WorkTemplate.COMMENT:
+                      wpds = WorkPlanDetail.getWorkPlanDetailList(workplan.workPlanId);
+                      idx = 0;
+                      for (WorkPlanDetail wpd : wpds) {
+                        idx++;
+                        planLine.message        +=  "<コメント" + idx + ">" + "&nbsp;&nbsp;" + wpd.comment + "<br>";
+
+                      }
+                      planLine.message       +=  "--------------------------------------------------<br>";
+                      break;
+                    case AgryeelConst.WorkTemplate.MALTI:
+                      planLine.message       += "<使用マルチ> " + Common.GetCommonValue(Common.ConstClass.ITOMULTI, (int)workplan.useMulti, true) + "<br>";
+                      planLine.message       += "<列数> " + workplan.retusu + "列" + "<br>";
+                      planLine.message       +=  "--------------------------------------------------<br>";
+                      break;
+                    case AgryeelConst.WorkTemplate.TEISHOKU:
+                      planLine.message       += "<使用苗枚数> " + workplan.naemaisu + "枚" + "<br>";
+                      planLine.message       += "<列数> " + workplan.retusu + "列" + "<br>";
+                      planLine.message       +=  "--------------------------------------------------<br>";
+                      break;
+                    case AgryeelConst.WorkTemplate.NAEHASHU:
+                      planLine.message       += "<使用穴数> " + workplan.useHole + "穴" + "<br>";
+                      planLine.message       += "<枚数> " + workplan.maisu + "枚" + "<br>";
+                      planLine.message       += "<使用培土> " + Common.GetCommonValue(Common.ConstClass.ITOBAIDO, (int)workplan.useBaido, true) + "<br>";
+                      planLine.message       +=  "--------------------------------------------------<br>";
+                      break;
+                    case AgryeelConst.WorkTemplate.SENTEI:
+                      planLine.message       += "<剪定高> " + workplan.senteiHeight + "cm" + "<br>";
+                      planLine.message       +=  "--------------------------------------------------<br>";
+                      break;
+                    case AgryeelConst.WorkTemplate.MABIKI:
+                      planLine.message       += "<仕立本数> " + workplan.shitateHonsu + "本" + "<br>";
+                      planLine.message       +=  "--------------------------------------------------<br>";
+                      break;
+                    case AgryeelConst.WorkTemplate.NICHOCHOSEI:
+                      planLine.message       += "<日長> " + workplan.nicho + "時間" + "<br>";
+                      planLine.message       +=  "--------------------------------------------------<br>";
+                      break;
+                    case AgryeelConst.WorkTemplate.SENKA:
+                      wpdsp = WorkPlanDetail.getWorkPlanDetailList(workplan.workPlanId);
+                      idx = 0;
+                      for (WorkPlanDetail wpd : wpdsp) {
+                        if (wpd.syukakuKosu == 0 && wpd.syukakuHakosu == 0) {
+                          continue;
+                        }
+                        idx++;
+                        planLine.message       += "<等級" + idx + "> "       + Shitu.getShituName(wpd.syukakuSitsu) + "<br>";
+                        planLine.message       += "<階級" + idx + "> "   + Size.getSizeName(wpd.syukakuSize) + "<br>";
+                        planLine.message       += "<箱数" + idx + "> "   + wpd.syukakuHakosu + "ケース" + "<br>";
+                        planLine.message       += "<本数" + idx + "> "   + wpd.syukakuKosu + "本" + "<br>";
+                        planLine.message       += "<人数" + idx + "> "   + wpd.syukakuNinzu + "人" + "<br>";
+                        planLine.message       += "<収穫量" + idx + "> " + wpd.shukakuRyo + "Kg" + "<br>";
+                        planLine.message       +=  "--------------------------------------------------<br>";
+
+                      }
+                      break;
+                    case AgryeelConst.WorkTemplate.HAIKI:
+                      planLine.message       += "<廃棄量> " + workplan.haikiRyo + "Kg" + "<br>";
+                      planLine.message       +=  "--------------------------------------------------<br>";
+                      break;
+                    }
+
+                    planLine.planLineColor  = work.workColor;                             //プランラインカラー
+                    planLine.workId         = work.workId;                                    //作業ID
+                    planLine.workName       = work.workName;                                  //作業名
+                    planLine.workDate       = workplan.workDate;                              //作業日
+                    planLine.kukakuId       = compartment.kukakuId;                           //区画ID
+                    planLine.kukakuName     = compartment.kukakuName;                         //区画名
+                    planLine.accountId      = sAccountId;                                     //アカウントＩＤ
+                    planLine.accountName    = sAccountName;                                   //アカウント名
+                    planLine.farmId         = ac.accountData.farmId;                          //農場ID
+                    planLine.workPlanFlag   = workplan.workPlanFlag;                          //作業計画フラグ
+                    planLine.workPlanUUID   = workplan.workPlanUUID;                          //作業計画UUID
+
+                    planLine.save();                                                          //タイムラインを追加
+
+                  }
+                  break;
               }
-              break;
-          }
-           targetId = wci.nextSequenceId;
-         }
+               targetId = wci.nextSequenceId;
+             }
+            }
         }
 
       Ebean.commitTransaction();

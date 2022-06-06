@@ -3431,4 +3431,8 @@ public class APIController extends Controller {
 
         return ok(resultJson);
 	}
+    public static Result makeWorkPlanChain( String accountId,double workChainId, String kukakuIds, String targetId, String planDate, String copyCount) {
+    	session(AgryeelConst.SessionKey.ACCOUNTID, accountId);								//アカウントIDをセッションに格納
+        return controllers.WorkPlanController.makeWorkPlanChain(workChainId, kukakuIds, targetId, planDate, copyCount);
+    }
 }
