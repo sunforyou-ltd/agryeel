@@ -3435,4 +3435,12 @@ public class APIController extends Controller {
     	session(AgryeelConst.SessionKey.ACCOUNTID, accountId);								//アカウントIDをセッションに格納
         return controllers.WorkPlanController.makeWorkPlanChain(workChainId, kukakuIds, targetId, planDate, copyCount);
     }
+    public static Result tantouChange( String accountId, double workPlanId, String targetId) {
+    	session(AgryeelConst.SessionKey.ACCOUNTID, accountId);								//アカウントIDをセッションに格納
+        return controllers.WorkPlanController.tantouChange(workPlanId, targetId);
+    }
+    public static Result tantouDateChange( String accountId, double workPlanId, String targetId, String workDate) {
+      session(AgryeelConst.SessionKey.ACCOUNTID, accountId);                //アカウントIDをセッションに格納
+        return controllers.WorkPlanController.tantouDateChange(workPlanId, targetId, workDate);
+    }
 }

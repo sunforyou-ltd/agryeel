@@ -592,6 +592,54 @@ public class WorkPlanController extends Controller {
       return ok(resultJson);
     }
     /**
+     * 【AICA】作業指示書の担当者／作業日変更
+     */
+    @Security.Authenticated(SessionCheckComponent.class)
+    public static Result tantouDateChange(double workPlanId, String accountId, String workDate) {
+
+      ObjectNode resultJson   = Json.newObject();
+
+      SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+      Calendar cal = Calendar.getInstance();
+      WorkPlan wp = WorkPlan.getWorkPlanById(workPlanId);
+
+      if (wp != null) {
+        try {
+          cal.setTime(sdf.parse((workDate)));
+        } catch (ParseException e) {
+          e.printStackTrace();
+        }
+        wp.workDate = new java.sql.Date(cal.getTimeInMillis());
+        wp.accountId = accountId;
+        wp.update();
+
+        PlanLine pl = PlanLine.find.where().eq("work_plan_id", workPlanId).findUnique();
+        if (pl != null) {
+
+          Account ac = Account.getAccount(accountId);
+
+          pl.accountId    = accountId;
+          pl.workDate = wp.workDate;
+          pl.accountName  = ac.acountName;
+          pl.update();
+
+          Logger.info("[ WORK PLAN TANTOU CHANGE ] ID:{} NAME:{}", ac.accountId, ac.acountName);
+          resultJson.put("id"     , pl.accountId);
+          resultJson.put("name"   , pl.accountName);
+          resultJson.put("result" , AgryeelConst.Result.SUCCESS);
+
+        }
+        else {
+          resultJson.put("result" , AgryeelConst.Result.ERROR);
+        }
+      }
+      else {
+        resultJson.put("result" , AgryeelConst.Result.ERROR);
+      }
+
+      return ok(resultJson);
+    }
+    /**
      * 【AICA】作業指示書の削除
      */
     @Security.Authenticated(SessionCheckComponent.class)
