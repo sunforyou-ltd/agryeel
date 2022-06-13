@@ -28,6 +28,52 @@ public class DateU {
 
   }
 
+  /**
+   * 日数の差分（期間）を取得します
+   * @param from
+   * @param to
+   * @return 経過日数
+   */
+  public static java.sql.Date GetDateBase(java.sql.Date pBase, java.sql.Date from, java.sql.Date to) {
+
+    Calendar cBase = Calendar.getInstance();
+    Calendar cStart = Calendar.getInstance();
+    Calendar cEnd = Calendar.getInstance();
+
+    cStart.setTime(from);
+    cStart.set(Calendar.YEAR, 2000);
+    cEnd.setTime(to);
+    cEnd.set(Calendar.YEAR, 2000);
+
+    long diffDay = Math.abs(cEnd.getTimeInMillis() - cStart.getTimeInMillis()) / (1000 * 60 * 60 * 24);
+
+    cBase.setTime(pBase);
+    cBase.add(Calendar.DATE, (int)diffDay);
+
+    return new java.sql.Date(cBase.getTimeInMillis());
+
+  }
+  /**
+   * 日数の差分（期間）を取得します
+   * @param from
+   * @param to
+   * @return 経過日数
+   */
+  public static long GetDiffDateKikan(Date from, Date to) {
+
+    Calendar cStart = Calendar.getInstance();
+    Calendar cEnd = Calendar.getInstance();
+
+    cStart.setTime(from);
+    cStart.set(Calendar.YEAR, 2000);
+    cEnd.setTime(to);
+    cEnd.set(Calendar.YEAR, 2000);
+
+    long diffDay = Math.abs(cEnd.getTimeInMillis() - cStart.getTimeInMillis()) / (1000 * 60 * 60 * 24);
+
+    return diffDay;
+
+  }
 	/**
 	 * 日数の差分を取得します
 	 * @param from

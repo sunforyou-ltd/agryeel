@@ -1840,7 +1840,7 @@ public class AICAController extends Controller {
       boolean     api        = false;
 
       if (session(AgryeelConst.SessionKey.API) != null) {
-      	api = true;
+        api = true;
       }
 
       //----- パラメータの調整 -----
@@ -2137,7 +2137,7 @@ public class AICAController extends Controller {
       boolean     api        = false;
 
       if (session(AgryeelConst.SessionKey.API) != null) {
-      	api = true;
+        api = true;
       }
 
       //----- パラメータの調整 -----
@@ -3022,6 +3022,825 @@ public class AICAController extends Controller {
 
     return aica;
   }
+// 大改修前のコーディング
+//  public static Result aicaSaibaiManage(double kukakuId) {
+//
+//    ObjectNode  resultJson = Json.newObject();
+//    SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+//    DecimalFormat     df = new DecimalFormat("#,##0.0");
+//    ObjectMapper mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
+//    boolean     api        = false;
+//
+//    if (session(AgryeelConst.SessionKey.API) != null) {
+//      api = true;
+//    }
+//
+//    //---------------------------------------------------------
+//    // 必要な情報の取得
+//    //---------------------------------------------------------
+//    //区画情報
+//    Compartment cp = Compartment.getCompartmentInfo(kukakuId);
+//    if (cp == null) {
+//      return ok(resultJson);
+//    }
+//    CompartmentStatus cs = CompartmentStatus.find.where().eq("kukaku_id", kukakuId).findUnique();
+//    if (cs == null) {
+//      return ok(resultJson);
+//    }
+//    CompartmentWorkChainStatus cwcs = CompartmentWorkChainStatus.find.where().eq("kukaku_id", kukakuId).findUnique();
+//    if (cwcs == null) {
+//      return ok(resultJson);
+//    }
+//    //アカウント情報
+//    UserComprtnent accountComprtnent = new UserComprtnent();
+//    int getAccount = accountComprtnent.GetAccountData(session(AgryeelConst.SessionKey.ACCOUNTID));
+//
+//    Account account = accountComprtnent.accountData;
+//    double farmId = account.farmId;
+//    FarmStatus fs = FarmStatus.getFarmStatus(farmId);
+//
+//    List<Compartment> cts = Compartment.getCompartmentOfFarm(farmId);
+//    List<Double> keys = new ArrayList<Double>();
+//    for (Compartment ct : cts) {
+//      keys.add(new Double(ct.kukakuId));
+//    }
+//    SaibaiPlanHinsyuList spl = new SaibaiPlanHinsyuList();
+//    //区画縛り
+//    List<MotochoBase> datas = get10YearsMotochoBase(cwcs.cropId, cs.katadukeDate, cs.kukakuId, keys);
+//    if (datas.size() == 0) {
+//      return ok(resultJson);
+//    }
+//
+//    //---------------------------------------------------------
+//    // 播種済か？否か？による予測モード判定
+//    //---------------------------------------------------------
+//    Date nullDate = DateUtils.truncate(DateU.GetNullDate(), Calendar.DAY_OF_MONTH);
+//    short mode = 0;
+//    if ((cs.hashuDate != null)
+//        && (cs.hashuDate.compareTo(nullDate) != 0)) { //播種日が正しく登録されている場合
+//      mode = 1;
+//    }
+//    resultJson.put("mode", mode);
+//    //---------------------------------------------------------
+//    // AICA栽培管理データの生成
+//    //---------------------------------------------------------
+//    Calendar calHashu = Calendar.getInstance();
+//    double cropId   = 0;
+//    String cropName = "";
+//    String hinsyuId   = "";
+//    String hinsyuName = "";
+//    Logger.info("----------------------------------------------------------------------");
+//    Logger.info("MODE --> {}", mode);
+//    if (mode == 0) {
+//      //---------------------------------------------------------
+//      // 想定播種日の算出
+//      //---------------------------------------------------------
+//      for(MotochoBase data: datas) {
+//        if (data.hinsyuId == null) {
+//          continue;
+//        }
+//        if (data.hashuDate == null || data.shukakuStartDate == null) {
+//          continue;
+//        }
+//        String[] hinsyuIds = data.hinsyuId.split(",");
+//        spl.add(Double.parseDouble(hinsyuIds[0]));
+//        spl.put(Double.parseDouble(hinsyuIds[0]), data.totalShukakuCount);
+//        Logger.info("[HINSYUID]{} [SHUKAKU]{}", hinsyuIds[0], data.totalShukakuCount);
+//        if (data.cropId == 0) {
+//          continue;
+//        }
+//        if (api) {
+//          cropId = data.cropId;
+//        }
+//      }
+//      Logger.info("----------------------------------------------------------------------");
+//      DecimalFormat fHinsyu = new DecimalFormat("##0");
+//      hinsyuId   = fHinsyu.format(spl.getMaxHinshu());
+//      hinsyuName = Hinsyu.getHinsyuName(Double.parseDouble(hinsyuId));
+//      resultJson.put("hinsyuId", hinsyuId);
+//      resultJson.put("hinsyuName", hinsyuName);
+//      if (api) {
+//        Crop crop = Crop.getCropInfo(cropId);
+//        if (crop != null) {
+//          cropName = crop.cropName;
+//        }
+//        resultJson.put("cropId", cropId);
+//        resultJson.put("cropName", cropName);
+//      }
+//      boolean init = true;
+//      long tDiff = 0;
+//      MotochoBase tbase = null;
+//      Calendar cal = Calendar.getInstance();
+//      Calendar target = Calendar.getInstance();
+//      cal.setTime(cs.katadukeDate);
+//      for(MotochoBase data: datas) {
+//        if ((data.hinsyuId == null) || (data.hinsyuId != null && data.hinsyuId.indexOf(hinsyuId) == -1)) {
+//          Logger.info("[KUKAKU]{} [YEAR]{} [ROTATION]{} [HINSYUID]{}", data.kukakuId, data.workYear, data.rotationSpeedOfYear, data.hinsyuId);
+//          continue;
+//        }
+//        if (data.hashuDate == null || data.shukakuStartDate == null) {
+//          Logger.info("[KUKAKU]{} [YEAR]{} [ROTATION]{} HASHU SHUKAKU DATE ERROR", data.kukakuId, data.workYear, data.rotationSpeedOfYear);
+//          continue;
+//        }
+//        target.setTime(data.hashuDate);
+//        cal.set(Calendar.YEAR, target.get(Calendar.YEAR));
+//        if (init) { // 初回データ
+//          tbase = data;
+//          tDiff = Math.abs(DateU.GetDiffDate(cal.getTime(), target.getTime()));
+//          Logger.info("[KUKAKU]{} [YEAR]{} [ROTATION]{} [DIFF]{}", tbase.kukakuId, tbase.workYear, tbase.rotationSpeedOfYear, tDiff);
+//        }
+//        else {  // 播種日が直近のデータを探索する
+//          long diff = Math.abs(DateU.GetDiffDate(cal.getTime(), target.getTime()));
+//          if ( (diff < tDiff) || (diff == tDiff)) {
+//            tbase = data;
+//            tDiff = diff;
+//            Logger.info("[KUKAKU]{} [YEAR]{} [ROTATION]{} [DIFF]{}", tbase.kukakuId, tbase.workYear, tbase.rotationSpeedOfYear, tDiff);
+//          }
+//        }
+//        init = false;
+//      }
+//      if (tbase != null) {
+//        Logger.info("[KUKAKU]{} [YEAR]{} [ROTATION]{} [START]{} [END]{}", tbase.kukakuId, tbase.workYear, tbase.rotationSpeedOfYear, sdf.format(tbase.workStartDay), sdf.format(tbase.workEndDay));
+//        long diff = Math.abs(DateU.GetDiffDate(tbase.workStartDay, tbase.hashuDate));
+//        cal.setTime(cs.katadukeDate);
+//        cal.add(Calendar.DAY_OF_MONTH, (int)diff);
+//        resultJson.put("hasyuDate", sdf.format(cal.getTime()));
+//        calHashu.setTime(cal.getTime());
+//        //---------------------------------------------------------
+//        // 作付管理の作業を作成する
+//        //---------------------------------------------------------
+//        int  idx      = 0;
+//        List<ObjectNode> workLists = new ArrayList<ObjectNode>();
+//        ObjectNode workList = Json.newObject();
+//        ArrayNode workListApi = mapper.createArrayNode();
+//        java.sql.Date oWorkDate = null;
+//        List<models.WorkDiary> wds = models.WorkDiary.getWorkDiaryOfWork(tbase.kukakuId, new java.sql.Timestamp(tbase.workStartDay.getTime()), new java.sql.Timestamp(tbase.workEndDay.getTime()));
+//        double oWorkId = -1;
+//        Logger.info("[KUKAKU]{} [YEAR]{} [ROTATION]{} [START]{} [END]{} [COUNT]{}", tbase.kukakuId, tbase.workYear, tbase.rotationSpeedOfYear, sdf.format(tbase.workStartDay), sdf.format(tbase.workEndDay), wds.size());
+//        for (models.WorkDiary wd :wds) {
+//          Logger.info("[WORKID]{}", wd.workId);
+//          target.setTime(cal.getTime());
+//          diff = DateU.GetDiffDate(tbase.hashuDate, wd.workDate);
+//          target.add(Calendar.DAY_OF_MONTH, (int)diff);
+//          int workMode = 0;
+//          Compartment baseCt = Compartment.getCompartmentInfo(tbase.kukakuId);
+//          CompartmentWorkChainStatus baseCwcs = baseCt.getCompartmentWorkChainStatus();
+//          List<WorkChainItem> wcis = WorkChainItem.find.where().eq("work_chain_id", baseCwcs.workChainId).eq("work_id", wd.workId).findList();
+//          for (WorkChainItem wci : wcis) {
+//            workMode = wci.workMode;
+//            break;
+//          }
+//          if(workMode != 1) { /* 作付管理以外は不要 */
+//            continue;
+//          }
+//          Work wk = Work.getWork(wd.workId);
+//          if ((tbase.hashuDate.compareTo(wd.workDate) == -1)
+//                && (wk.workTemplateId == AgryeelConst.WorkTemplate.END)) { // 播種日以降の作付け開始は無視する
+//            continue;
+//          }
+//          if ((wk != null) && (oWorkId != wd.workId) && ((oWorkDate == null ) || (oWorkDate != null && oWorkDate.compareTo(wd.workDate) != 0))) {
+//            idx++;
+//            ObjectNode workJson = Json.newObject();
+//            workJson.put("idx", idx);
+//            workJson.put("workDiaryId", wd.workDiaryId);
+//            workJson.put("workId", wd.workId);
+//            workJson.put("name", wk.workName);
+//            workJson.put("color", wk.workColor);
+//            workJson.put("date", sdf.format(target.getTime()));
+//            workJson.put("time", wd.workTime);
+//            workJson.put("mode", workMode);
+//            workLists.add(workJson);
+//          }
+//          oWorkId   = wd.workId;
+//          oWorkDate = wd.workDate;
+//        }
+//        Collections.sort(workLists,
+//            new Comparator<ObjectNode>() {
+//              @Override
+//              public int compare(ObjectNode o1, ObjectNode o2) {
+//                SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+//                try {
+//                  java.util.Date d1 = sdf.parse(o1.get("date").asText());
+//                  java.util.Date d2 = sdf.parse(o2.get("date").asText());
+//                  return d1.compareTo(d2);
+//                } catch (ParseException e) {
+//                  return 0;
+//                }
+//              }
+//            }
+//        );
+//        idx=0;
+//        for (ObjectNode node:workLists) {
+//          idx++;
+//          workList.put(String.valueOf(idx), node);
+//          workListApi.add(node);
+//        }
+//        if(api){
+//          resultJson.put("sakudukeList", workListApi);
+//        }else{
+//          resultJson.put("sakudukeList", workList);
+//        }
+//      }
+//    }
+//    else {
+//      //---------------------------------------------------------
+//      // 想定播種日の算出
+//      //---------------------------------------------------------
+//      hinsyuId   = cs.hinsyuId;
+//      hinsyuName = cs.hinsyuName;
+//      resultJson.put("hinsyuId", hinsyuId);
+//      resultJson.put("hinsyuName", hinsyuName);
+//      resultJson.put("hasyuDate", sdf.format(cs.hashuDate));
+//      calHashu.setTime(cs.hashuDate);
+//      if (api) {
+//        cropId = cs.cropId;
+//        Crop crop = Crop.getCropInfo(cropId);
+//        if (crop != null) {
+//          cropName = crop.cropName;
+//        }
+//        resultJson.put("cropId", cropId);
+//        resultJson.put("cropName", cropName);
+//      }
+//      //---------------------------------------------------------
+//      // 作付管理の作業を作成する
+//      //---------------------------------------------------------
+//      int  idx      = 0;
+//      ObjectNode workList = Json.newObject();
+//      List<ObjectNode> workLists = new ArrayList<ObjectNode>();
+//      ArrayNode workListApi = mapper.createArrayNode();
+//      java.sql.Date oWorkDate = null;
+//      java.sql.Timestamp stime = new java.sql.Timestamp(cs.katadukeDate.getTime());
+//      stime.setHours(0);
+//      stime.setMinutes(0);
+//      stime.setSeconds(0);
+//      java.sql.Timestamp etime = new java.sql.Timestamp(cs.hashuDate.getTime());
+//      etime.setHours(23);
+//      etime.setMinutes(59);
+//      etime.setSeconds(29);
+//      List<models.WorkDiary> wds = models.WorkDiary.getWorkDiaryOfWork(cs.kukakuId, stime, etime);
+//      double oWorkId = -1;
+//      for (models.WorkDiary wd :wds) {
+//        int workMode = 0;
+//        Work wk = Work.getWork(wd.workId);
+//        if ((wk != null) && (oWorkId != wd.workDiaryId)) {
+//          idx++;
+//          ObjectNode workJson = Json.newObject();
+//          workJson.put("idx", idx);
+//          workJson.put("workDiaryId", wd.workDiaryId);
+//          workJson.put("workId", wd.workId);
+//          workJson.put("name", wk.workName);
+//          workJson.put("color", wk.workColor);
+//          workJson.put("date", sdf.format(wd.workDate));
+//          workJson.put("time", wd.workTime);
+//          workJson.put("mode", workMode);
+//          workLists.add(workJson);
+//        }
+//        oWorkId   = wd.workDiaryId;
+//        oWorkDate = wd.workDate;
+//      }
+//      Collections.sort(workLists,
+//          new Comparator<ObjectNode>() {
+//            @Override
+//            public int compare(ObjectNode o1, ObjectNode o2) {
+//              SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+//              try {
+//                java.util.Date d1 = sdf.parse(o1.get("work_start_time").asText());
+//                java.util.Date d2 = sdf.parse(o2.get("work_start_time").asText());
+//                return d1.compareTo(d2);
+//              } catch (ParseException e) {
+//                return 0;
+//              }
+//            }
+//          }
+//      );
+//      idx=0;
+//      for (ObjectNode node:workLists) {
+//        idx++;
+//        workList.put(String.valueOf(idx), node);
+//        workListApi.add(node);
+//      }
+//      if(api){
+//        resultJson.put("sakudukeList", workListApi);
+//      }else{
+//        resultJson.put("sakudukeList", workList);
+//      }
+//
+//    }
+//    //---------------------------------------------------------
+//    // 想定収穫日を算出する
+//    //---------------------------------------------------------
+//    double dShukakuRyo = 0;
+//    Calendar st = Calendar.getInstance();
+//    st.setTime(calHashu.getTime());
+//    st.add(Calendar.DAY_OF_MONTH, -6);
+//    Calendar ed = Calendar.getInstance();
+//    ed.setTime(calHashu.getTime());
+//    Calendar cal    = Calendar.getInstance();
+//    Calendar target = Calendar.getInstance();
+//
+//    Field fd = cp.getFieldInfo();
+//    if (fd != null) {
+//      String pointId = PosttoPoint.getPointId(fd.postNo);
+//      if (pointId != null && !"".equals(pointId)) {
+//        //---------------------------------------------------------
+//        // 想定積算温度を算出する
+//        //---------------------------------------------------------
+//        boolean init        = true;
+//        long tDiff          = 0;
+//        MotochoBase tbase   = null;
+//        double sekisanKion  = 0;
+//        cal.setTime(cs.katadukeDate);
+//        for(MotochoBase data: datas) {
+//          if (data.hashuDate == null || data.shukakuStartDate == null) {
+//            continue;
+//          }
+//          target.setTime(data.hashuDate);
+//          cal.set(Calendar.YEAR, target.get(Calendar.YEAR));
+//          if (init) { // 初回データ
+//            tbase = data;
+//            tDiff = Math.abs(DateU.GetDiffDate(cal.getTime(), target.getTime()));
+//          }
+//          else {  // 播種日が直近のデータを探索する
+//            if ((tbase.hinsyuId == null) || (tbase.hinsyuId != null && tbase.hinsyuId.indexOf(hinsyuId) == -1)
+//                && ((data.hinsyuId != null && data.hinsyuId.indexOf(hinsyuId) != -1))) {
+//              long diff = Math.abs(DateU.GetDiffDate(cal.getTime(), target.getTime()));
+//              tbase = data;
+//              tDiff = diff;
+//            }
+//            else {
+//              if ((tbase.hinsyuId != null && tbase.hinsyuId.indexOf(hinsyuId) != -1)
+//                  && ((data.hinsyuId != null && data.hinsyuId.indexOf(hinsyuId) != -1))) {
+//                long diff = Math.abs(DateU.GetDiffDate(cal.getTime(), target.getTime()));
+//                if ( (diff < tDiff) || (diff == tDiff)) {
+//                  tbase = data;
+//                  tDiff = diff;
+//                }
+//              }
+//            }
+//          }
+//          init = false;
+//        }
+//        if (tbase != null) {
+//          st.setTime(tbase.hashuDate);
+//          ed.setTime(tbase.shukakuStartDate);
+//          long diff = Math.abs(DateU.GetDiffDate(st.getTime(), ed.getTime()));
+//          if (diff < 10) {
+//            ed.setTime(st.getTime());
+//            ed.add(Calendar.DAY_OF_WEEK, 30);
+//          }
+//          List<Weather> weathers = Weather.getWeather( pointId, new java.sql.Date(st.getTime().getTime()), new java.sql.Date(ed.getTime().getTime()));
+//          for (Weather weather : weathers) {
+//            double kion = weather.kionAve;
+//            sekisanKion += kion;
+//          }
+//          dShukakuRyo = tbase.totalShukakuCount / sekisanKion;
+//        }
+//        else {
+//          st.setTime(calHashu.getTime());
+//          st.add(Calendar.YEAR, -1);
+//          ed.setTime(calHashu.getTime());
+//          ed.add(Calendar.YEAR, -1);
+//          ed.add(Calendar.DAY_OF_WEEK, 40);
+//          List<Weather> weathers = Weather.getWeather( pointId, new java.sql.Date(st.getTime().getTime()), new java.sql.Date(ed.getTime().getTime()));
+//          for (Weather weather : weathers) {
+//            double kion = weather.kionAve;
+//            sekisanKion += kion;
+//          }
+//          dShukakuRyo = 0;
+//        }
+//
+//        Calendar calSystem = Calendar.getInstance();
+//
+//        AicaCompornent aica = modelingSekisan(pointId, new java.sql.Date(calSystem.getTime().getTime()));
+//
+////既に予測している気温で積算を行う
+////        st.setTime(calHashu.getTime());
+////        st.add(Calendar.DAY_OF_MONTH, -6);
+////        ed.setTime(calHashu.getTime());
+////        List<Weather> weathers = Weather.getWeather( pointId, new java.sql.Date(st.getTime().getTime()), new java.sql.Date(ed.getTime().getTime()));
+////        double[] x = new double[aica.getSekisanCount()];
+////        int idx = 0;
+////        for (Weather weather : weathers) {
+////          double kion = weather.kionAve;
+////          x[idx] = kion;
+////          idx++;
+////        }
+////
+////        double[] sekisans = aica.predictionSekisan(x, 180);
+//        st.setTime(calHashu.getTime());
+//        ed.setTime(calHashu.getTime());
+//        ed.add(Calendar.MONTH, 4);
+//        List<Weather> weathers = Weather.getWeather( pointId, new java.sql.Date(st.getTime().getTime()), new java.sql.Date(ed.getTime().getTime()));
+//        int idx = 0;
+//        double[] sekisans = new double[weathers.size()];
+//        for (Weather weather : weathers) {
+//          double kion = weather.kionAve;
+//          sekisans[idx] = kion;
+//          idx++;
+//        }
+//
+//        double sekisan    = 0;
+//        int dayCount      = 0;
+//
+//        for (int i=0; i<sekisans.length; i++) {
+//          Logger.info("[AICA MANAGE] KION={}", sekisans[i]);
+//          sekisan += sekisans[i];
+//          dayCount++;
+//          if(sekisanKion <= sekisan) { //想定積算温度が超えた場合
+//            Logger.info("[BASE SEKISAN]{} [SOUTEI SEKISAN]{} [SEIIKU]{}", sekisanKion, sekisan, dayCount);
+//            cal.setTime(calHashu.getTime());
+//            cal.add(Calendar.DAY_OF_MONTH, dayCount);
+//            dShukakuRyo = dShukakuRyo * sekisan;
+//            resultJson.put("souteiShukakuDay", sdf.format(cal.getTime()));
+//            resultJson.put("souteiShukakuRyo", df.format(dShukakuRyo));
+//            resultJson.put("seiiku", dayCount);
+//
+//            //---------------------------------------------------------
+//            //自生産者の該当品種収穫力を算出する
+//            //---------------------------------------------------------
+//            List<Double> kkey = new ArrayList<Double>();
+//            for (Compartment ct : cts) {
+//              CompartmentWorkChainStatus cws = ct.getCompartmentWorkChainStatus();
+//              if (cws == null || (cws != null && cwcs.cropId != cws.cropId)) {
+//                continue;
+//              }
+//              kkey.add(new Double(ct.kukakuId));
+//            }
+//            List<Work> works = Work.find.where().disjunction().add(Expr.eq("farm_id", 0)).add(Expr.eq("farm_id", farmId)).endJunction().eq("work_template_id", AgryeelConst.WorkTemplate.SHUKAKU).findList();
+//            List<Double> wkey = new ArrayList<Double>();
+//            for (Work work : works) {
+//              wkey.add(new Double(work.workId));
+//            }
+//            Calendar sst = Calendar.getInstance();
+//            sst.add(Calendar.MONTH, -2);
+//            Calendar sed = Calendar.getInstance();
+//            List<WorkDiary> workDiarys = WorkDiary.find.where().in("kukaku_id", kkey).in("work_id", wkey).between("work_date", new java.sql.Date(sst.getTimeInMillis()), new java.sql.Date(sed.getTimeInMillis())).findList();
+//            double aveShukakuryo   = 0;
+//            long   needWorkTime    = 0;
+//            double totalShukakuryo = 0;
+//            long   totalWorkTime   = 0;
+//            Work   wShukaku        = null;
+//            for(WorkDiary workDiary: workDiarys) {
+//              if (workDiary.shukakuRyo  == 0
+//               || workDiary.workTime    == 0) {
+//                continue;
+//              }
+//              if (wShukaku == null) {
+//                wShukaku = Work.getWork(workDiary.workId);
+//              }
+//              totalShukakuryo += workDiary.shukakuRyo;
+//              totalWorkTime   += workDiary.workTime;
+//            }
+//            if (totalWorkTime != 0) {
+//              aveShukakuryo = totalShukakuryo / totalWorkTime;
+//            }
+//            if (aveShukakuryo != 0) {
+//              needWorkTime = (long)(dShukakuRyo / aveShukakuryo);
+//            }
+//            if (wShukaku == null) {
+//              List<WorkChainItem> wcis = WorkChainItem.getWorkChainItemList(cwcs.workChainId);
+//              for (WorkChainItem wci :wcis) {
+//                Work w = Work.getWork(wci.workId);
+//                if (w.workTemplateId == AgryeelConst.WorkTemplate.SHUKAKU ||
+//                    w.workTemplateId == AgryeelConst.WorkTemplate.SENKA) {
+//                  wShukaku = w;
+//                  break;
+//                }
+//              }
+//            }
+//            //---------------------------------------------------------
+//            //想定収穫作業日数を算出する
+//            //---------------------------------------------------------
+//            Logger.info("[TOTAL SHUKAKURYO]{} [TOTAL WORKTIME]{} [AVERAGE SHUKAKURYO]{} [NEED TIME]{} [ONEDAY TIME]{}", totalShukakuryo, totalWorkTime, aveShukakuryo, needWorkTime, fs.workTimeOfDay);
+//            long tantoNinzu   = (int)Math.ceil((double)needWorkTime / fs.workTimeOfDay);
+//            int  shukakuNisu  = (int)Math.ceil(tantoNinzu / fs.syukakuTantoNinzu);
+//            Logger.info("[Ninzu]{} [Nissu]{}", tantoNinzu, shukakuNisu);
+//            resultJson.put("souteiTantoNinzu" , tantoNinzu);
+//            resultJson.put("souteiShukakuNisu", shukakuNisu);
+//            ObjectNode workList = Json.newObject();
+//            ArrayNode workListApi = mapper.createArrayNode();
+//            for (int ii=0; ii < shukakuNisu; ii++) {
+//              ObjectNode workJson = Json.newObject();
+//              workJson.put("idx", (ii+1));
+//              workJson.put("workDiaryId", 0);
+//              workJson.put("workId", wShukaku.workId);
+//              workJson.put("name", wShukaku.workName);
+//              workJson.put("color", wShukaku.workColor);
+//              workJson.put("date", sdf.format(cal.getTime()));
+//              workJson.put("workTime", fs.workTimeOfDay);
+//              if (tantoNinzu < fs.syukakuTantoNinzu) {
+//                workJson.put("ninzu", tantoNinzu);
+//              }
+//              else {
+//                workJson.put("ninzu", fs.syukakuTantoNinzu);
+//                tantoNinzu -= fs.syukakuTantoNinzu;
+//              }
+//              workList.put(String.valueOf(ii+1), workJson);
+//              workListApi.add(workJson);
+//              cal.add(Calendar.DAY_OF_MONTH, 1);
+//            }
+//            if (shukakuNisu == 0) {
+//              ObjectNode workJson = Json.newObject();
+//              workJson.put("idx", 1);
+//              workJson.put("workDiaryId", 0);
+//              workJson.put("workId", wShukaku.workId);
+//              workJson.put("name", wShukaku.workName);
+//              workJson.put("color", wShukaku.workColor);
+//              workJson.put("date", sdf.format(cal.getTime()));
+//              workJson.put("workTime", fs.workTimeOfDay);
+//              workJson.put("ninzu", tantoNinzu);
+//              workList.put(String.valueOf(1), workJson);
+//              workListApi.add(workJson);
+//            }
+//            if(api){
+//              resultJson.put("shukakuList", workListApi);
+//            }else{
+//              resultJson.put("shukakuList", workList);
+//            }
+//            //---------------------------------------------------------
+//            //想定栽培管理を行う
+//            //---------------------------------------------------------
+//            int iSaibaiIdx = 0;
+//            List<ObjectNode> workLists = new ArrayList<ObjectNode>();
+//            workList = Json.newObject();
+//            workListApi = mapper.createArrayNode();
+//            //同一時期範囲を生成する
+//            Calendar dst = Calendar.getInstance();
+//            dst.setTime(cal.getTime());
+//            dst.add(Calendar.WEEK_OF_YEAR, -2);
+//            Calendar ded = Calendar.getInstance();
+//            ded.setTime(cal.getTime());
+//            ded.add(Calendar.WEEK_OF_YEAR, 2);
+//            //同一時期内に消毒を実施しているかチェックする
+//            works = Work.find.where().disjunction().add(Expr.eq("farm_id", 0)).add(Expr.eq("farm_id", farmId)).endJunction().eq("work_template_id", AgryeelConst.WorkTemplate.SANPU).findList();
+//            wkey = new ArrayList<Double>();
+//            for (Work work : works) {
+//              wkey.add(new Double(work.workId));
+//            }
+//            WorkDiary             shoudokuDiary   = null;
+//            List<WorkDiarySanpu>  shoudokuSanpus  = null;
+//            for (int prev = 0; prev < 10; prev++) {
+//              dst.add(Calendar.YEAR , -1 * prev);
+//              ded.add(Calendar.YEAR , -1 * prev);
+//              workDiarys = WorkDiary.find.where().in("kukaku_id", kkey).in("work_id", wkey).between("work_date", new java.sql.Date(dst.getTimeInMillis()), new java.sql.Date(ded.getTimeInMillis())).orderBy("work_date").findList();
+//              for(WorkDiary workDiary: workDiarys) {
+//                List<WorkDiarySanpu> wdss = WorkDiarySanpu.getWorkDiarySanpuList(workDiary.workDiaryId);
+//                for (WorkDiarySanpu wds : wdss) {
+//                  Nouhi nouhi = Nouhi.getNouhiInfo(wds.nouhiId);
+//                  if (nouhi != null && nouhi.nouhiKind == AgryeelConst.NouhiKind.NOUYAKU) {
+//                    List<MotochoBase> shoudokuBases = MotochoBase.find.where().eq("kukaku_id", workDiary.kukakuId).le("hashu_date", workDiary.workDate).ge("work_end_day", workDiary.workDate).findList();
+//                    MotochoBase shoudokuBase = null;
+//                    if (shoudokuBases.size() > 0) {
+//                      shoudokuBase = shoudokuBases.get(0);
+//                    }
+//                    if (shoudokuBase != null && shoudokuBase.shukakuStartDate != null) {
+//                      shoudokuSanpus = wdss;
+//                      break;
+//                    }
+//                    else {
+//                      continue;
+//                    }
+//                  }
+//                }
+//                if (shoudokuSanpus != null) {
+//                  shoudokuDiary = workDiary;
+//                  break;
+//                }
+//              }
+//              if (shoudokuSanpus != null) {
+//                break;
+//              }
+//            }
+//            //消毒を収穫の何日前に実施しているか算出する
+//            if (shoudokuDiary != null) {
+//              List<MotochoBase> shoudokuBases = MotochoBase.find.where().eq("kukaku_id", shoudokuDiary.kukakuId).le("work_start_day", shoudokuDiary.workDate).ge("work_end_day", shoudokuDiary.workDate).findList();
+//              MotochoBase shoudokuBase = null;
+//              if (shoudokuBases.size() > 0) {
+//                shoudokuBase = shoudokuBases.get(0);
+//              }
+//              if (shoudokuBase != null && shoudokuBase.shukakuStartDate != null) {
+//                long diff = Math.abs(DateU.GetDiffDate(shoudokuDiary.workDate, shoudokuBase.shukakuStartDate));
+//                cal.setTime(calHashu.getTime());
+//                cal.add(Calendar.DAY_OF_MONTH, dayCount);
+//                Calendar shodokuDate = Calendar.getInstance();
+//                shodokuDate.setTime(cal.getTime());
+//                shodokuDate.add(Calendar.DAY_OF_MONTH, (int)(-1 * diff));
+//                ObjectNode workJson = Json.newObject();
+//                Work   wShodoku        = Work.getWork(shoudokuDiary.workId);
+//                iSaibaiIdx++;
+//                workJson.put("idx", iSaibaiIdx);
+//                workJson.put("workDiaryId", 0);
+//                workJson.put("workId", wShodoku.workId);
+//                workJson.put("color", wShodoku.workColor);
+//                workJson.put("name", wShodoku.workName);
+//                workJson.put("date", sdf.format(shodokuDate.getTime()));
+//                if(api){
+//                  workJson.put("workTime", (long)0);
+//                }
+//                ObjectNode sanpuList = Json.newObject();
+//                ArrayNode sanpuListApi = mapper.createArrayNode();
+//                int sanpuIdx = 0;
+//                for (WorkDiarySanpu shoudokuSanpu : shoudokuSanpus){
+//                  ObjectNode sanpuJson = Json.newObject();
+//                  sanpuIdx++;
+//                  Nouhi nouhi = Nouhi.getNouhiInfo(shoudokuSanpu.nouhiId);
+//                  double hosei = 1;
+//                  if (nouhi.unitKind == 1 || nouhi.unitKind == 2) { //単位種別がKgかLの場合
+//                    hosei = 0.001;
+//                  }
+//                  sanpuJson.put("idx"        , sanpuIdx);
+//                  sanpuJson.put("nouhiId"    , nouhi.nouhiId);
+//                  sanpuJson.put("nouhiName"  , nouhi.nouhiName);
+//                  sanpuJson.put("bairitu"    , shoudokuSanpu.bairitu);
+//                  sanpuJson.put("sanpuryo"   , shoudokuSanpu.sanpuryo * hosei);
+//                  sanpuJson.put("unit"       , Common.GetCommonValue(Common.ConstClass.UNIT, nouhi.unitKind));
+//                  sanpuList.put(String.valueOf(sanpuIdx), sanpuJson);
+//                  sanpuListApi.add(sanpuJson);
+//                }
+//
+//                if(api){
+//                  workJson.put("sanpu", sanpuListApi);
+//                  //workListApi.add(workJson);
+//                }else{
+//                  workJson.put("sanpu", sanpuList);
+//                  //workList.put(String.valueOf(iSaibaiIdx), workJson);
+//                }
+//                workLists.add(workJson);
+//              }
+//            }
+//            //同一時期内に潅水を実施しているか？
+//            Work workKansui = null;
+//            List<WorkChainItem> wcis = WorkChainItem.getWorkChainItemList(cwcs.workChainId);
+//            for (WorkChainItem wci :wcis) {
+//              Work w = Work.getWork(wci.workId);
+//              if (w.workTemplateId == AgryeelConst.WorkTemplate.KANSUI) {
+//                workKansui = w;
+//                break;
+//              }
+//            }
+//            if (workKansui != null) {
+//              keys.clear();
+//              for (Compartment ct : cts) {
+//                keys.add(new Double(ct.kukakuId));
+//              }
+//              //----- 品種縛り -----
+//              //区画縛り
+//              List<MotochoBase> baseKansuis = get10YearsMotochoBaseKansui(hinsyuId,cwcs.cropId, new java.sql.Date(calHashu.getTime().getTime()), cs.kukakuId, keys);
+//              if (baseKansuis.size() == 0) {
+//                //生産者縛り
+//                baseKansuis = get10YearsMotochoBaseKansui(hinsyuId, cwcs.cropId, new java.sql.Date(calHashu.getTime().getTime()), 0, keys);
+//              }
+//              if (baseKansuis.size() == 0) {
+//                //AICA全体
+//                keys.clear();
+//                baseKansuis = get10YearsMotochoBaseKansui(hinsyuId, cwcs.cropId, new java.sql.Date(calHashu.getTime().getTime()), 0, keys);
+//              }
+//              //----- 品種縛りなし -----
+//              keys.clear();
+//              for (Compartment ct : cts) {
+//                keys.add(new Double(ct.kukakuId));
+//              }
+//              if (baseKansuis.size() == 0) {
+//                //区画縛り
+//                baseKansuis = get10YearsMotochoBaseKansui("0", cwcs.cropId, new java.sql.Date(calHashu.getTime().getTime()), 0, keys);
+//              }
+//              if (baseKansuis.size() == 0) {
+//                //生産者縛り
+//                baseKansuis = get10YearsMotochoBaseKansui("0", cwcs.cropId, new java.sql.Date(calHashu.getTime().getTime()), 0, keys);
+//              }
+//              if (baseKansuis.size() == 0) {
+//                //AICA全体
+//                keys.clear();
+//                baseKansuis = get10YearsMotochoBaseKansui("0", cwcs.cropId, new java.sql.Date(calHashu.getTime().getTime()), 0, keys);
+//              }
+//              double totalSekisan = 0;
+//              double diffSekisan = 0;
+//              MotochoBase baseKansui = null;
+//              List<Weather> baseWeathers = new ArrayList<Weather>();
+//              for (MotochoBase bK: baseKansuis) {
+//                Compartment kcp = Compartment.getCompartmentInfo(bK.kukakuId);
+//                Field kfd = kcp.getFieldInfo();
+//                if (kfd != null) {
+//                  String kPointId = PosttoPoint.getPointId(kfd.postNo);
+//                  weathers = Weather.getWeather( kPointId, bK.hashuDate, bK.shukakuStartDate);
+//                  double kSekisan = 0;
+//                  for (Weather weather : weathers) {
+//                    kSekisan += weather.kionAve;
+//                  }
+//                  if (diffSekisan == 0) {
+//                    diffSekisan = Math.abs(kSekisan - sekisan);
+//                    baseKansui  = bK;
+//                    totalSekisan=kSekisan;
+//                    baseWeathers = weathers;
+//                  }
+//                  else {
+//                    if (Math.abs(kSekisan - sekisan) < diffSekisan) {
+//                      diffSekisan = Math.abs(kSekisan - sekisan);
+//                      baseKansui  = bK;
+//                      totalSekisan=kSekisan;
+//                      baseWeathers = weathers;
+//                    }
+//                  }
+//                }
+//              }
+//              if (baseKansui != null) {
+//                //対象期間の総潅水分数を求める
+//                long kansuiTime = 0;
+//                workDiarys = WorkDiary.find.where().in("kukaku_id", baseKansui.kukakuId).between("work_date", baseKansui.hashuDate, baseKansui.shukakuStartDate).orderBy("work_date").findList();
+//                Analysis als = new Analysis();
+//                Logger.info("---------- KANSUI INFO ----------");
+//                for(WorkDiary workDiary: workDiarys) {
+//                  Work work = Work.getWork(workDiary.workId);
+//                  if (work.workTemplateId != AgryeelConst.WorkTemplate.KANSUI) {
+//                    continue;
+//                  }
+//                  int diff = (int)Math.abs(DateU.GetDiffDate(baseKansui.hashuDate, workDiary.workDate));
+//                  double bsekisan = 0;
+//                  for (int iw=0; iw <= diff; iw++) {
+//                    Weather w = baseWeathers.get(iw);
+//                    bsekisan += w.kionAve;
+//                  }
+//                  als.add(bsekisan);
+//                  als.put(bsekisan, workDiary.workTime);
+//                  kansuiTime += workDiary.workTime;
+//                  Logger.info("[DATE]{} [NISU]{} [SEKISAN]{} [TIME]{}", sdf.format(workDiary.workDate), diff, bsekisan, workDiary.workTime);
+//                }
+//                double timePerSekisan = kansuiTime / totalSekisan;
+//                double dSekisan = 0;
+//                double dPrevSekisan = 0;
+//                int kidx = 0;
+//                List<Double> kansuiKeys = als.getKeys();
+//                for (double kansuiKey : kansuiKeys) {
+//                  double time = als.data(kansuiKey);
+//                  for (int ik=0; ik<sekisans.length; ik++) {
+//                    dSekisan += sekisans[ik];
+//                    if (kansuiKey <= dSekisan) {
+//                      ObjectNode workJson = Json.newObject();
+//                      iSaibaiIdx++;
+//                      workJson.put("idx", iSaibaiIdx);
+//                      workJson.put("workDiaryId", 0);
+//                      workJson.put("workId", workKansui.workId);
+//                      workJson.put("name", workKansui.workName);
+//                      workJson.put("color", workKansui.workColor);
+//                      cal.setTime(calHashu.getTime());
+//                      cal.add(Calendar.DAY_OF_MONTH, ik);
+//                      workJson.put("date", sdf.format(cal.getTime()));
+//                      if (dPrevSekisan == 0) {
+//                        workJson.put("workTime", (long)time);
+//                      }
+//                      else {
+//                        long hoseiTime = (long)(timePerSekisan * (dSekisan - dPrevSekisan));
+//                        workJson.put("workTime", (long)time + hoseiTime);
+//                      }
+//                      if(api){
+//                        ArrayNode sanpuListApi = mapper.createArrayNode();
+//                        workJson.put("sanpu", sanpuListApi);
+//                      }
+////                    workList.put(String.valueOf(iSaibaiIdx), workJson);
+////                    workListApi.add(workJson);
+//                      workLists.add(workJson);
+//                      dPrevSekisan = dSekisan;
+//                      dSekisan = 0;
+//                      break;
+//                    }
+//                  }
+//                }
+//              }
+//            }
+//            Collections.sort(workLists,
+//                new Comparator<ObjectNode>() {
+//                  @Override
+//                  public int compare(ObjectNode o1, ObjectNode o2) {
+//                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+//                    try {
+//                      java.util.Date d1 = sdf.parse(o1.get("date").asText());
+//                      java.util.Date d2 = sdf.parse(o2.get("date").asText());
+//                      return d1.compareTo(d2);
+//                    } catch (ParseException e) {
+//                      return 0;
+//                    }
+//                  }
+//                }
+//            );
+//            idx=0;
+//            for (ObjectNode node:workLists) {
+//              idx++;
+//              workList.put(String.valueOf(idx), node);
+//              workListApi.add(node);
+//            }
+//            if(api){
+//              resultJson.put("saibaiList", workListApi);
+//            }else{
+//              resultJson.put("saibaiList", workList);
+//            }
+//            break;
+//          }
+//        }
+//      }
+//    }
+//
+//    return ok(resultJson);
+//  }
   public static Result aicaSaibaiManage(double kukakuId) {
 
     ObjectNode  resultJson = Json.newObject();
@@ -3031,7 +3850,7 @@ public class AICAController extends Controller {
     boolean     api        = false;
 
     if (session(AgryeelConst.SessionKey.API) != null) {
-    	api = true;
+      api = true;
     }
 
     //---------------------------------------------------------
@@ -3065,196 +3884,168 @@ public class AICAController extends Controller {
     }
     SaibaiPlanHinsyuList spl = new SaibaiPlanHinsyuList();
     //区画縛り
-    List<MotochoBase> datas = get10YearsMotochoBase(cwcs.cropId, cs.katadukeDate, cs.kukakuId, keys);
-    if (datas.size() == 0) {
-      //生産者縛り
-      datas = get10YearsMotochoBase(cwcs.cropId, cs.katadukeDate, 0, keys);
-    }
-    if (datas.size() == 0) {
-      //AICA全体
-      keys.clear();
-      datas = get10YearsMotochoBase(cwcs.cropId, cs.katadukeDate, 0, keys);
-    }
+    List<MotochoBase> datas = MotochoBase.find.where().eq("kukaku_id", kukakuId).eq("crop_id", cwcs.cropId).orderBy("work_year desc, rotation_speed_of_year desc").findList();
     if (datas.size() == 0) {
       return ok(resultJson);
     }
-
     //---------------------------------------------------------
-    // 播種済か？否か？による予測モード判定
+    // 計画モード判定
     //---------------------------------------------------------
     Date nullDate = DateUtils.truncate(DateU.GetNullDate(), Calendar.DAY_OF_MONTH);
     short mode = 0;
     if ((cs.hashuDate != null)
         && (cs.hashuDate.compareTo(nullDate) != 0)) { //播種日が正しく登録されている場合
       mode = 1;
+      if ((cs.shukakuStartDate != null)
+          && (cs.shukakuStartDate.compareTo(nullDate) != 0)) { //収穫日が正しく登録されている場合
+        mode = 2;
+      }
     }
+    Logger.info("[MODE] {}", mode);
     resultJson.put("mode", mode);
     //---------------------------------------------------------
-    // AICA栽培管理データの生成
+    // 採用する元帳データを決定する
+    //---------------------------------------------------------
+    long diffDay = 0;
+    MotochoBase mbt = null;
+    for (MotochoBase mb: datas) {
+      if ((mb.hashuDate != null)
+          && (mb.hashuDate.compareTo(nullDate) != 0)) { //播種日が正しく登録されている場合
+        if ((mb.shukakuStartDate != null)
+            && (mb.shukakuStartDate.compareTo(nullDate) != 0)) { //収穫日が正しく登録されている場合
+          long diff = 0;
+          if (mode == 1) {
+            Logger.info("DIFF DATE [CS] {} [MB]{}.", cs.hashuDate, mb.hashuDate);
+            diff = DateU.GetDiffDateKikan(cs.hashuDate, mb.hashuDate);
+          }
+          else {
+            java.util.Date date = Calendar.getInstance().getTime();
+            Logger.info("DIFF DATE [CS] {} [MB]{}.", date, mb.workStartDay);
+            diff = DateU.GetDiffDateKikan(date, mb.workStartDay);
+          }
+          if ( diffDay == 0 || diff < diffDay ) {
+            mbt = mb;
+            diffDay = diff;
+          }
+        }
+      }
+    }
+    if (mbt == null) {
+      Logger.info("REFER MOTOCHO BASE NONE.");
+      return ok(resultJson);
+    }
+    else {
+      Logger.info("REFER MOTOCHO BASE [DIFF] {} {}/{} [START] {} [HASHU]{} [SHUKAKU] {}.", diffDay, mbt.workYear, mbt.rotationSpeedOfYear
+          , mbt.workStartDay, mbt.hashuDate, mbt.shukakuStartDate);
+    }
+
+    //---------------------------------------------------------
+    // 基準日の作成
+    //---------------------------------------------------------
+    Calendar baseDate = Calendar.getInstance();
+    java.sql.Date prevDate = new java.sql.Date(mbt.workStartDay.getTime());
+    if (mode != 2) {
+      baseDate.setTime(cs.katadukeDate);
+    }
+    //---------------------------------------------------------
+    // 作付管理の作業を作成する
+    //---------------------------------------------------------
+    int  idx      = 0;
+    List<ObjectNode> workLists = new ArrayList<ObjectNode>();
+    ObjectNode workList = Json.newObject();
+    ArrayNode workListApi = mapper.createArrayNode();
+    java.sql.Date oWorkDate = null;
+    List<models.WorkDiary> wds = models.WorkDiary.getWorkDiaryOfWork(mbt.kukakuId, new java.sql.Timestamp(mbt.workStartDay.getTime()), new java.sql.Timestamp(mbt.workEndDay.getTime()));
+    double oWorkId = -1;
+    for (models.WorkDiary wd :wds) {
+      Logger.info("[WORKID]{}", wd.workId);
+      int workMode = 0;
+      Compartment baseCt = Compartment.getCompartmentInfo(mbt.kukakuId);
+      CompartmentWorkChainStatus baseCwcs = baseCt.getCompartmentWorkChainStatus();
+      List<WorkChainItem> wcis = WorkChainItem.find.where().eq("work_chain_id", baseCwcs.workChainId).eq("work_id", wd.workId).findList();
+      for (WorkChainItem wci : wcis) {
+        workMode = wci.workMode;
+        break;
+      }
+      if(workMode != 1) { /* 作付管理以外は不要 */
+        continue;
+      }
+      Work wk = Work.getWork(wd.workId);
+      if ((mbt.hashuDate.compareTo(wd.workDate) == -1)
+            && (wk.workTemplateId == AgryeelConst.WorkTemplate.END)) { // 播種日以降の作付け開始は無視する
+        continue;
+      }
+      if ((wk != null) && (oWorkId != wd.workId) && ((oWorkDate == null ) || (oWorkDate != null && oWorkDate.compareTo(wd.workDate) != 0))) {
+        idx++;
+        ObjectNode workJson = Json.newObject();
+        workJson.put("idx", idx);
+        workJson.put("workDiaryId", wd.workDiaryId);
+        workJson.put("workId", wd.workId);
+        workJson.put("name", wk.workName);
+        workJson.put("color", wk.workColor);
+        List<WorkDiary> rsts = WorkDiary.getWorkDiaryOfWork(wd.workId, mbt.kukakuId, cs.katadukeDate, cs.finalEndDate);
+        boolean isRst = false;
+        WorkDiary rst = null;
+        for (WorkDiary rs: rsts) {
+          rst = rs;
+          isRst = true;
+          break;
+        }
+        workJson.put("date", sdf.format(DateU.GetDateBase( new java.sql.Date(baseDate.getTimeInMillis()), prevDate, wd.workDate)));
+        if (mode != 2 && isRst) {
+          baseDate.setTime(rst.workDate);
+          prevDate = rst.workDate;
+          workJson.put("result", sdf.format(rst.workDate));
+          workJson.put("plan", 0);
+        }
+        else {
+          baseDate.setTime(DateU.GetDateBase( new java.sql.Date(baseDate.getTimeInMillis()), prevDate, wd.workDate));
+          prevDate = wd.workDate;
+          workJson.put("result", "");
+          workJson.put("plan", 1);
+        }
+        workJson.put("time", wd.workTime);
+        workJson.put("mode", workMode);
+        workLists.add(workJson);
+      }
+      oWorkId   = wd.workId;
+      oWorkDate = wd.workDate;
+    }
+    Collections.sort(workLists,
+        new Comparator<ObjectNode>() {
+          @Override
+          public int compare(ObjectNode o1, ObjectNode o2) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+            try {
+              java.util.Date d1 = sdf.parse(o1.get("date").asText());
+              java.util.Date d2 = sdf.parse(o2.get("date").asText());
+              return d1.compareTo(d2);
+            } catch (ParseException e) {
+              return 0;
+            }
+          }
+        }
+    );
+    idx=0;
+    for (ObjectNode node:workLists) {
+      idx++;
+      workList.put(String.valueOf(idx), node);
+      workListApi.add(node);
+    }
+    if(api){
+      resultJson.put("sakudukeList", workListApi);
+    }else{
+      resultJson.put("sakudukeList", workList);
+    }
+    //---------------------------------------------------------
+    // 想定播種日の算出
     //---------------------------------------------------------
     Calendar calHashu = Calendar.getInstance();
     double cropId   = 0;
     String cropName = "";
     String hinsyuId   = "";
     String hinsyuName = "";
-    Logger.info("----------------------------------------------------------------------");
-    if (mode == 0) {
-      //---------------------------------------------------------
-      // 想定播種日の算出
-      //---------------------------------------------------------
-      for(MotochoBase data: datas) {
-        if (data.hinsyuId == null) {
-          continue;
-        }
-        if (data.hashuDate == null || data.shukakuStartDate == null) {
-          continue;
-        }
-        String[] hinsyuIds = data.hinsyuId.split(",");
-        spl.add(Double.parseDouble(hinsyuIds[0]));
-        spl.put(Double.parseDouble(hinsyuIds[0]), data.totalShukakuCount);
-        Logger.info("[HINSYUID]{} [SHUKAKU]{}", hinsyuIds[0], data.totalShukakuCount);
-        if (data.cropId == 0) {
-          continue;
-        }
-        if (api) {
-          cropId = data.cropId;
-        }
-      }
-      Logger.info("----------------------------------------------------------------------");
-      DecimalFormat fHinsyu = new DecimalFormat("##0");
-      hinsyuId   = fHinsyu.format(spl.getMaxHinshu());
-      hinsyuName = Hinsyu.getHinsyuName(Double.parseDouble(hinsyuId));
-      resultJson.put("hinsyuId", hinsyuId);
-      resultJson.put("hinsyuName", hinsyuName);
-      if (api) {
-        Crop crop = Crop.getCropInfo(cropId);
-        if (crop != null) {
-          cropName = crop.cropName;
-        }
-        resultJson.put("cropId", cropId);
-        resultJson.put("cropName", cropName);
-      }
-      boolean init = true;
-      long tDiff = 0;
-      MotochoBase tbase = null;
-      Calendar cal = Calendar.getInstance();
-      Calendar target = Calendar.getInstance();
-      cal.setTime(cs.katadukeDate);
-      for(MotochoBase data: datas) {
-        if ((data.hinsyuId == null) || (data.hinsyuId != null && data.hinsyuId.indexOf(hinsyuId) == -1)) {
-          Logger.info("[KUKAKU]{} [YEAR]{} [ROTATION]{} [HINSYUID]{}", data.kukakuId, data.workYear, data.rotationSpeedOfYear, data.hinsyuId);
-          continue;
-        }
-        if (data.hashuDate == null || data.shukakuStartDate == null) {
-          Logger.info("[KUKAKU]{} [YEAR]{} [ROTATION]{} HASHU SHUKAKU DATE ERROR", data.kukakuId, data.workYear, data.rotationSpeedOfYear);
-          continue;
-        }
-        target.setTime(data.hashuDate);
-        cal.set(Calendar.YEAR, target.get(Calendar.YEAR));
-        if (init) { // 初回データ
-          tbase = data;
-          tDiff = Math.abs(DateU.GetDiffDate(cal.getTime(), target.getTime()));
-          Logger.info("[KUKAKU]{} [YEAR]{} [ROTATION]{} [DIFF]{}", tbase.kukakuId, tbase.workYear, tbase.rotationSpeedOfYear, tDiff);
-        }
-        else {  // 播種日が直近のデータを探索する
-          long diff = Math.abs(DateU.GetDiffDate(cal.getTime(), target.getTime()));
-          if ( (diff < tDiff) || (diff == tDiff)) {
-            tbase = data;
-            tDiff = diff;
-            Logger.info("[KUKAKU]{} [YEAR]{} [ROTATION]{} [DIFF]{}", tbase.kukakuId, tbase.workYear, tbase.rotationSpeedOfYear, tDiff);
-          }
-        }
-        init = false;
-      }
-      if (tbase != null) {
-        Logger.info("[KUKAKU]{} [YEAR]{} [ROTATION]{} [START]{} [END]{}", tbase.kukakuId, tbase.workYear, tbase.rotationSpeedOfYear, sdf.format(tbase.workStartDay), sdf.format(tbase.workEndDay));
-        long diff = Math.abs(DateU.GetDiffDate(tbase.workStartDay, tbase.hashuDate));
-        cal.setTime(cs.katadukeDate);
-        cal.add(Calendar.DAY_OF_MONTH, (int)diff);
-        resultJson.put("hasyuDate", sdf.format(cal.getTime()));
-        calHashu.setTime(cal.getTime());
-        //---------------------------------------------------------
-        // 作付管理の作業を作成する
-        //---------------------------------------------------------
-        int  idx      = 0;
-        List<ObjectNode> workLists = new ArrayList<ObjectNode>();
-        ObjectNode workList = Json.newObject();
-        ArrayNode workListApi = mapper.createArrayNode();
-        java.sql.Date oWorkDate = null;
-        List<models.WorkDiary> wds = models.WorkDiary.getWorkDiaryOfWork(tbase.kukakuId, new java.sql.Timestamp(tbase.workStartDay.getTime()), new java.sql.Timestamp(tbase.workEndDay.getTime()));
-        double oWorkId = -1;
-        Logger.info("[KUKAKU]{} [YEAR]{} [ROTATION]{} [START]{} [END]{} [COUNT]{}", tbase.kukakuId, tbase.workYear, tbase.rotationSpeedOfYear, sdf.format(tbase.workStartDay), sdf.format(tbase.workEndDay), wds.size());
-        for (models.WorkDiary wd :wds) {
-          Logger.info("[WORKID]{}", wd.workId);
-          target.setTime(cal.getTime());
-          diff = DateU.GetDiffDate(tbase.hashuDate, wd.workDate);
-          target.add(Calendar.DAY_OF_MONTH, (int)diff);
-          int workMode = 0;
-          Compartment baseCt = Compartment.getCompartmentInfo(tbase.kukakuId);
-          CompartmentWorkChainStatus baseCwcs = baseCt.getCompartmentWorkChainStatus();
-          List<WorkChainItem> wcis = WorkChainItem.find.where().eq("work_chain_id", baseCwcs.workChainId).eq("work_id", wd.workId).findList();
-          for (WorkChainItem wci : wcis) {
-            workMode = wci.workMode;
-            break;
-          }
-          if(workMode != 1) { /* 作付管理以外は不要 */
-            continue;
-          }
-          Work wk = Work.getWork(wd.workId);
-          if ((tbase.hashuDate.compareTo(wd.workDate) == -1)
-                && (wk.workTemplateId == AgryeelConst.WorkTemplate.END)) { // 播種日以降の作付け開始は無視する
-            continue;
-          }
-          if ((wk != null) && (oWorkId != wd.workId) && ((oWorkDate == null ) || (oWorkDate != null && oWorkDate.compareTo(wd.workDate) != 0))) {
-            idx++;
-            ObjectNode workJson = Json.newObject();
-            workJson.put("idx", idx);
-            workJson.put("workDiaryId", wd.workDiaryId);
-            workJson.put("workId", wd.workId);
-            workJson.put("name", wk.workName);
-            workJson.put("color", wk.workColor);
-            workJson.put("date", sdf.format(target.getTime()));
-            workJson.put("time", wd.workTime);
-            workJson.put("mode", workMode);
-            workLists.add(workJson);
-//          workList.put(String.valueOf(idx), workJson);
-//          workListApi.add(workJson);
-          }
-          oWorkId   = wd.workId;
-          oWorkDate = wd.workDate;
-        }
-        Collections.sort(workLists,
-            new Comparator<ObjectNode>() {
-              @Override
-              public int compare(ObjectNode o1, ObjectNode o2) {
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-                try {
-                  java.util.Date d1 = sdf.parse(o1.get("date").asText());
-                  java.util.Date d2 = sdf.parse(o2.get("date").asText());
-                  return d1.compareTo(d2);
-                } catch (ParseException e) {
-                  return 0;
-                }
-              }
-            }
-        );
-        idx=0;
-        for (ObjectNode node:workLists) {
-          idx++;
-          workList.put(String.valueOf(idx), node);
-          workListApi.add(node);
-        }
-        if(api){
-          resultJson.put("sakudukeList", workListApi);
-        }else{
-          resultJson.put("sakudukeList", workList);
-        }
-      }
-    }
-    else {
-      //---------------------------------------------------------
-      // 想定播種日の算出
-      //---------------------------------------------------------
+    if (mode == 1) {
       hinsyuId   = cs.hinsyuId;
       hinsyuName = cs.hinsyuName;
       resultJson.put("hinsyuId", hinsyuId);
@@ -3270,589 +4061,235 @@ public class AICAController extends Controller {
         resultJson.put("cropId", cropId);
         resultJson.put("cropName", cropName);
       }
-      //---------------------------------------------------------
-      // 作付管理の作業を作成する
-      //---------------------------------------------------------
-      int  idx      = 0;
-      ObjectNode workList = Json.newObject();
-      List<ObjectNode> workLists = new ArrayList<ObjectNode>();
-      ArrayNode workListApi = mapper.createArrayNode();
-      java.sql.Date oWorkDate = null;
-      List<models.WorkDiary> wds = models.WorkDiary.getWorkDiaryOfWork(cs.kukakuId, new java.sql.Timestamp(cs.katadukeDate.getTime()), new java.sql.Timestamp(cs.hashuDate.getTime()));
-      double oWorkId = -1;
-      for (models.WorkDiary wd :wds) {
-        int workMode = 0;
-        List<WorkChainItem> wcis = WorkChainItem.find.where().eq("work_id", wd.workId).findList();
-        for (WorkChainItem wci : wcis) {
-          workMode = wci.workMode;
+    }
+    else {
+      hinsyuId   = mbt.hinsyuId;
+      hinsyuName = mbt.hinsyuName;
+      resultJson.put("hinsyuId", hinsyuId);
+      resultJson.put("hinsyuName", hinsyuName);
+      resultJson.put("hasyuDate", sdf.format(DateU.GetDateBase( new java.sql.Date(baseDate.getTimeInMillis()), new java.sql.Date(mbt.workStartDay.getTime()), mbt.hashuDate)));
+      calHashu.setTime(mbt.hashuDate);
+      if (api) {
+        cropId = mbt.cropId;
+        Crop crop = Crop.getCropInfo(cropId);
+        if (crop != null) {
+          cropName = crop.cropName;
+        }
+        resultJson.put("cropId", cropId);
+        resultJson.put("cropName", cropName);
+      }
+    }
+    //---------------------------------------------------------
+    // 栽培管理の算出
+    //---------------------------------------------------------
+    workLists.clear();
+    for (models.WorkDiary wd :wds) {
+      Logger.info("[WORKID]{}", wd.workId);
+      int workMode = 0;
+      Compartment baseCt = Compartment.getCompartmentInfo(mbt.kukakuId);
+      CompartmentWorkChainStatus baseCwcs = baseCt.getCompartmentWorkChainStatus();
+      List<WorkChainItem> wcis = WorkChainItem.find.where().eq("work_chain_id", baseCwcs.workChainId).eq("work_id", wd.workId).findList();
+      for (WorkChainItem wci : wcis) {
+        workMode = wci.workMode;
+        break;
+      }
+      if(workMode != 2) { /* 栽培管理以外は不要 */
+        continue;
+      }
+      Work wk = Work.getWork(wd.workId);
+      if ((mbt.hashuDate.compareTo(wd.workDate) == -1)
+            && (wk.workTemplateId == AgryeelConst.WorkTemplate.END)) { // 播種日以降の作付け開始は無視する
+        continue;
+      }
+      if ((wk != null) && (oWorkId != wd.workId) && ((oWorkDate == null ) || (oWorkDate != null && oWorkDate.compareTo(wd.workDate) != 0))) {
+        idx++;
+        ObjectNode workJson = Json.newObject();
+        workJson.put("idx", idx);
+        workJson.put("workDiaryId", wd.workDiaryId);
+        workJson.put("workId", wd.workId);
+        workJson.put("name", wk.workName);
+        workJson.put("color", wk.workColor);
+        List<WorkDiary> rsts = WorkDiary.getWorkDiaryOfWork(wd.workId, mbt.kukakuId, cs.katadukeDate, cs.finalEndDate);
+        boolean isRst = false;
+        WorkDiary rst = null;
+        for (WorkDiary rs: rsts) {
+          rst = rs;
+          isRst = true;
           break;
         }
-        if(workMode != 1) { /* 作付管理以外は不要 */
-          continue;
-        }
-        Work wk = Work.getWork(wd.workId);
-        if ((wk != null) && (oWorkId != wd.workDiaryId) && ((oWorkDate == null ) || (oWorkDate != null && oWorkDate.compareTo(wd.workDate) != 0))) {
-          idx++;
-          ObjectNode workJson = Json.newObject();
-          workJson.put("idx", idx);
-          workJson.put("workDiaryId", wd.workDiaryId);
-          workJson.put("workId", wd.workId);
-          workJson.put("name", wk.workName);
-          workJson.put("color", wk.workColor);
-          workJson.put("date", sdf.format(wd.workDate));
-          workJson.put("time", wd.workTime);
-          workJson.put("mode", workMode);
-          workLists.add(workJson);
-//        workList.put(String.valueOf(idx), workJson);
-//        workListApi.add(workJson);
-        }
-        oWorkId   = wd.workDiaryId;
-        oWorkDate = wd.workDate;
-      }
-      Collections.sort(workLists,
-          new Comparator<ObjectNode>() {
-            @Override
-            public int compare(ObjectNode o1, ObjectNode o2) {
-              SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-              try {
-                java.util.Date d1 = sdf.parse(o1.get("date").asText());
-                java.util.Date d2 = sdf.parse(o2.get("date").asText());
-                return d1.compareTo(d2);
-              } catch (ParseException e) {
-                return 0;
-              }
-            }
-          }
-      );
-      idx=0;
-      for (ObjectNode node:workLists) {
-        idx++;
-        workList.put(String.valueOf(idx), node);
-        workListApi.add(node);
-      }
-      if(api){
-        resultJson.put("sakudukeList", workListApi);
-      }else{
-        resultJson.put("sakudukeList", workList);
-      }
-
-    }
-    //---------------------------------------------------------
-    // 想定収穫日を算出する
-    //---------------------------------------------------------
-    double dShukakuRyo = 0;
-    Calendar st = Calendar.getInstance();
-    st.setTime(calHashu.getTime());
-    st.add(Calendar.DAY_OF_MONTH, -6);
-    Calendar ed = Calendar.getInstance();
-    ed.setTime(calHashu.getTime());
-    Calendar cal    = Calendar.getInstance();
-    Calendar target = Calendar.getInstance();
-
-    Field fd = cp.getFieldInfo();
-    if (fd != null) {
-      String pointId = PosttoPoint.getPointId(fd.postNo);
-      if (pointId != null && !"".equals(pointId)) {
-        //---------------------------------------------------------
-        // 想定積算温度を算出する
-        //---------------------------------------------------------
-        boolean init        = true;
-        long tDiff          = 0;
-        MotochoBase tbase   = null;
-        double sekisanKion  = 0;
-        cal.setTime(cs.katadukeDate);
-        for(MotochoBase data: datas) {
-//        if ((data.hinsyuId == null) || (data.hinsyuId != null && data.hinsyuId.indexOf(hinsyuId) == -1)) {
-//        continue;
-//      }
-          if (data.hashuDate == null || data.shukakuStartDate == null) {
-            continue;
-          }
-          target.setTime(data.hashuDate);
-          cal.set(Calendar.YEAR, target.get(Calendar.YEAR));
-          if (init) { // 初回データ
-            tbase = data;
-            tDiff = Math.abs(DateU.GetDiffDate(cal.getTime(), target.getTime()));
-          }
-          else {  // 播種日が直近のデータを探索する
-            if ((tbase.hinsyuId == null) || (tbase.hinsyuId != null && tbase.hinsyuId.indexOf(hinsyuId) == -1)
-                && ((data.hinsyuId != null && data.hinsyuId.indexOf(hinsyuId) != -1))) {
-              long diff = Math.abs(DateU.GetDiffDate(cal.getTime(), target.getTime()));
-              tbase = data;
-              tDiff = diff;
-            }
-            else {
-              if ((tbase.hinsyuId != null && tbase.hinsyuId.indexOf(hinsyuId) != -1)
-                  && ((data.hinsyuId != null && data.hinsyuId.indexOf(hinsyuId) != -1))) {
-                long diff = Math.abs(DateU.GetDiffDate(cal.getTime(), target.getTime()));
-                if ( (diff < tDiff) || (diff == tDiff)) {
-                  tbase = data;
-                  tDiff = diff;
-                }
-              }
-            }
-          }
-          init = false;
-        }
-        if (tbase != null) {
-          st.setTime(tbase.hashuDate);
-          ed.setTime(tbase.shukakuStartDate);
-          long diff = Math.abs(DateU.GetDiffDate(st.getTime(), ed.getTime()));
-          if (diff < 10) {
-            ed.setTime(st.getTime());
-            ed.add(Calendar.DAY_OF_WEEK, 30);
-          }
-          List<Weather> weathers = Weather.getWeather( pointId, new java.sql.Date(st.getTime().getTime()), new java.sql.Date(ed.getTime().getTime()));
-          for (Weather weather : weathers) {
-            double kion = weather.kionAve;
-            sekisanKion += kion;
-          }
-          dShukakuRyo = tbase.totalShukakuCount / sekisanKion;
+        workJson.put("date", sdf.format(DateU.GetDateBase( new java.sql.Date(baseDate.getTimeInMillis()), prevDate, wd.workDate)));
+        if (mode != 2 && isRst) {
+          baseDate.setTime(rst.workDate);
+          prevDate = rst.workDate;
+          workJson.put("result", sdf.format(rst.workDate));
+          workJson.put("plan", 0);
         }
         else {
-          st.setTime(calHashu.getTime());
-          st.add(Calendar.YEAR, -1);
-          ed.setTime(calHashu.getTime());
-          ed.add(Calendar.YEAR, -1);
-          ed.add(Calendar.DAY_OF_WEEK, 40);
-          List<Weather> weathers = Weather.getWeather( pointId, new java.sql.Date(st.getTime().getTime()), new java.sql.Date(ed.getTime().getTime()));
-          for (Weather weather : weathers) {
-            double kion = weather.kionAve;
-            sekisanKion += kion;
-          }
-          dShukakuRyo = 0;
+          baseDate.setTime(DateU.GetDateBase( new java.sql.Date(baseDate.getTimeInMillis()), prevDate, wd.workDate));
+          prevDate = wd.workDate;
+          workJson.put("result", "");
+          workJson.put("plan", 1);
         }
-
-        Calendar calSystem = Calendar.getInstance();
-
-        AicaCompornent aica = modelingSekisan(pointId, new java.sql.Date(calSystem.getTime().getTime()));
-
-//既に予測している気温で積算を行う
-//        st.setTime(calHashu.getTime());
-//        st.add(Calendar.DAY_OF_MONTH, -6);
-//        ed.setTime(calHashu.getTime());
-//        List<Weather> weathers = Weather.getWeather( pointId, new java.sql.Date(st.getTime().getTime()), new java.sql.Date(ed.getTime().getTime()));
-//        double[] x = new double[aica.getSekisanCount()];
-//        int idx = 0;
-//        for (Weather weather : weathers) {
-//          double kion = weather.kionAve;
-//          x[idx] = kion;
-//          idx++;
-//        }
-//
-//        double[] sekisans = aica.predictionSekisan(x, 180);
-        st.setTime(calHashu.getTime());
-        ed.setTime(calHashu.getTime());
-        ed.add(Calendar.MONTH, 4);
-        List<Weather> weathers = Weather.getWeather( pointId, new java.sql.Date(st.getTime().getTime()), new java.sql.Date(ed.getTime().getTime()));
-        int idx = 0;
-        double[] sekisans = new double[weathers.size()];
-        for (Weather weather : weathers) {
-          double kion = weather.kionAve;
-          sekisans[idx] = kion;
-          idx++;
+        workJson.put("time", wd.workTime);
+        workJson.put("mode", workMode);
+        ObjectNode sanpuList = Json.newObject();
+        ArrayNode sanpuListApi = mapper.createArrayNode();
+        if(api){
+          workJson.put("sanpu", sanpuListApi);
+        }else{
+          workJson.put("sanpu", sanpuList);
         }
-
-        double sekisan    = 0;
-        int dayCount      = 0;
-
-        for (int i=0; i<sekisans.length; i++) {
-          Logger.info("[AICA MANAGE] KION={}", sekisans[i]);
-          sekisan += sekisans[i];
-          dayCount++;
-          if(sekisanKion <= sekisan) { //想定積算温度が超えた場合
-            Logger.info("[BASE SEKISAN]{} [SOUTEI SEKISAN]{} [SEIIKU]{}", sekisanKion, sekisan, dayCount);
-            cal.setTime(calHashu.getTime());
-            cal.add(Calendar.DAY_OF_MONTH, dayCount);
-            dShukakuRyo = dShukakuRyo * sekisan;
-            resultJson.put("souteiShukakuDay", sdf.format(cal.getTime()));
-            resultJson.put("souteiShukakuRyo", df.format(dShukakuRyo));
-            resultJson.put("seiiku", dayCount);
-
-            //---------------------------------------------------------
-            //自生産者の該当品種収穫力を算出する
-            //---------------------------------------------------------
-            List<Double> kkey = new ArrayList<Double>();
-            for (Compartment ct : cts) {
-              CompartmentWorkChainStatus cws = ct.getCompartmentWorkChainStatus();
-              if (cws == null || (cws != null && cwcs.cropId != cws.cropId)) {
-                continue;
-              }
-              kkey.add(new Double(ct.kukakuId));
+        if(api){
+          workJson.put("workTime", (long)0);
+        }
+        workLists.add(workJson);
+      }
+      oWorkId   = wd.workId;
+      oWorkDate = wd.workDate;
+    }
+    Collections.sort(workLists,
+        new Comparator<ObjectNode>() {
+          @Override
+          public int compare(ObjectNode o1, ObjectNode o2) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+            try {
+              java.util.Date d1 = sdf.parse(o1.get("date").asText());
+              java.util.Date d2 = sdf.parse(o2.get("date").asText());
+              return d1.compareTo(d2);
+            } catch (ParseException e) {
+              return 0;
             }
-            List<Work> works = Work.find.where().disjunction().add(Expr.eq("farm_id", 0)).add(Expr.eq("farm_id", farmId)).endJunction().eq("work_template_id", AgryeelConst.WorkTemplate.SHUKAKU).findList();
-            List<Double> wkey = new ArrayList<Double>();
-            for (Work work : works) {
-              wkey.add(new Double(work.workId));
-            }
-            Calendar sst = Calendar.getInstance();
-            sst.add(Calendar.MONTH, -2);
-            Calendar sed = Calendar.getInstance();
-            List<WorkDiary> workDiarys = WorkDiary.find.where().in("kukaku_id", kkey).in("work_id", wkey).between("work_date", new java.sql.Date(sst.getTimeInMillis()), new java.sql.Date(sed.getTimeInMillis())).findList();
-            double aveShukakuryo   = 0;
-            long   needWorkTime    = 0;
-            double totalShukakuryo = 0;
-            long   totalWorkTime   = 0;
-            Work   wShukaku        = null;
-            for(WorkDiary workDiary: workDiarys) {
-              if (workDiary.shukakuRyo  == 0
-               || workDiary.workTime    == 0) {
-                continue;
-              }
-              if (wShukaku == null) {
-                wShukaku = Work.getWork(workDiary.workId);
-              }
-              totalShukakuryo += workDiary.shukakuRyo;
-              totalWorkTime   += workDiary.workTime;
-            }
-            if (totalWorkTime != 0) {
-              aveShukakuryo = totalShukakuryo / totalWorkTime;
-            }
-            if (aveShukakuryo != 0) {
-              needWorkTime = (long)(dShukakuRyo / aveShukakuryo);
-            }
-            if (wShukaku == null) {
-              List<WorkChainItem> wcis = WorkChainItem.getWorkChainItemList(cwcs.workChainId);
-              for (WorkChainItem wci :wcis) {
-                Work w = Work.getWork(wci.workId);
-                if (w.workTemplateId == AgryeelConst.WorkTemplate.SHUKAKU ||
-                    w.workTemplateId == AgryeelConst.WorkTemplate.SENKA) {
-                  wShukaku = w;
-                  break;
-                }
-              }
-            }
-            //---------------------------------------------------------
-            //想定収穫作業日数を算出する
-            //---------------------------------------------------------
-            Logger.info("[TOTAL SHUKAKURYO]{} [TOTAL WORKTIME]{} [AVERAGE SHUKAKURYO]{} [NEED TIME]{} [ONEDAY TIME]{}", totalShukakuryo, totalWorkTime, aveShukakuryo, needWorkTime, fs.workTimeOfDay);
-            long tantoNinzu   = (int)Math.ceil((double)needWorkTime / fs.workTimeOfDay);
-            int  shukakuNisu  = (int)Math.ceil(tantoNinzu / fs.syukakuTantoNinzu);
-            Logger.info("[Ninzu]{} [Nissu]{}", tantoNinzu, shukakuNisu);
-            resultJson.put("souteiTantoNinzu" , tantoNinzu);
-            resultJson.put("souteiShukakuNisu", shukakuNisu);
-            ObjectNode workList = Json.newObject();
-            ArrayNode workListApi = mapper.createArrayNode();
-            for (int ii=0; ii < shukakuNisu; ii++) {
-              ObjectNode workJson = Json.newObject();
-              workJson.put("idx", (ii+1));
-              workJson.put("workDiaryId", 0);
-              workJson.put("workId", wShukaku.workId);
-              workJson.put("name", wShukaku.workName);
-              workJson.put("color", wShukaku.workColor);
-              workJson.put("date", sdf.format(cal.getTime()));
-              workJson.put("workTime", fs.workTimeOfDay);
-              if (tantoNinzu < fs.syukakuTantoNinzu) {
-                workJson.put("ninzu", tantoNinzu);
-              }
-              else {
-                workJson.put("ninzu", fs.syukakuTantoNinzu);
-                tantoNinzu -= fs.syukakuTantoNinzu;
-              }
-              workList.put(String.valueOf(ii+1), workJson);
-              workListApi.add(workJson);
-              cal.add(Calendar.DAY_OF_MONTH, 1);
-            }
-            if (shukakuNisu == 0) {
-              ObjectNode workJson = Json.newObject();
-              workJson.put("idx", 1);
-              workJson.put("workDiaryId", 0);
-              workJson.put("workId", wShukaku.workId);
-              workJson.put("name", wShukaku.workName);
-              workJson.put("color", wShukaku.workColor);
-              workJson.put("date", sdf.format(cal.getTime()));
-              workJson.put("workTime", fs.workTimeOfDay);
-              workJson.put("ninzu", tantoNinzu);
-              workList.put(String.valueOf(1), workJson);
-              workListApi.add(workJson);
-            }
-            if(api){
-              resultJson.put("shukakuList", workListApi);
-            }else{
-              resultJson.put("shukakuList", workList);
-            }
-            //---------------------------------------------------------
-            //想定栽培管理を行う
-            //---------------------------------------------------------
-            int iSaibaiIdx = 0;
-            List<ObjectNode> workLists = new ArrayList<ObjectNode>();
-            workList = Json.newObject();
-            workListApi = mapper.createArrayNode();
-            //同一時期範囲を生成する
-            Calendar dst = Calendar.getInstance();
-            dst.setTime(cal.getTime());
-            dst.add(Calendar.WEEK_OF_YEAR, -2);
-            Calendar ded = Calendar.getInstance();
-            ded.setTime(cal.getTime());
-            ded.add(Calendar.WEEK_OF_YEAR, 2);
-            //同一時期内に消毒を実施しているかチェックする
-            works = Work.find.where().disjunction().add(Expr.eq("farm_id", 0)).add(Expr.eq("farm_id", farmId)).endJunction().eq("work_template_id", AgryeelConst.WorkTemplate.SANPU).findList();
-            wkey = new ArrayList<Double>();
-            for (Work work : works) {
-              wkey.add(new Double(work.workId));
-            }
-            WorkDiary             shoudokuDiary   = null;
-            List<WorkDiarySanpu>  shoudokuSanpus  = null;
-            for (int prev = 0; prev < 10; prev++) {
-              dst.add(Calendar.YEAR , -1 * prev);
-              ded.add(Calendar.YEAR , -1 * prev);
-              workDiarys = WorkDiary.find.where().in("kukaku_id", kkey).in("work_id", wkey).between("work_date", new java.sql.Date(dst.getTimeInMillis()), new java.sql.Date(ded.getTimeInMillis())).orderBy("work_date").findList();
-              for(WorkDiary workDiary: workDiarys) {
-                List<WorkDiarySanpu> wdss = WorkDiarySanpu.getWorkDiarySanpuList(workDiary.workDiaryId);
-                for (WorkDiarySanpu wds : wdss) {
-                  Nouhi nouhi = Nouhi.getNouhiInfo(wds.nouhiId);
-                  if (nouhi != null && nouhi.nouhiKind == AgryeelConst.NouhiKind.NOUYAKU) {
-                    List<MotochoBase> shoudokuBases = MotochoBase.find.where().eq("kukaku_id", workDiary.kukakuId).le("hashu_date", workDiary.workDate).ge("work_end_day", workDiary.workDate).findList();
-                    MotochoBase shoudokuBase = null;
-                    if (shoudokuBases.size() > 0) {
-                      shoudokuBase = shoudokuBases.get(0);
-                    }
-                    if (shoudokuBase != null && shoudokuBase.shukakuStartDate != null) {
-                      shoudokuSanpus = wdss;
-                      break;
-                    }
-                    else {
-                      continue;
-                    }
-                  }
-                }
-                if (shoudokuSanpus != null) {
-                  shoudokuDiary = workDiary;
-                  break;
-                }
-              }
-              if (shoudokuSanpus != null) {
-                break;
-              }
-            }
-            //消毒を収穫の何日前に実施しているか算出する
-            if (shoudokuDiary != null) {
-              List<MotochoBase> shoudokuBases = MotochoBase.find.where().eq("kukaku_id", shoudokuDiary.kukakuId).le("work_start_day", shoudokuDiary.workDate).ge("work_end_day", shoudokuDiary.workDate).findList();
-              MotochoBase shoudokuBase = null;
-              if (shoudokuBases.size() > 0) {
-                shoudokuBase = shoudokuBases.get(0);
-              }
-              if (shoudokuBase != null && shoudokuBase.shukakuStartDate != null) {
-                long diff = Math.abs(DateU.GetDiffDate(shoudokuDiary.workDate, shoudokuBase.shukakuStartDate));
-                cal.setTime(calHashu.getTime());
-                cal.add(Calendar.DAY_OF_MONTH, dayCount);
-                Calendar shodokuDate = Calendar.getInstance();
-                shodokuDate.setTime(cal.getTime());
-                shodokuDate.add(Calendar.DAY_OF_MONTH, (int)(-1 * diff));
-                ObjectNode workJson = Json.newObject();
-                Work   wShodoku        = Work.getWork(shoudokuDiary.workId);
-                iSaibaiIdx++;
-                workJson.put("idx", iSaibaiIdx);
-                workJson.put("workDiaryId", 0);
-                workJson.put("workId", wShodoku.workId);
-                workJson.put("color", wShodoku.workColor);
-                workJson.put("name", wShodoku.workName);
-                workJson.put("date", sdf.format(shodokuDate.getTime()));
-                if(api){
-                  workJson.put("workTime", (long)0);
-                }
-                ObjectNode sanpuList = Json.newObject();
-                ArrayNode sanpuListApi = mapper.createArrayNode();
-                int sanpuIdx = 0;
-                for (WorkDiarySanpu shoudokuSanpu : shoudokuSanpus){
-                  ObjectNode sanpuJson = Json.newObject();
-                  sanpuIdx++;
-                  Nouhi nouhi = Nouhi.getNouhiInfo(shoudokuSanpu.nouhiId);
-                  double hosei = 1;
-                  if (nouhi.unitKind == 1 || nouhi.unitKind == 2) { //単位種別がKgかLの場合
-                    hosei = 0.001;
-                  }
-                  sanpuJson.put("idx"        , sanpuIdx);
-                  sanpuJson.put("nouhiId"    , nouhi.nouhiId);
-                  sanpuJson.put("nouhiName"  , nouhi.nouhiName);
-                  sanpuJson.put("bairitu"    , shoudokuSanpu.bairitu);
-                  sanpuJson.put("sanpuryo"   , shoudokuSanpu.sanpuryo * hosei);
-                  sanpuJson.put("unit"       , Common.GetCommonValue(Common.ConstClass.UNIT, nouhi.unitKind));
-                  sanpuList.put(String.valueOf(sanpuIdx), sanpuJson);
-                  sanpuListApi.add(sanpuJson);
-                }
-
-                if(api){
-                  workJson.put("sanpu", sanpuListApi);
-                  //workListApi.add(workJson);
-                }else{
-                  workJson.put("sanpu", sanpuList);
-                  //workList.put(String.valueOf(iSaibaiIdx), workJson);
-                }
-                workLists.add(workJson);
-              }
-            }
-            //同一時期内に潅水を実施しているか？
-            Work workKansui = null;
-            List<WorkChainItem> wcis = WorkChainItem.getWorkChainItemList(cwcs.workChainId);
-            for (WorkChainItem wci :wcis) {
-              Work w = Work.getWork(wci.workId);
-              if (w.workTemplateId == AgryeelConst.WorkTemplate.KANSUI) {
-                workKansui = w;
-                break;
-              }
-            }
-            if (workKansui != null) {
-              keys.clear();
-              for (Compartment ct : cts) {
-                keys.add(new Double(ct.kukakuId));
-              }
-              //----- 品種縛り -----
-              //区画縛り
-              List<MotochoBase> baseKansuis = get10YearsMotochoBaseKansui(hinsyuId,cwcs.cropId, new java.sql.Date(calHashu.getTime().getTime()), cs.kukakuId, keys);
-              if (baseKansuis.size() == 0) {
-                //生産者縛り
-                baseKansuis = get10YearsMotochoBaseKansui(hinsyuId, cwcs.cropId, new java.sql.Date(calHashu.getTime().getTime()), 0, keys);
-              }
-              if (baseKansuis.size() == 0) {
-                //AICA全体
-                keys.clear();
-                baseKansuis = get10YearsMotochoBaseKansui(hinsyuId, cwcs.cropId, new java.sql.Date(calHashu.getTime().getTime()), 0, keys);
-              }
-              //----- 品種縛りなし -----
-              keys.clear();
-              for (Compartment ct : cts) {
-                keys.add(new Double(ct.kukakuId));
-              }
-              if (baseKansuis.size() == 0) {
-                //区画縛り
-                baseKansuis = get10YearsMotochoBaseKansui("0", cwcs.cropId, new java.sql.Date(calHashu.getTime().getTime()), 0, keys);
-              }
-              if (baseKansuis.size() == 0) {
-                //生産者縛り
-                baseKansuis = get10YearsMotochoBaseKansui("0", cwcs.cropId, new java.sql.Date(calHashu.getTime().getTime()), 0, keys);
-              }
-              if (baseKansuis.size() == 0) {
-                //AICA全体
-                keys.clear();
-                baseKansuis = get10YearsMotochoBaseKansui("0", cwcs.cropId, new java.sql.Date(calHashu.getTime().getTime()), 0, keys);
-              }
-              double totalSekisan = 0;
-              double diffSekisan = 0;
-              MotochoBase baseKansui = null;
-              List<Weather> baseWeathers = new ArrayList<Weather>();
-              for (MotochoBase bK: baseKansuis) {
-                Compartment kcp = Compartment.getCompartmentInfo(bK.kukakuId);
-                Field kfd = kcp.getFieldInfo();
-                if (kfd != null) {
-                  String kPointId = PosttoPoint.getPointId(kfd.postNo);
-                  weathers = Weather.getWeather( kPointId, bK.hashuDate, bK.shukakuStartDate);
-                  double kSekisan = 0;
-                  for (Weather weather : weathers) {
-                    kSekisan += weather.kionAve;
-                  }
-                  if (diffSekisan == 0) {
-                    diffSekisan = Math.abs(kSekisan - sekisan);
-                    baseKansui  = bK;
-                    totalSekisan=kSekisan;
-                    baseWeathers = weathers;
-                  }
-                  else {
-                    if (Math.abs(kSekisan - sekisan) < diffSekisan) {
-                      diffSekisan = Math.abs(kSekisan - sekisan);
-                      baseKansui  = bK;
-                      totalSekisan=kSekisan;
-                      baseWeathers = weathers;
-                    }
-                  }
-                }
-              }
-              if (baseKansui != null) {
-                //対象期間の総潅水分数を求める
-                long kansuiTime = 0;
-                workDiarys = WorkDiary.find.where().in("kukaku_id", baseKansui.kukakuId).between("work_date", baseKansui.hashuDate, baseKansui.shukakuStartDate).orderBy("work_date").findList();
-                Analysis als = new Analysis();
-                Logger.info("---------- KANSUI INFO ----------");
-                for(WorkDiary workDiary: workDiarys) {
-                  Work work = Work.getWork(workDiary.workId);
-                  if (work.workTemplateId != AgryeelConst.WorkTemplate.KANSUI) {
-                    continue;
-                  }
-                  int diff = (int)Math.abs(DateU.GetDiffDate(baseKansui.hashuDate, workDiary.workDate));
-                  double bsekisan = 0;
-                  for (int iw=0; iw <= diff; iw++) {
-                    Weather w = baseWeathers.get(iw);
-                    bsekisan += w.kionAve;
-                  }
-                  als.add(bsekisan);
-                  als.put(bsekisan, workDiary.workTime);
-                  kansuiTime += workDiary.workTime;
-                  Logger.info("[DATE]{} [NISU]{} [SEKISAN]{} [TIME]{}", sdf.format(workDiary.workDate), diff, bsekisan, workDiary.workTime);
-                }
-                double timePerSekisan = kansuiTime / totalSekisan;
-                double dSekisan = 0;
-                double dPrevSekisan = 0;
-                int kidx = 0;
-                List<Double> kansuiKeys = als.getKeys();
-                for (double kansuiKey : kansuiKeys) {
-                  double time = als.data(kansuiKey);
-                  for (int ik=0; ik<sekisans.length; ik++) {
-                    dSekisan += sekisans[ik];
-                    if (kansuiKey <= dSekisan) {
-                      ObjectNode workJson = Json.newObject();
-                      iSaibaiIdx++;
-                      workJson.put("idx", iSaibaiIdx);
-                      workJson.put("workDiaryId", 0);
-                      workJson.put("workId", workKansui.workId);
-                      workJson.put("name", workKansui.workName);
-                      workJson.put("color", workKansui.workColor);
-                      cal.setTime(calHashu.getTime());
-                      cal.add(Calendar.DAY_OF_MONTH, ik);
-                      workJson.put("date", sdf.format(cal.getTime()));
-                      if (dPrevSekisan == 0) {
-                        workJson.put("workTime", (long)time);
-                      }
-                      else {
-                        long hoseiTime = (long)(timePerSekisan * (dSekisan - dPrevSekisan));
-                        workJson.put("workTime", (long)time + hoseiTime);
-                      }
-                      if(api){
-                        ArrayNode sanpuListApi = mapper.createArrayNode();
-                        workJson.put("sanpu", sanpuListApi);
-                      }
-//                    workList.put(String.valueOf(iSaibaiIdx), workJson);
-//                    workListApi.add(workJson);
-                      workLists.add(workJson);
-                      dPrevSekisan = dSekisan;
-                      dSekisan = 0;
-                      break;
-                    }
-                  }
-                }
-              }
-            }
-            Collections.sort(workLists,
-                new Comparator<ObjectNode>() {
-                  @Override
-                  public int compare(ObjectNode o1, ObjectNode o2) {
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-                    try {
-                      java.util.Date d1 = sdf.parse(o1.get("date").asText());
-                      java.util.Date d2 = sdf.parse(o2.get("date").asText());
-                      return d1.compareTo(d2);
-                    } catch (ParseException e) {
-                      return 0;
-                    }
-                  }
-                }
-            );
-            idx=0;
-            for (ObjectNode node:workLists) {
-              idx++;
-              workList.put(String.valueOf(idx), node);
-              workListApi.add(node);
-            }
-            if(api){
-              resultJson.put("saibaiList", workListApi);
-            }else{
-              resultJson.put("saibaiList", workList);
-            }
-            break;
           }
+        }
+    );
+    ObjectNode workList2 = Json.newObject();
+    ArrayNode workListApi2 = mapper.createArrayNode();
+    idx=0;
+    for (ObjectNode node:workLists) {
+      idx++;
+      workList2.put(String.valueOf(idx), node);
+      workListApi2.add(node);
+    }
+    if(api){
+      resultJson.put("saibaiList", workListApi2);
+    }else{
+      resultJson.put("saibaiList", workList2);
+    }
+    resultJson.put("souteiShukakuDay", sdf.format(DateU.GetDateBase( new java.sql.Date(baseDate.getTimeInMillis()), new java.sql.Date(mbt.workStartDay.getTime()), mbt.shukakuStartDate)));
+    resultJson.put("souteiShukakuRyo", df.format(mbt.totalShukakuCount));
+    resultJson.put("seiiku", mbt.seiikuDayCount);
+    Calendar cShukaku = Calendar.getInstance();
+    cShukaku.setTime(DateU.GetDateBase( new java.sql.Date(baseDate.getTimeInMillis()), new java.sql.Date(mbt.workStartDay.getTime()), mbt.shukakuStartDate));
+
+    //---------------------------------------------------------
+    //自生産者の該当品種収穫力を算出する
+    //---------------------------------------------------------
+    List<Double> kkey = new ArrayList<Double>();
+    for (Compartment ct : cts) {
+      CompartmentWorkChainStatus cws = ct.getCompartmentWorkChainStatus();
+      if (cws == null || (cws != null && cwcs.cropId != cws.cropId)) {
+        continue;
+      }
+      kkey.add(new Double(ct.kukakuId));
+    }
+    List<Work> works = Work.find.where().disjunction().add(Expr.eq("farm_id", 0)).add(Expr.eq("farm_id", farmId)).endJunction().eq("work_template_id", AgryeelConst.WorkTemplate.SHUKAKU).findList();
+    List<Double> wkey = new ArrayList<Double>();
+    for (Work work : works) {
+      wkey.add(new Double(work.workId));
+    }
+    Calendar sst = Calendar.getInstance();
+    sst.add(Calendar.MONTH, -2);
+    Calendar sed = Calendar.getInstance();
+    List<WorkDiary> workDiarys = WorkDiary.find.where().in("kukaku_id", kkey).in("work_id", wkey).between("work_date", new java.sql.Date(sst.getTimeInMillis()), new java.sql.Date(sed.getTimeInMillis())).findList();
+    double aveShukakuryo   = 0;
+    long   needWorkTime    = 0;
+    double totalShukakuryo = 0;
+    long   totalWorkTime   = 0;
+    Work   wShukaku        = null;
+    for(WorkDiary workDiary: workDiarys) {
+      if (workDiary.shukakuRyo  == 0
+       || workDiary.workTime    == 0) {
+        continue;
+      }
+      if (wShukaku == null) {
+        wShukaku = Work.getWork(workDiary.workId);
+      }
+      totalShukakuryo += workDiary.shukakuRyo;
+      totalWorkTime   += workDiary.workTime;
+    }
+    if (totalWorkTime != 0) {
+      aveShukakuryo = totalShukakuryo / totalWorkTime;
+    }
+    if (aveShukakuryo != 0) {
+      needWorkTime = (long)(mbt.totalShukakuCount / aveShukakuryo);
+    }
+    if (wShukaku == null) {
+      List<WorkChainItem> wcis = WorkChainItem.getWorkChainItemList(cwcs.workChainId);
+      for (WorkChainItem wci :wcis) {
+        Work w = Work.getWork(wci.workId);
+        if (w.workTemplateId == AgryeelConst.WorkTemplate.SHUKAKU ||
+            w.workTemplateId == AgryeelConst.WorkTemplate.SENKA) {
+          wShukaku = w;
+          break;
         }
       }
     }
-
+    //---------------------------------------------------------
+    //想定収穫作業日数を算出する
+    //---------------------------------------------------------
+    Logger.info("[TOTAL SHUKAKURYO]{} [TOTAL WORKTIME]{} [AVERAGE SHUKAKURYO]{} [NEED TIME]{} [ONEDAY TIME]{}", totalShukakuryo, totalWorkTime, aveShukakuryo, needWorkTime, fs.workTimeOfDay);
+    long tantoNinzu   = (int)Math.ceil((double)needWorkTime / fs.workTimeOfDay);
+    int  shukakuNisu  = (int)Math.ceil(tantoNinzu / fs.syukakuTantoNinzu);
+    if (shukakuNisu == 0 && tantoNinzu == 1) {
+      shukakuNisu = 1;
+    }
+    Logger.info("[Ninzu]{} [Nissu]{}", tantoNinzu, shukakuNisu);
+    resultJson.put("souteiTantoNinzu" , tantoNinzu);
+    resultJson.put("souteiShukakuNisu", shukakuNisu);
+    ObjectNode workList3 = Json.newObject();
+    ArrayNode workListApi3 = mapper.createArrayNode();
+    for (int ii=0; ii < shukakuNisu; ii++) {
+      ObjectNode workJson = Json.newObject();
+      workJson.put("idx", (ii+1));
+      workJson.put("workDiaryId", 0);
+      workJson.put("workId", wShukaku.workId);
+      workJson.put("name", wShukaku.workName);
+      workJson.put("color", wShukaku.workColor);
+      workJson.put("result", "");
+      workJson.put("plan", 1);
+      workJson.put("date", sdf.format(cShukaku.getTime()));
+      workJson.put("workTime", fs.workTimeOfDay);
+      if (tantoNinzu < fs.syukakuTantoNinzu) {
+        workJson.put("ninzu", tantoNinzu);
+      }
+      else {
+        workJson.put("ninzu", fs.syukakuTantoNinzu);
+        tantoNinzu -= fs.syukakuTantoNinzu;
+      }
+      workList3.put(String.valueOf(ii+1), workJson);
+      workListApi3.add(workJson);
+      cShukaku.add(Calendar.DAY_OF_MONTH, 1);
+    }
+    if (shukakuNisu == 0) {
+      ObjectNode workJson = Json.newObject();
+      workJson.put("idx", 1);
+      workJson.put("workDiaryId", 0);
+      workJson.put("workId", wShukaku.workId);
+      workJson.put("name", wShukaku.workName);
+      workJson.put("color", wShukaku.workColor);
+      workJson.put("result", "");
+      workJson.put("plan", 1);
+      workJson.put("date", sdf.format(cShukaku.getTime()));
+      workJson.put("workTime", fs.workTimeOfDay);
+      workJson.put("ninzu", tantoNinzu);
+      workList3.put(String.valueOf(1), workJson);
+      workListApi3.add(workJson);
+    }
+    if(api){
+      resultJson.put("shukakuList", workListApi3);
+    }else{
+      resultJson.put("shukakuList", workList3);
+    }
     return ok(resultJson);
   }
   public static Result aicaSaibaiVerification() {
