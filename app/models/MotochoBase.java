@@ -163,10 +163,16 @@ public class MotochoBase extends Model {
     public static MotochoBase getMotochoBase(double pKukakuId, java.sql.Timestamp pStart) {
       MotochoBase result = null;                                                                                        /* 元帳基本情報 */
 
+      //----- V02R291 MOD START -----
+//      List<MotochoBase> mbs = MotochoBase.find.where().eq("kukaku_id", pKukakuId)
+//                                                      .ge("work_start_day", pStart)
+//                                                      .le("work_end_day", pStart)
+//                                                      .orderBy("work_start_day").findList();                            /* 元帳基本情報を取得 */
       List<MotochoBase> mbs = MotochoBase.find.where().eq("kukaku_id", pKukakuId)
-                                                      .ge("work_start_day", pStart)
-                                                      .le("work_end_day", pStart)
-                                                      .orderBy("work_start_day").findList();                            /* 元帳基本情報を取得 */
+          .le("work_start_day", pStart)
+          .ge("work_end_day", pStart)
+          .orderBy("work_start_day").findList();                            /* 元帳基本情報を取得 */
+      //----- V02R291 MOD END   -----
       if (mbs.size() > 0) {                                                                                             /* データが取得できた場合 */
         result = mbs.get(0);                                                                                            /* データを戻り値に格納する */
       }

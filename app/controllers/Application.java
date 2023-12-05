@@ -2568,6 +2568,22 @@ Logger.debug("[ GET WORK ] END");
           }
           kJ.put("cropName"        , "");
         }
+//----- V02R291 ADD START -----
+        crop = CropComprtnent.getCropById(compartmentStatusData.cropId);
+        if (crop != null ){
+          kJ.put("cropIdD"          , crop.cropId);
+          kJ.put("cropNameD"        , crop.cropName);
+        }
+        else {
+          if(api){
+            kJ.put("cropIdD"          , 0);
+          }
+          else {
+            kJ.put("cropIdD"          , "");
+          }
+          kJ.put("cropNameD"        , "");
+        }
+//----- V02R291 ADD END   -----
         if (compartmentStatusData.hinsyuName != null && !"".equals(compartmentStatusData.hinsyuName)) {
 
           kJ.put("hinsyuName"        , compartmentStatusData.hinsyuName);            //品種名

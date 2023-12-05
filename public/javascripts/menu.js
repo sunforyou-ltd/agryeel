@@ -1335,7 +1335,10 @@
       hinsyu = " ( " + kdj["hinsyuName"] + " )"
     }
     k1.append('</br><span class="item-title">年内回転数</span><span class="item">' + kdj["rotationSpeedOfYear"] + '作目</span>');
-    k1.append('</br><span class="item-title">品目</span><span class="item">' + kdj["cropName"] + hinsyu + '</span>');
+//----- V02R291 MOD START -----
+//  k1.append('</br><span class="item-title">品目</span><span class="item">' + kdj["cropName"] + hinsyu + '</span>');
+    k1.append('</br><span class="item-title">品目</span><span class="item">' + kdj["cropNameD"] + hinsyu + '</span>');
+//----- V02R291 MOD END -----
     k1.append('</br><span class="item-title">播種日</span><span class="item">' + kdj["hashuDate"] + '</span>');
     k1.append('<span class="sub">播種回数</span><span class="item">' + kdj["hashuCount"] + '&nbsp;回</span>');
     k1.append('</br><span class="item-title">生育日数</span><span class="item">' + kdj["seiikuDayCount"] + '日</span><span class="item">～&nbsp;&nbsp;' + kdj["seiikuDayCountEnd"] + '日</span>');
